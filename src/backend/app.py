@@ -381,12 +381,165 @@ def get_user_progress():
         "recent_games": [{"game_type": g[0], "score": g[1], "completed_at": g[2]} for g in recent_games]
     })
 
+@app.route('/api/learning/paths', methods=['GET'])
+def get_learning_paths():
+    """Get structured learning paths"""
+    paths = {
+        'beginner': {
+            'id': 'beginner',
+            'title': 'Beginner Path: Essential Cybersecurity Awareness',
+            'description': 'Build fundamental cybersecurity awareness. Learn practical ways to protect yourself online and recognize common threats.',
+            'duration': '4-6 weeks',
+            'modules': [
+                {
+                    'id': 'passwords',
+                    'order': 1,
+                    'title': 'Password Security',
+                    'objectives': [
+                        'Understand what makes a strong password',
+                        'Learn to use password managers effectively',
+                        'Recognize common password vulnerabilities'
+                    ],
+                    'games': ['password-cracker'],
+                    'estimated_time': '30 minutes'
+                },
+                {
+                    'id': 'phishing',
+                    'order': 2,
+                    'title': 'Phishing Recognition',
+                    'objectives': [
+                        'Identify phishing emails and messages',
+                        'Understand social engineering tactics',
+                        'Learn to verify legitimate communications'
+                    ],
+                    'games': ['social-engineering'],
+                    'estimated_time': '45 minutes'
+                },
+                {
+                    'id': 'browsing',
+                    'order': 3,
+                    'title': 'Secure Browsing',
+                    'objectives': [
+                        'Recognize secure websites (HTTPS)',
+                        'Understand safe download practices',
+                        'Identify suspicious websites'
+                    ],
+                    'games': ['network-scanner'],
+                    'estimated_time': '30 minutes'
+                }
+            ],
+            'outcomes': [
+                'Awareness of password security best practices',
+                'Ability to recognize and avoid phishing attempts',
+                'Knowledge of safe browsing habits',
+                'Practical cybersecurity awareness for daily life'
+            ]
+        },
+        'intermediate': {
+            'id': 'intermediate',
+            'title': 'Intermediate Path: Network & Security Awareness',
+            'description': 'Develop awareness of network security, encryption basics, and how to respond to security incidents in real-world scenarios.',
+            'duration': '6-8 weeks',
+            'modules': [
+                {
+                    'id': 'encryption',
+                    'order': 1,
+                    'title': 'Encryption Basics',
+                    'objectives': [
+                        'Understand how encryption works',
+                        'Learn about different encryption methods',
+                        'Apply encryption concepts practically'
+                    ],
+                    'games': ['caesar-cipher'],
+                    'estimated_time': '45 minutes'
+                },
+                {
+                    'id': 'network',
+                    'order': 2,
+                    'title': 'Network Security',
+                    'objectives': [
+                        'Understand network vulnerabilities',
+                        'Learn about port scanning and security assessment',
+                        'Identify common network threats'
+                    ],
+                    'games': ['network-scanner'],
+                    'estimated_time': '60 minutes'
+                },
+                {
+                    'id': 'incident',
+                    'order': 3,
+                    'title': 'Incident Response',
+                    'objectives': [
+                        'Learn to respond to security incidents',
+                        'Understand incident response procedures',
+                        'Practice handling real-world scenarios'
+                    ],
+                    'games': ['incident-response'],
+                    'estimated_time': '45 minutes'
+                }
+            ],
+            'outcomes': [
+                'Awareness of encryption and how it protects data',
+                'Understanding of network security vulnerabilities',
+                'Knowledge of incident response procedures',
+                'Practical awareness of intermediate security concepts'
+            ]
+        },
+        'advanced': {
+            'id': 'advanced',
+            'title': 'Advanced Path: Security Analysis Awareness',
+            'description': 'Build awareness of advanced security concepts including penetration testing, malware analysis, and security research practices.',
+            'duration': '8-12 weeks',
+            'modules': [
+                {
+                    'id': 'ctf',
+                    'order': 1,
+                    'title': 'Capture The Flag',
+                    'objectives': [
+                        'Solve cryptography challenges',
+                        'Understand web exploitation basics',
+                        'Learn digital forensics techniques',
+                        'Practice reverse engineering concepts'
+                    ],
+                    'games': ['capture-the-flag'],
+                    'estimated_time': '2-3 hours'
+                },
+                {
+                    'id': 'malware',
+                    'order': 2,
+                    'title': 'Malware Analysis',
+                    'objectives': [
+                        'Understand malware behavior',
+                        'Learn static and dynamic analysis',
+                        'Identify network indicators of compromise'
+                    ],
+                    'games': ['malware-analysis'],
+                    'estimated_time': '60 minutes'
+                }
+            ],
+            'outcomes': [
+                'Awareness of CTF challenges and security competitions',
+                'Understanding of malware analysis concepts',
+                'Knowledge of penetration testing principles',
+                'Foundation for advanced security learning platforms'
+            ],
+            'next_steps': 'After building awareness here, you\'ll have a solid foundation to explore advanced platforms like TryHackMe and HackTheBox.'
+        }
+    }
+    
+    return jsonify(paths)
+
 @app.route('/api/learning/<module_id>', methods=['GET'])
 def get_learning_module(module_id):
     """Get learning module content"""
     modules = {
         'passwords': {
             'title': 'Password Security',
+            'learning_objectives': [
+                'Understand what makes a strong password',
+                'Learn to use password managers effectively',
+                'Recognize common password vulnerabilities'
+            ],
             'content': {
                 'lessons': [
                     {
@@ -404,6 +557,11 @@ def get_learning_module(module_id):
         },
         'phishing': {
             'title': 'Phishing Recognition',
+            'learning_objectives': [
+                'Identify phishing emails and messages',
+                'Understand social engineering tactics',
+                'Learn to verify legitimate communications'
+            ],
             'content': {
                 'lessons': [
                     {
@@ -421,6 +579,11 @@ def get_learning_module(module_id):
         },
         'browsing': {
             'title': 'Secure Browsing',
+            'learning_objectives': [
+                'Recognize secure websites (HTTPS)',
+                'Understand safe download practices',
+                'Identify suspicious websites'
+            ],
             'content': {
                 'lessons': [
                     {
@@ -438,6 +601,11 @@ def get_learning_module(module_id):
         },
         'encryption': {
             'title': 'Encryption Basics',
+            'learning_objectives': [
+                'Understand how encryption works',
+                'Learn about different encryption methods',
+                'Apply encryption concepts practically'
+            ],
             'content': {
                 'lessons': [
                     {

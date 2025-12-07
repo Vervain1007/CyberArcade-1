@@ -13,6 +13,9 @@ const appState = {
     moduleInstances: {}
 };
 
+// Registry for modular game definitions
+window.CyberArcadeGames = window.CyberArcadeGames || {};
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
@@ -24,6 +27,409 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeApp() {
     updateUserDisplay();
     showSection('home');
+    loadLearningPaths();
+    loadCareerRoadmap();
+    loadTodaysSecurityTip();
+    loadSecurityChecklist();
+}
+
+// Load and display career roadmap
+function loadCareerRoadmap() {
+    const roadmapData = {
+        'penetration-tester': {
+            title: '🔓 Penetration Tester (Ethical Hacker)',
+            description: 'Find security vulnerabilities before attackers do',
+            icon: 'fas fa-user-secret',
+            color: '#ff6b6b',
+            skills: ['Network Security', 'Web Exploitation', 'Social Engineering', 'CTF Challenges'],
+            modules: ['Network Security', 'Secure Browsing', 'Phishing Recognition'],
+            games: ['Network Security Scanner', 'Capture The Flag', 'Social Engineering Simulator'],
+            nextSteps: 'Build awareness here, then explore TryHackMe, HackTheBox, or pursue CEH certification'
+        },
+        'security-analyst': {
+            title: '🛡️ Security Analyst',
+            description: 'Monitor and protect systems from cyber threats',
+            icon: 'fas fa-shield-alt',
+            color: '#4ecdc4',
+            skills: ['Network Analysis', 'Incident Response', 'Malware Analysis', 'Threat Detection'],
+            modules: ['Network Security', 'Secure Browsing', 'Encryption Basics'],
+            games: ['Network Security Scanner', 'Incident Response Simulator', 'Malware Analysis Lab'],
+            nextSteps: 'Build awareness here, then continue with Security+ certification, SIEM tools training, and threat intelligence courses'
+        },
+        'forensics-expert': {
+            title: '🔍 Digital Forensics Expert',
+            description: 'Investigate cybercrimes and analyze digital evidence',
+            icon: 'fas fa-search',
+            color: '#ffd700',
+            skills: ['File Analysis', 'Data Recovery', 'Evidence Collection', 'CTF Forensics'],
+            modules: ['Encryption Basics', 'Secure Browsing'],
+            games: ['Capture The Flag (Forensics)', 'Malware Analysis Lab'],
+            nextSteps: 'Pursue GCFA (GIAC Certified Forensics Analyst) or CHFI certification'
+        },
+        'cryptographer': {
+            title: '🔐 Cryptographer',
+            description: 'Design and break encryption systems',
+            icon: 'fas fa-lock',
+            color: '#00ffff',
+            skills: ['Encryption Algorithms', 'Cryptanalysis', 'Caesar Cipher', 'Modern Cryptography'],
+            modules: ['Encryption Basics'],
+            games: ['Caesar Cipher', 'Capture The Flag (Crypto)'],
+            nextSteps: 'Study advanced cryptography, mathematics, and pursue cryptography research or certifications'
+        },
+        'security-engineer': {
+            title: '⚙️ Security Engineer',
+            description: 'Build secure systems and infrastructure',
+            icon: 'fas fa-cogs',
+            color: '#ff00ff',
+            skills: ['Network Security', 'System Hardening', 'Password Security', 'Security Architecture'],
+            modules: ['Password Security', 'Network Security', 'Encryption Basics'],
+            games: ['Password Cracking Simulator', 'Network Security Scanner', 'Caesar Cipher'],
+            nextSteps: 'Learn cloud security (AWS, Azure), infrastructure as code, and pursue CISSP certification'
+        },
+        'security-educator': {
+            title: '📚 Security Educator',
+            description: 'Teach cybersecurity to others',
+            icon: 'fas fa-chalkboard-teacher',
+            color: '#00ff00',
+            skills: ['All Fundamentals', 'Communication', 'Pedagogy', 'Curriculum Design'],
+            modules: ['All Learning Modules'],
+            games: ['All Games'],
+            nextSteps: 'Gain teaching experience, pursue education certifications, and develop comprehensive curricula'
+        }
+    };
+    
+    displayCareerRoadmap(roadmapData);
+}
+
+// Load Today's Security Tip
+function loadTodaysSecurityTip() {
+    const tips = [
+        'Always check if a website uses HTTPS (look for the padlock icon) before entering any personal information.',
+        'Never reuse passwords across different accounts. If one gets hacked, all your accounts could be compromised.',
+        'Enable two-factor authentication (2FA) on all important accounts - it adds an extra layer of security.',
+        'Be suspicious of emails asking for personal information or urgent action. Legitimate companies rarely ask for sensitive data via email.',
+        'Keep your software updated! Security patches fix vulnerabilities that hackers exploit.',
+        'Use a password manager to create and store strong, unique passwords for all your accounts.',
+        'Never click links in suspicious emails. Instead, go directly to the company\'s website.',
+        'Public WiFi is risky - avoid accessing sensitive accounts or making purchases on public networks.',
+        'Check the sender\'s email address carefully. Phishing emails often use similar-looking domains (like amaz0n.com instead of amazon.com).',
+        'Back up your important data regularly. Ransomware attacks can lock you out of your files.',
+        'Don\'t download files from unknown sources, especially .exe files. They could contain malware.',
+        'Review your privacy settings on social media regularly. Limit what information is publicly visible.',
+        'If something seems too good to be true online, it probably is. Be cautious of "free" offers and prizes.',
+        'Use a VPN when connecting to public WiFi to encrypt your internet connection.',
+        'Regularly check your bank and credit card statements for unauthorized transactions.',
+        'Don\'t share personal information like your full address, phone number, or birthday on public platforms.',
+        'Be careful with USB drives from unknown sources - they could contain malware.',
+        'Use strong, unique passwords that are at least 12 characters long with a mix of letters, numbers, and symbols.',
+        'Verify the legitimacy of websites before entering payment information. Look for trust badges and reviews.',
+        'Keep your antivirus software updated and run regular scans to detect malware.'
+    ];
+    
+    // Get tip based on day of year (so it changes daily)
+    const today = new Date();
+    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+    const tip = tips[dayOfYear % tips.length];
+    
+    const tipElement = document.getElementById('todaysSecurityTip');
+    if (tipElement) {
+        tipElement.innerHTML = `<p style="margin: 0;">💡 ${tip}</p>`;
+    }
+}
+
+// Display career roadmap
+function displayCareerRoadmap(roadmapData) {
+    const container = document.getElementById('roadmapContainer');
+    if (!container) return;
+    
+    container.innerHTML = `
+        <div class="roadmap-grid">
+            ${Object.entries(roadmapData).map(([key, role]) => `
+                <div class="roadmap-card" style="background: linear-gradient(135deg, ${role.color}15 0%, ${role.color}05 100%); border: 2px solid ${role.color}40; border-radius: 20px; padding: 2rem; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -50px; right: -50px; font-size: 8rem; opacity: 0.1; color: ${role.color};">
+                        <i class="${role.icon}"></i>
+                    </div>
+                    
+                    <div class="roadmap-card-header" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; position: relative; z-index: 1;">
+                        <div class="roadmap-icon" style="font-size: 3.5rem; color: ${role.color}; text-shadow: 0 0 20px ${role.color}50;">
+                            <i class="${role.icon}"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="color: #ffffff; font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: bold;">${role.title}</h3>
+                            <p style="color: #cccccc; line-height: 1.6; font-size: 1.05rem;">${role.description}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="roadmap-skills" style="margin: 1.5rem 0; position: relative; z-index: 1;">
+                        <h4 style="color: ${role.color}; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold;">⚡ What You'll Master:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            ${role.skills.map(skill => `
+                                <span style="background: ${role.color}25; color: ${role.color}; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.95rem; border: 1px solid ${role.color}50; font-weight: 500;">${skill}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="roadmap-path" style="background: rgba(0,0,0,0.4); padding: 1.5rem; border-radius: 15px; margin-top: 1.5rem; border-left: 4px solid ${role.color}; position: relative; z-index: 1;">
+                        <h4 style="color: ${role.color}; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold;">🎯 Your Journey:</h4>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                <span style="font-size: 1.5rem;">📚</span>
+                                <span style="color: #00ffff; font-weight: bold;">Study These Topics:</span>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-left: 2rem;">
+                                ${role.modules.map(module => `
+                                    <span style="background: rgba(0,255,255,0.15); color: #00ffff; padding: 0.4rem 0.8rem; border-radius: 10px; font-size: 0.9rem; border: 1px solid rgba(0,255,255,0.3);">${module}</span>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                <span style="font-size: 1.5rem;">🎮</span>
+                                <span style="color: #ff6b6b; font-weight: bold;">Play These Games:</span>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-left: 2rem;">
+                                ${role.games.map(game => `
+                                    <span style="background: rgba(255,107,107,0.15); color: #ff6b6b; padding: 0.4rem 0.8rem; border-radius: 10px; font-size: 0.9rem; border: 1px solid rgba(255,107,107,0.3);">${game.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="roadmap-next-steps" style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(255,215,0,0.1); border-radius: 12px; border-left: 4px solid #ffd700; position: relative; z-index: 1;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="font-size: 1.3rem;">🌟</span>
+                            <p style="color: #ffd700; font-weight: bold; margin: 0; font-size: 1.05rem;">What's Next?</p>
+                        </div>
+                        <p style="color: #ffffff; font-size: 0.95rem; line-height: 1.7; margin: 0;">${role.nextSteps}</p>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// Explore career path (removed - no longer needed)
+function exploreCareerPath(careerKey) {
+    // Just scroll to learn section
+    showSection('learn');
+}
+
+// Start a career path (removed - no longer using buttons)
+function startCareerPath(careerKey) {
+    const careerPaths = {
+        'penetration-tester': {
+            modules: ['Secure Browsing', 'Phishing Recognition'],
+            games: ['network-scanner', 'social-engineering', 'capture-the-flag']
+        },
+        'security-analyst': {
+            modules: ['Secure Browsing', 'Password Safety'],
+            games: ['network-scanner', 'incident-response', 'malware-analysis']
+        },
+        'forensics-expert': {
+            modules: ['Encryption Basics', 'Secure Browsing'],
+            games: ['capture-the-flag', 'malware-analysis']
+        },
+        'cryptographer': {
+            modules: ['Encryption Basics'],
+            games: ['caesar-cipher', 'capture-the-flag']
+        },
+        'security-engineer': {
+            modules: ['Password Safety', 'Secure Browsing', 'Encryption Basics'],
+            games: ['password-cracker', 'network-scanner', 'caesar-cipher']
+        },
+        'security-educator': {
+            modules: ['Password Safety', 'Phishing Recognition', 'Secure Browsing', 'Encryption Basics'],
+            games: ['snake-ladder', 'social-engineering', 'caesar-cipher', 'password-cracker']
+        }
+    };
+    
+    const path = careerPaths[careerKey];
+    if (!path) return;
+    
+    // Show a modal with the path
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 2rem;';
+    modal.innerHTML = `
+        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; border-radius: 20px; border: 2px solid rgba(0,255,255,0.3); max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;">
+            <h2 style="color: #00ffff; margin-bottom: 1rem;">🎯 Your Career Path Journey</h2>
+            <p style="color: #ffffff; margin-bottom: 2rem; line-height: 1.6;">Let's start your learning journey! We'll guide you through the modules and games relevant to this career path.</p>
+            
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: #ffd700; margin-bottom: 1rem;">📚 Step 1: Learning Modules (Flashcards)</h3>
+                <p style="color: #cccccc; font-size: 0.9rem; margin-bottom: 1rem;">Click on any flashcard to learn about these topics:</p>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    ${path.modules.map(module => `
+                        <button onclick="closePathModal(); showSection('learn'); setTimeout(() => { const cards = document.querySelectorAll('.flashcard'); if (cards.length > 0) { const card = Array.from(cards).find(c => c.textContent.includes('${module}')); if (card) { card.click(); } else { alert('Please find and click the \\'${module}\\' flashcard in the Learn section!'); } } }, 500);" 
+                                style="padding: 1rem; background: rgba(0,255,255,0.1); border: 1px solid rgba(0,255,255,0.3); border-radius: 10px; color: #00ffff; cursor: pointer; text-align: left; transition: all 0.3s;">
+                            <i class="fas fa-book"></i> ${module}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: #ffd700; margin-bottom: 1rem;">🎮 Step 2: Practice Games</h3>
+                <p style="color: #cccccc; font-size: 0.9rem; margin-bottom: 1rem;">Practice what you learned with these games:</p>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    ${path.games.map(game => `
+                        <button onclick="closePathModal(); showSection('games'); setTimeout(() => startGame('${game}'), 300);" 
+                                style="padding: 1rem; background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); border-radius: 10px; color: #ff6b6b; cursor: pointer; text-align: left; transition: all 0.3s;">
+                            <i class="fas fa-gamepad"></i> ${game.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <button onclick="closePathModal()" style="width: 100%; padding: 1rem; background: rgba(255,0,0,0.2); border: 1px solid #ff0000; border-radius: 10px; color: #ff0000; font-weight: bold; cursor: pointer;">
+                Close
+            </button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    window.closePathModal = function() {
+        if (modal && modal.parentNode) {
+            modal.parentNode.removeChild(modal);
+        }
+    };
+}
+
+// Explore career path (show details)
+function exploreCareerPath(careerKey) {
+    // This can show more details or scroll to the path
+    startCareerPath(careerKey);
+}
+
+// Load and display learning paths
+async function loadLearningPaths() {
+    try {
+        const response = await fetch('/api/learning/paths');
+        const paths = await response.json();
+        displayLearningPaths(paths);
+    } catch (error) {
+        console.error('Error loading learning paths:', error);
+    }
+}
+
+// Display learning paths
+function displayLearningPaths(paths) {
+    const container = document.getElementById('learningPathsContainer');
+    if (!container) return;
+    
+    container.innerHTML = Object.values(paths).map(path => `
+        <div class="learning-path-card">
+            <div class="path-header">
+                <div class="path-badge">${path.id === 'beginner' ? '🟢 Beginner' : path.id === 'intermediate' ? '🟡 Intermediate' : '🔴 Advanced'}</div>
+                <h3>${path.title}</h3>
+                <p class="path-description">${path.description}</p>
+                <div class="path-meta">
+                    <span><i class="fas fa-clock"></i> ${path.duration}</span>
+                    <span><i class="fas fa-book"></i> ${path.modules.length} Modules</span>
+                </div>
+            </div>
+            
+            <div class="path-progress-visual">
+                <h4 style="margin-bottom: 1rem; color: #00ffff;">Your Journey:</h4>
+                <div class="progress-steps">
+                    ${path.modules.map((module, index) => `
+                        <div class="progress-step" onclick="startModuleFromPath('${path.id}', ${index})">
+                            <div class="step-connector ${index === path.modules.length - 1 ? 'last' : ''}"></div>
+                            <div class="step-circle">${index + 1}</div>
+                            <div class="step-info">
+                                <h5>${module.title}</h5>
+                                <p><i class="fas fa-hourglass-half"></i> ${module.estimated_time}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div class="path-outcomes-compact">
+                <h4>What You'll Learn:</h4>
+                <div class="outcomes-grid">
+                    ${path.outcomes.slice(0, 4).map(outcome => `
+                        <div class="outcome-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>${outcome}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <button class="btn btn-primary path-start-btn" onclick="startLearningPath('${path.id}')">
+                <i class="fas fa-play"></i> Start Learning Path
+            </button>
+        </div>
+    `).join('');
+}
+
+// Start module from path (when clicking progress step)
+function startModuleFromPath(pathId, moduleIndex) {
+    startPathModule(pathId, moduleIndex);
+}
+
+// Start a learning path
+function startLearningPath(pathId) {
+    // Load the path data
+    fetch('/api/learning/paths')
+        .then(response => response.json())
+        .then(paths => {
+            const path = paths[pathId];
+            if (!path || !path.modules.length) return;
+            
+            // Show confirmation modal with path overview
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 2rem;';
+            modal.innerHTML = `
+                <div style="background: #1a1a2e; padding: 2.5rem; border-radius: 20px; border: 2px solid rgba(0,255,255,0.3); max-width: 600px; max-height: 80vh; overflow-y: auto;">
+                    <h2 style="color: #00ffff; margin-bottom: 1rem; text-align: center;">${path.title}</h2>
+                    <p style="color: #cccccc; margin-bottom: 1.5rem; text-align: center;">${path.description}</p>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: #00ffff; margin-bottom: 1rem;">📚 Modules in this path:</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            ${path.modules.map((module, index) => `
+                                <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(0,255,255,0.1); border-radius: 10px; border-left: 3px solid #00ffff;">
+                                    <div style="width: 35px; height: 35px; background: linear-gradient(45deg, #00ffff, #0080ff); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${index + 1}</div>
+                                    <div style="flex: 1;">
+                                        <h4 style="color: #ffffff; margin: 0 0 0.25rem 0;">${module.title}</h4>
+                                        <p style="color: #cccccc; margin: 0; font-size: 0.9rem;"><i class="fas fa-hourglass-half"></i> ${module.estimated_time}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <button onclick="this.parentElement.parentElement.remove()" style="padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 5px; color: #ffffff; cursor: pointer; font-weight: bold;">Cancel</button>
+                        <button onclick="startPathModule('${pathId}', 0); this.parentElement.parentElement.parentElement.remove();" style="padding: 0.75rem 1.5rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 5px; color: #000; cursor: pointer; font-weight: bold;">Start Learning Path</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        })
+        .catch(error => {
+            console.error('Error starting learning path:', error);
+        });
+}
+
+// Start a specific module from a path
+function startPathModule(pathId, moduleIndex) {
+    fetch('/api/learning/paths')
+        .then(response => response.json())
+        .then(paths => {
+            const path = paths[pathId];
+            if (!path || !path.modules[moduleIndex]) return;
+            
+            const module = path.modules[moduleIndex];
+            showSection('learn');
+            setTimeout(() => {
+                openModule(module.id);
+            }, 300);
+        })
+        .catch(error => {
+            console.error('Error starting module:', error);
+        });
 }
 
 // Load user progress from localStorage
@@ -71,6 +477,25 @@ function setupEventListeners() {
             showSection(target);
         });
     });
+    
+    // Escape key to close modals
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const gameModal = document.getElementById('gameModal');
+            const moduleModal = document.getElementById('moduleModal');
+            const ctfModal = document.querySelector('.ctf-challenge-modal');
+            
+            if (gameModal && gameModal.style.display === 'block') {
+                closeGame();
+            }
+            if (moduleModal && moduleModal.style.display === 'block') {
+                closeModule();
+            }
+            if (ctfModal) {
+                window.closeCTFChallenge();
+            }
+        }
+    });
 }
 
 // Show specific section
@@ -85,6 +510,11 @@ function showSection(sectionName) {
     if (targetSection) {
         targetSection.classList.add('active');
         appState.currentSection = sectionName;
+        
+        // Initialize flashcards when Learn section is shown
+        if (sectionName === 'learn') {
+            setTimeout(initializeFlashcards, 100);
+        }
     }
 }
 
@@ -209,163 +639,392 @@ function getModuleData(moduleName) {
             content: `
                 <div class="module-content">
                     <div class="lesson-section">
-                        <h3>What Makes a Strong Password?</h3>
+                        <h3>🔐 Why Passwords Matter</h3>
+                        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                            <strong>For Kids:</strong> Think of a password like a secret code to your treehouse. You wouldn't want just anyone to know it!<br><br>
+                            <strong>For Students:</strong> Passwords protect your personal information, school work, and online accounts from hackers.<br><br>
+                            <strong>For Professionals:</strong> Weak passwords are the #1 cause of data breaches. A single compromised password can expose entire systems.
+                        </p>
+                        
+                        <div class="real-world-example" style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 5px; border-left: 3px solid #ff0000; margin-bottom: 1.5rem;">
+                            <h4>⚠️ Real-World Example:</h4>
+                            <p>In 2021, a company lost $4.5 million because an employee used "password123" as their password. Hackers guessed it in seconds!</p>
+                        </div>
+                        
+                        <h3>✅ What Makes a Strong Password?</h3>
                         <div class="password-rules">
                             <div class="rule-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>At least 12 characters long</span>
+                                <i class="fas fa-check-circle" style="color: #00ff00;"></i>
+                                <div>
+                                    <strong>At least 12 characters long</strong>
+                                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.25rem;">Longer = Harder to guess. "MyDog123" (8 chars) vs "MyDogLovesPlaying123!" (22 chars)</p>
+                                </div>
                             </div>
                             <div class="rule-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Mix of uppercase and lowercase letters</span>
+                                <i class="fas fa-check-circle" style="color: #00ff00;"></i>
+                                <div>
+                                    <strong>Mix of uppercase and lowercase letters</strong>
+                                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.25rem;">Example: "MyDog" is better than "mydog"</p>
+                                </div>
                             </div>
                             <div class="rule-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Include numbers and special characters</span>
+                                <i class="fas fa-check-circle" style="color: #00ff00;"></i>
+                                <div>
+                                    <strong>Include numbers and special characters</strong>
+                                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.25rem;">Example: "MyDog123!" includes numbers and special characters</p>
+                                </div>
                             </div>
                             <div class="rule-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Avoid personal information</span>
+                                <i class="fas fa-check-circle" style="color: #00ff00;"></i>
+                                <div>
+                                    <strong>Avoid personal information</strong>
+                                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.25rem;">Don't use your name, birthday, pet's name, or favorite sports team</p>
+                                </div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-check-circle" style="color: #00ff00;"></i>
+                                <div>
+                                    <strong>Use unique passwords for each account</strong>
+                                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.25rem;">If one password is stolen, your other accounts stay safe</p>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="interactive-section">
-                        <h3>Test Your Password</h3>
+                        <div class="password-examples" style="margin-top: 2rem;">
+                            <h4>📝 Password Examples:</h4>
+                            <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                                <div style="padding: 1rem; background: rgba(255,0,0,0.1); border-radius: 5px; border-left: 3px solid #ff0000;">
+                                    <strong style="color: #ff0000;">❌ Weak:</strong> "password123"<br>
+                                    <small>Too common, too short, no special characters</small>
+                                </div>
+                                <div style="padding: 1rem; background: rgba(255,215,0,0.1); border-radius: 5px; border-left: 3px solid #ffd700;">
+                                    <strong style="color: #ffd700;">⚠️ Medium:</strong> "MyDog123"<br>
+                                    <small>Has uppercase/lowercase/numbers, but too short and uses personal info</small>
+                                </div>
+                                <div style="padding: 1rem; background: rgba(0,255,0,0.1); border-radius: 5px; border-left: 3px solid #00ff00;">
+                                    <strong style="color: #00ff00;">✅ Strong:</strong> "Tr3eH0us3!@#2024"<br>
+                                    <small>Long, complex, no personal info, includes special characters</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="interactive-section" style="margin-top: 2rem;">
+                        <h3>🔧 Test Your Password</h3>
+                        <p style="margin-bottom: 1rem; color: #cccccc;">Enter a password below to see how strong it is:</p>
                         <div class="password-checker">
-                            <input type="password" id="passwordInput" placeholder="Enter a password to test">
-                            <div class="password-strength" id="passwordStrength">
-                                <div class="strength-bar"></div>
-                                <span class="strength-text">Enter a password</span>
+                            <input type="password" id="passwordInput" placeholder="Enter a password to test" style="width: 100%; padding: 1rem; font-size: 1.1rem; background: rgba(255,255,255,0.1); border: 2px solid rgba(0,255,255,0.3); border-radius: 5px; color: white;">
+                            <div class="password-strength" id="passwordStrength" style="margin-top: 1rem;">
+                                <div class="strength-bar" style="height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
+                                    <div class="strength-fill" style="height: 100%; width: 0%; background: linear-gradient(45deg, #ff0000, #ffd700, #00ff00); transition: all 0.3s ease;"></div>
+                                </div>
+                                <span class="strength-text" style="display: block; margin-top: 0.5rem; font-weight: bold;">Enter a password</span>
+                                <div id="passwordFeedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #cccccc;"></div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="quiz-section">
-                        <h3>Quick Quiz</h3>
+                    <div class="quiz-section" style="margin-top: 2rem;">
+                        <h3>🎯 Test Your Knowledge</h3>
                         <div class="quiz-question">
-                            <p>Which password is the strongest?</p>
-                            <div class="quiz-options">
-                                <button class="quiz-option" onclick="checkQuizAnswer(this, false)">password123</button>
-                                <button class="quiz-option" onclick="checkQuizAnswer(this, true)">M@xS3cUrE#89</button>
-                                <button class="quiz-option" onclick="checkQuizAnswer(this, false)">iloveyou</button>
-                                <button class="quiz-option" onclick="checkQuizAnswer(this, false)">12345678</button>
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem;"><strong>Which password is the strongest?</strong></p>
+                            <div class="quiz-options" style="display: grid; gap: 0.75rem;">
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Too common and predictable')">password123</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, true, 'Perfect! Long, complex, includes special characters')">M@xS3cUrE#89</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Too short and uses common words')">iloveyou</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Only numbers, very weak')">12345678</button>
                             </div>
+                            <div id="quizExplanation" style="margin-top: 1rem; padding: 1rem; background: rgba(0,255,255,0.1); border-radius: 5px; display: none;"></div>
                         </div>
+                        <div style="margin-top: 1.5rem; text-align: center;">
+                            <button onclick="closeModule(); showSection('games');" style="padding: 0.8rem 1.5rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,255,255,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,255,255,0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.3)'">
+                                <i class="fas fa-gamepad"></i> Play Games to Know More!
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="next-steps" style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,128,255,0.1)); border-radius: 10px; border: 2px solid rgba(0,255,255,0.3); text-align: center;">
+                        <h4 style="color: #00ffff; margin-bottom: 1rem; font-size: 1.3rem;">🎮 Ready to Test Your Skills?</h4>
+                        <p style="color: #cccccc; margin-bottom: 1.5rem;">Now that you've learned about password security, try the interactive game!</p>
+                        <button onclick="closeModule(); startGame('password-cracker');" style="padding: 1rem 2rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0,255,255,0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 30px rgba(0,255,255,0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 20px rgba(0,255,255,0.3)'">
+                            <i class="fas fa-gamepad"></i> Play Password Cracker Game
+                        </button>
+                        <p style="color: #cccccc; margin-top: 1rem; font-size: 0.9rem;">See how easily weak passwords can be cracked!</p>
                     </div>
                 </div>
             `,
-            init: initPasswordModule
+            init: initPasswordModule,
+            relatedGame: 'password-cracker'
         },
         phishing: {
             title: 'Phishing Recognition',
             content: `
                 <div class="module-content">
                     <div class="lesson-section">
-                        <h3>What is Phishing?</h3>
-                        <p>Phishing is a cyber attack that uses disguised email as a weapon. The goal is to trick the email recipient into believing that the message is something they want or need and to click a link or download an attachment.</p>
+                        <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border: 2px solid rgba(255,0,0,0.3);">
+                            <h3 style="color: #ff0000; margin-bottom: 1rem; font-size: 1.8rem;">🎣 What is Phishing?</h3>
+                            <p style="font-size: 1.1rem; line-height: 1.8; color: #ffffff;">
+                                <strong style="color: #ffd700;">For Kids:</strong> Like a fisherman trying to catch fish, hackers "fish" for your information by tricking you!<br><br>
+                                <strong style="color: #ffd700;">For Everyone:</strong> Phishing is when attackers pretend to be someone you trust (like your bank or school) to steal your passwords, money, or personal info.
+                            </p>
+                        </div>
                         
-                        <h4>Common Phishing Tactics:</h4>
-                        <ul class="phishing-tactics">
-                            <li>Urgent language ("Act now!", "Limited time!")</li>
-                            <li>Suspicious sender addresses</li>
-                            <li>Generic greetings ("Dear Customer")</li>
-                            <li>Poor grammar and spelling</li>
-                            <li>Requests for personal information</li>
-                        </ul>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                            <div style="padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border-left: 4px solid #ff0000;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
+                                <h4 style="color: #ff0000; margin-bottom: 0.5rem;">Urgent Language</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">"Act now!", "Limited time!", "Your account will be closed!"</p>
+                            </div>
+                            <div style="padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border-left: 4px solid #ff0000;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📧</div>
+                                <h4 style="color: #ff0000; margin-bottom: 0.5rem;">Suspicious Sender</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">Fake email addresses like "paypal-security.com" instead of "paypal.com"</p>
+                            </div>
+                            <div style="padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border-left: 4px solid #ff0000;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">👤</div>
+                                <h4 style="color: #ff0000; margin-bottom: 0.5rem;">Generic Greetings</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">"Dear Customer" instead of your actual name</p>
+                            </div>
+                            <div style="padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border-left: 4px solid #ff0000;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">❌</div>
+                                <h4 style="color: #ff0000; margin-bottom: 0.5rem;">Poor Grammar</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">Lots of spelling mistakes and bad grammar</p>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="interactive-section">
-                        <h3>Spot the Phishing Email</h3>
+                    <div class="interactive-section" style="margin-top: 2rem; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                        <h3 style="color: #00ffff; margin-bottom: 1.5rem; text-align: center;">🔍 Can You Spot the Phishing Email?</h3>
                         <div class="email-examples">
-                            <div class="email-example" data-phishing="true">
-                                <div class="email-header">
-                                    <strong>From:</strong> security@paypal-security.com<br>
-                                    <strong>Subject:</strong> URGENT: Your account will be closed!
+                            <div class="email-example" data-phishing="true" style="background: rgba(255,0,0,0.1); padding: 1.5rem; border-radius: 10px; border: 2px solid rgba(255,0,0,0.5); cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'" onclick="showPhishingAnalysis(this)">
+                                <div class="email-header" style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,0,0,0.3);">
+                                    <div style="margin-bottom: 0.5rem;"><strong style="color: #ff0000;">From:</strong> <span style="color: #ffffff;">security@paypal-security.com</span></div>
+                                    <div><strong style="color: #ff0000;">Subject:</strong> <span style="color: #ffffff; font-weight: bold;">URGENT: Your account will be closed!</span></div>
                                 </div>
-                                <div class="email-body">
+                                <div class="email-body" style="color: #ffffff; line-height: 1.8;">
                                     <p>Dear Customer,</p>
                                     <p>We have detected suspicious activity on your account. Click here immediately to verify your identity or your account will be closed in 24 hours.</p>
-                                    <p><a href="#" class="suspicious-link">Verify Account Now</a></p>
+                                    <p style="margin-top: 1rem;"><a href="#" class="suspicious-link" style="color: #ff0000; text-decoration: underline; font-weight: bold;">Verify Account Now</a></p>
                                 </div>
+                                <div id="phishingAnalysis" style="display: none; margin-top: 1rem; padding: 1rem; background: rgba(255,215,0,0.2); border-radius: 5px; border-left: 3px solid #ffd700;">
+                                    <strong style="color: #ffd700;">🔍 Red Flags Found:</strong>
+                                    <ul style="margin-top: 0.5rem; color: #ffffff;">
+                                        <li>Suspicious domain: "paypal-security.com" (real PayPal uses "paypal.com")</li>
+                                        <li>Urgent language: "URGENT", "immediately", "24 hours"</li>
+                                        <li>Generic greeting: "Dear Customer" instead of your name</li>
+                                        <li>HTTP link (not secure HTTPS)</li>
+                                    </ul>
                             </div>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-section" style="margin-top: 2rem;">
+                        <h3>🎯 Test Your Knowledge</h3>
+                        <div class="quiz-question">
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem;"><strong>What is the most common sign of a phishing email?</strong></p>
+                            <div class="quiz-options" style="display: grid; gap: 0.75rem;">
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Not always - legitimate emails can have attachments')">Has an attachment</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, true, 'Correct! Urgent language is a major red flag used to pressure victims')">Uses urgent language like "Act now!"</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Many phishing emails look professional')">Looks unprofessional</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Phishing emails often come from unknown senders')">Comes from someone you know</button>
+                            </div>
+                            <div id="quizExplanation" style="margin-top: 1rem; padding: 1rem; background: rgba(255,0,0,0.1); border-radius: 5px; display: none;"></div>
+                        </div>
+                        <div style="margin-top: 1.5rem; text-align: center;">
+                            <button onclick="closeModule(); showSection('games');" style="padding: 0.8rem 1.5rem; background: linear-gradient(45deg, #ff6b6b, #ff8e53); border: none; border-radius: 50px; color: #ffffff; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255,107,107,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(255,107,107,0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(255,107,107,0.3)'">
+                                <i class="fas fa-gamepad"></i> Play Games to Know More!
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="next-steps" style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(255,0,0,0.1), rgba(255,100,0,0.1)); border-radius: 10px; border: 2px solid rgba(255,0,0,0.3); text-align: center;">
+                        <h4 style="color: #ff6b6b; margin-bottom: 1rem; font-size: 1.3rem;">🎮 Test Your Phishing Detection Skills!</h4>
+                        <p style="color: #cccccc; margin-bottom: 1.5rem;">Practice identifying real phishing attacks in our interactive games</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <button onclick="closeModule(); startGame('phishing-detective');" style="padding: 1rem 2rem; background: linear-gradient(45deg, #ff6b6b, #ff8e53); border: none; border-radius: 50px; color: #ffffff; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(255,107,107,0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 30px rgba(255,107,107,0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 20px rgba(255,107,107,0.3)'">
+                                <i class="fas fa-gamepad"></i> Phishing Detective
+                            </button>
+                            <button onclick="closeModule(); startGame('social-engineering');" style="padding: 1rem 2rem; background: linear-gradient(45deg, #ff6b6b, #ff8e53); border: none; border-radius: 50px; color: #ffffff; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(255,107,107,0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 30px rgba(255,107,107,0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 20px rgba(255,107,107,0.3)'">
+                                <i class="fas fa-gamepad"></i> Social Engineering
+                            </button>
                         </div>
                     </div>
                 </div>
             `,
-            init: initPhishingModule
+            init: initPhishingModule,
+            relatedGame: 'social-engineering'
         },
         browsing: {
             title: 'Secure Browsing',
             content: `
                 <div class="module-content">
                     <div class="lesson-section">
-                        <h3>Safe Browsing Practices</h3>
-                        <div class="browsing-tips">
-                            <div class="tip-item">
-                                <i class="fas fa-lock"></i>
-                                <div>
-                                    <h4>Check for HTTPS</h4>
-                                    <p>Always look for the lock icon and "https://" in the URL</p>
+                        <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(0,255,255,0.1); border-radius: 10px; border: 2px solid rgba(0,255,255,0.3);">
+                            <h3 style="color: #00ffff; margin-bottom: 1rem; font-size: 1.8rem;">🌐 Safe Browsing Practices</h3>
+                            <p style="font-size: 1.1rem; line-height: 1.8; color: #ffffff;">
+                                <strong style="color: #ffd700;">For Kids:</strong> The internet is like a big city - some places are safe, some are dangerous! Learn how to stay safe!<br><br>
+                                <strong style="color: #ffd700;">For Everyone:</strong> Most cyber attacks happen through unsafe browsing. Learn to identify safe websites and protect yourself online.
+                            </p>
+                                </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                            <div style="padding: 1.5rem; background: rgba(0,255,0,0.1); border-radius: 10px; border-left: 4px solid #00ff00;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔒</div>
+                                <h4 style="color: #00ff00; margin-bottom: 0.5rem;">Check for HTTPS</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">Always look for the lock icon 🔒 and "https://" in the URL. The 'S' means Secure!</p>
+                                <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(0,0,0,0.3); border-radius: 5px; font-family: monospace; font-size: 0.9rem;">
+                                    <span style="color: #00ff00;">✅ https://</span><span style="color: #ffffff;">bank.com</span><br>
+                                    <span style="color: #ff0000;">❌ http://</span><span style="color: #ffffff;">bank.com</span>
+                            </div>
+                                </div>
+                            <div style="padding: 1.5rem; background: rgba(0,255,0,0.1); border-radius: 10px; border-left: 4px solid #00ff00;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🛡️</div>
+                                <h4 style="color: #00ff00; margin-bottom: 0.5rem;">Use Antivirus Software</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">Like a bodyguard for your computer! Keep it updated to protect against new threats.</p>
+                            </div>
+                            <div style="padding: 1.5rem; background: rgba(0,255,0,0.1); border-radius: 10px; border-left: 4px solid #00ff00;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⬇️</div>
+                                <h4 style="color: #00ff00; margin-bottom: 0.5rem;">Safe Downloads</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">Only download from trusted sources. If it's free and seems too good to be true, it probably is!</p>
                                 </div>
                             </div>
-                            <div class="tip-item">
-                                <i class="fas fa-shield-alt"></i>
-                                <div>
-                                    <h4>Use Antivirus Software</h4>
-                                    <p>Keep your security software updated</p>
-                                </div>
+                        
+                        <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255,215,0,0.1); border-radius: 10px; border-left: 3px solid #ffd700;">
+                            <h4 style="color: #ffd700; margin-bottom: 1rem;">⚠️ Red Flags to Watch For:</h4>
+                            <ul style="color: #ffffff; line-height: 2;">
+                                <li>❌ No lock icon in the address bar</li>
+                                <li>❌ URLs with typos (amaz0n.com instead of amazon.com)</li>
+                                <li>❌ Pop-ups asking for personal information</li>
+                                <li>❌ Websites asking you to download software unexpectedly</li>
+                                <li>❌ "Too good to be true" offers</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-section" style="margin-top: 2rem;">
+                        <h3>🎯 Test Your Knowledge</h3>
+                        <div class="quiz-question">
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem;"><strong>What should you look for to know a website is secure?</strong></p>
+                            <div class="quiz-options" style="display: grid; gap: 0.75rem;">
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Not always - some safe sites use .org')">The .org domain</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, true, 'Correct! HTTPS and the lock icon indicate encrypted, secure connections')">HTTPS and a lock icon 🔒</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Many safe sites don\'t have this')">A security certificate badge</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'This doesn\'t indicate security')">A professional design</button>
                             </div>
-                            <div class="tip-item">
-                                <i class="fas fa-eye-slash"></i>
-                                <div>
-                                    <h4>Be Careful with Downloads</h4>
-                                    <p>Only download from trusted sources</p>
-                                </div>
-                            </div>
+                            <div id="quizExplanation" style="margin-top: 1rem; padding: 1rem; background: rgba(0,255,255,0.1); border-radius: 5px; display: none;"></div>
+                        </div>
+                        <div style="margin-top: 1.5rem; text-align: center;">
+                            <button onclick="closeModule(); showSection('games');" style="padding: 0.8rem 1.5rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,255,255,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,255,255,0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.3)'">
+                                <i class="fas fa-gamepad"></i> Play Games to Know More!
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="next-steps" style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,128,255,0.1)); border-radius: 10px; border: 2px solid rgba(0,255,255,0.3); text-align: center;">
+                        <h4 style="color: #00ffff; margin-bottom: 1rem; font-size: 1.3rem;">🎮 Practice Secure Browsing!</h4>
+                        <p style="color: #cccccc; margin-bottom: 1.5rem;">Test your skills with interactive games that teach safe browsing</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <button onclick="closeModule(); startGame('spot-the-threat');" style="padding: 1rem 2rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0,255,255,0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 30px rgba(0,255,255,0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 20px rgba(0,255,255,0.3)'">
+                                <i class="fas fa-gamepad"></i> Spot the Threat
+                            </button>
+                            <button onclick="closeModule(); startGame('security-quiz');" style="padding: 1rem 2rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0,255,255,0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 30px rgba(0,255,255,0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 20px rgba(0,255,255,0.3)'">
+                                <i class="fas fa-gamepad"></i> Security Quiz
+                            </button>
                         </div>
                     </div>
                 </div>
             `,
-            init: initBrowsingModule
+            init: initBrowsingModule,
+            relatedGame: 'spot-the-threat'
         },
         encryption: {
             title: 'Encryption Basics',
             content: `
                 <div class="module-content">
                     <div class="lesson-section">
-                        <h3>What is Encryption?</h3>
-                        <p>Encryption is the process of converting information into a form that cannot be understood by unauthorized people. It's like putting your message in a locked box that only you and the intended recipient have the key to.</p>
+                        <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(0,255,255,0.1); border-radius: 10px; border: 2px solid rgba(0,255,255,0.3);">
+                            <h3 style="color: #00ffff; margin-bottom: 1rem; font-size: 1.8rem;">🔐 What is Encryption?</h3>
+                            <p style="font-size: 1.1rem; line-height: 1.8; color: #ffffff;">
+                                <strong style="color: #ffd700;">For Kids:</strong> Like a secret code! You write a message that only people with the secret key can read!<br><br>
+                                <strong style="color: #ffd700;">For Everyone:</strong> Encryption scrambles your data so only authorized people can read it. It's how your passwords, credit cards, and messages stay safe online!
+                            </p>
+                        </div>
                         
-                        <h4>Types of Encryption:</h4>
-                        <ul class="encryption-types">
-                            <li><strong>Symmetric:</strong> Same key for encryption and decryption</li>
-                            <li><strong>Asymmetric:</strong> Different keys for encryption and decryption</li>
-                            <li><strong>Caesar Cipher:</strong> Simple substitution cipher</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="interactive-section">
-                        <h3>Try Caesar Cipher</h3>
-                        <div class="cipher-tool">
-                            <div class="cipher-input">
-                                <label>Message:</label>
-                                <input type="text" id="cipherMessage" placeholder="Enter message">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                            <div style="padding: 1.5rem; background: rgba(0,255,255,0.1); border-radius: 10px; border-left: 4px solid #00ffff;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔑</div>
+                                <h4 style="color: #00ffff; margin-bottom: 0.5rem;">Symmetric Encryption</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">Same key locks and unlocks. Like a regular door key - one key for both!</p>
                             </div>
-                            <div class="cipher-shift">
-                                <label>Shift:</label>
-                                <input type="number" id="cipherShift" value="3" min="1" max="25">
+                            <div style="padding: 1.5rem; background: rgba(0,255,255,0.1); border-radius: 10px; border-left: 4px solid #00ffff;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔓</div>
+                                <h4 style="color: #00ffff; margin-bottom: 0.5rem;">Asymmetric Encryption</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">Different keys! Public key locks, private key unlocks. Like a mailbox!</p>
                             </div>
-                            <button onclick="encryptMessage()" class="btn btn-primary">Encrypt</button>
-                            <div class="cipher-result">
-                                <label>Result:</label>
-                                <input type="text" id="cipherResult" readonly>
+                            <div style="padding: 1.5rem; background: rgba(0,255,255,0.1); border-radius: 10px; border-left: 4px solid #00ffff;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📜</div>
+                                <h4 style="color: #00ffff; margin-bottom: 0.5rem;">Caesar Cipher</h4>
+                                <p style="color: #cccccc; font-size: 0.9rem;">Ancient encryption! Each letter shifts by a number. Used by Julius Caesar 2000 years ago!</p>
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="interactive-section" style="margin-top: 2rem; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                        <h3 style="color: #00ffff; margin-bottom: 1.5rem; text-align: center;">🛠️ Try Caesar Cipher Yourself!</h3>
+                        <div class="cipher-tool" style="display: grid; gap: 1rem;">
+                            <div>
+                                <label style="color: #ffffff; display: block; margin-bottom: 0.5rem; font-weight: bold;">📝 Your Message:</label>
+                                <input type="text" id="cipherMessage" placeholder="Type a secret message..." style="width: 100%; padding: 1rem; font-size: 1.1rem; background: rgba(255,255,255,0.1); border: 2px solid rgba(0,255,255,0.3); border-radius: 5px; color: white;">
+                            </div>
+                            <div>
+                                <label style="color: #ffffff; display: block; margin-bottom: 0.5rem; font-weight: bold;">🔢 Shift Number:</label>
+                                <input type="number" id="cipherShift" value="3" min="1" max="25" style="width: 100%; padding: 1rem; font-size: 1.1rem; background: rgba(255,255,255,0.1); border: 2px solid rgba(0,255,255,0.3); border-radius: 5px; color: white;">
+                            </div>
+                            <button onclick="encryptMessage()" style="padding: 1rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 5px; color: #000; font-weight: bold; font-size: 1.1rem; cursor: pointer;">🔒 Encrypt Message</button>
+                            <div>
+                                <label style="color: #ffffff; display: block; margin-bottom: 0.5rem; font-weight: bold;">🔐 Encrypted Result:</label>
+                                <input type="text" id="cipherResult" readonly style="width: 100%; padding: 1rem; font-size: 1.1rem; background: rgba(0,255,0,0.1); border: 2px solid rgba(0,255,0,0.3); border-radius: 5px; color: #00ff00; font-weight: bold; font-family: monospace;">
+                            </div>
+                        </div>
+                        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255,215,0,0.1); border-radius: 5px; border-left: 3px solid #ffd700;">
+                            <strong style="color: #ffd700;">💡 How it works:</strong>
+                            <p style="color: #cccccc; margin-top: 0.5rem; font-size: 0.9rem;">
+                                With shift 3: A→D, B→E, C→F... Z→C (wraps around the alphabet!)
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-section" style="margin-top: 2rem;">
+                        <h3>🎯 Test Your Knowledge</h3>
+                        <div class="quiz-question">
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem;"><strong>What is the main purpose of encryption?</strong></p>
+                            <div class="quiz-options" style="display: grid; gap: 0.75rem;">
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Encryption doesn\'t speed up data transfer')">To make data transfer faster</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, true, 'Correct! Encryption scrambles data so only authorized people can read it')">To protect data from unauthorized access</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Encryption doesn\'t compress data')">To compress data to save space</button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'Encryption doesn\'t organize data')">To organize data better</button>
+                            </div>
+                            <div id="quizExplanation" style="margin-top: 1rem; padding: 1rem; background: rgba(0,255,255,0.1); border-radius: 5px; display: none;"></div>
+                        </div>
+                        <div style="margin-top: 1.5rem; text-align: center;">
+                            <button onclick="closeModule(); showSection('games');" style="padding: 0.8rem 1.5rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,255,255,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,255,255,0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.3)'">
+                                <i class="fas fa-gamepad"></i> Play Games to Know More!
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="next-steps" style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,128,255,0.1)); border-radius: 10px; border: 2px solid rgba(0,255,255,0.3); text-align: center;">
+                        <h4 style="color: #00ffff; margin-bottom: 1rem; font-size: 1.3rem;">🎮 Master the Caesar Cipher!</h4>
+                        <p style="color: #cccccc; margin-bottom: 1.5rem;">Test your encryption skills with our interactive Caesar Cipher challenge game</p>
+                        <button onclick="closeModule(); startGame('caesar-cipher');" style="padding: 1rem 2rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0,255,255,0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 30px rgba(0,255,255,0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 20px rgba(0,255,255,0.3)'">
+                            <i class="fas fa-gamepad"></i> Play Caesar Cipher Game
+                        </button>
+                    </div>
                 </div>
             `,
-            init: initEncryptionModule
+            init: initEncryptionModule,
+            relatedGame: 'caesar-cipher'
         }
     };
     
@@ -383,59 +1042,133 @@ function initPasswordModule() {
 // Check password strength
 function checkPasswordStrength() {
     const password = document.getElementById('passwordInput').value;
-    const strengthBar = document.querySelector('.strength-bar');
+    const strengthFill = document.querySelector('.strength-fill');
     const strengthText = document.querySelector('.strength-text');
+    const feedbackDiv = document.getElementById('passwordFeedback');
     
-    let strength = 0;
-    let feedback = '';
-    
-    if (password.length >= 12) strength += 25;
-    if (/[a-z]/.test(password)) strength += 25;
-    if (/[A-Z]/.test(password)) strength += 25;
-    if (/[0-9]/.test(password)) strength += 25;
-    if (/[^A-Za-z0-9]/.test(password)) strength += 25;
-    
-    if (strength < 25) {
-        feedback = 'Very Weak';
-        strengthBar.style.background = '#ff0000';
-    } else if (strength < 50) {
-        feedback = 'Weak';
-        strengthBar.style.background = '#ff6600';
-    } else if (strength < 75) {
-        feedback = 'Medium';
-        strengthBar.style.background = '#ffcc00';
-    } else if (strength < 100) {
-        feedback = 'Strong';
-        strengthBar.style.background = '#66cc00';
-    } else {
-        feedback = 'Very Strong';
-        strengthBar.style.background = '#00ff00';
+    if (!password) {
+        if (strengthFill) strengthFill.style.width = '0%';
+        if (strengthText) strengthText.textContent = 'Enter a password';
+        if (feedbackDiv) feedbackDiv.innerHTML = '';
+        return;
     }
     
-    strengthBar.style.width = Math.min(strength, 100) + '%';
-    strengthText.textContent = feedback;
+    let strength = 0;
+    let feedback = [];
+    let color = '#ff0000';
+    
+    // Length check
+    if (password.length >= 12) {
+        strength += 20;
+    } else {
+        feedback.push(`❌ Too short (need at least 12 characters, you have ${password.length})`);
+    }
+    
+    // Lowercase check
+    if (/[a-z]/.test(password)) {
+        strength += 20;
+    } else {
+        feedback.push('❌ Missing lowercase letters');
+    }
+    
+    // Uppercase check
+    if (/[A-Z]/.test(password)) {
+        strength += 20;
+    } else {
+        feedback.push('❌ Missing uppercase letters');
+    }
+    
+    // Numbers check
+    if (/[0-9]/.test(password)) {
+        strength += 20;
+    } else {
+        feedback.push('❌ Missing numbers');
+    }
+    
+    // Special characters check
+    if (/[^A-Za-z0-9]/.test(password)) {
+        strength += 20;
+    } else {
+        feedback.push('❌ Missing special characters (!@#$%^&*)');
+    }
+    
+    // Common password check
+    const commonPasswords = ['password', '123456', 'qwerty', 'admin', 'letmein', 'welcome'];
+    if (commonPasswords.some(common => password.toLowerCase().includes(common))) {
+        strength -= 30;
+        feedback.push('⚠️ Contains common words - avoid these!');
+    }
+    
+    // Set strength level
+    if (strength <= 20) {
+        strengthText.textContent = 'Very Weak';
+        strengthText.style.color = '#ff0000';
+        color = '#ff0000';
+    } else if (strength <= 40) {
+        strengthText.textContent = 'Weak';
+        strengthText.style.color = '#ff6600';
+        color = '#ff6600';
+    } else if (strength <= 60) {
+        strengthText.textContent = 'Medium';
+        strengthText.style.color = '#ffd700';
+        color = '#ffd700';
+    } else if (strength <= 80) {
+        strengthText.textContent = 'Strong';
+        strengthText.style.color = '#66cc00';
+        color = '#66cc00';
+    } else {
+        strengthText.textContent = 'Very Strong!';
+        strengthText.style.color = '#00ff00';
+        color = '#00ff00';
+        feedback = ['✅ Excellent password!'];
+    }
+    
+    if (strengthFill) {
+        strengthFill.style.width = Math.min(strength, 100) + '%';
+        strengthFill.style.background = color;
+    }
+    
+    if (feedbackDiv) {
+        feedbackDiv.innerHTML = feedback.length > 0 ? feedback.join('<br>') : '';
+    }
 }
 
 // Check quiz answer
-function checkQuizAnswer(button, isCorrect) {
+function checkQuizAnswer(button, isCorrect, explanation) {
     const options = document.querySelectorAll('.quiz-option');
-    options.forEach(opt => opt.disabled = true);
+    const explanationDiv = document.getElementById('quizExplanation');
+    
+    options.forEach(opt => {
+        opt.disabled = true;
+        opt.style.cursor = 'not-allowed';
+    });
     
     if (isCorrect) {
-        button.style.background = '#00ff00';
-        button.style.color = '#000';
+        button.style.background = 'rgba(0,255,0,0.3)';
+        button.style.color = '#00ff00';
+        button.style.border = '2px solid #00ff00';
         addPoints(50);
-        addAchievement('first_quiz', 'Quiz Master', 'Completed your first quiz!');
+        if (explanationDiv) {
+            explanationDiv.innerHTML = `<strong style="color: #00ff00;">✅ Correct!</strong><br>${explanation}`;
+            explanationDiv.style.display = 'block';
+        }
     } else {
-        button.style.background = '#ff0000';
-        button.style.color = '#fff';
+        button.style.background = 'rgba(255,0,0,0.3)';
+        button.style.color = '#ff0000';
+        button.style.border = '2px solid #ff0000';
+        if (explanationDiv) {
+            explanationDiv.innerHTML = `<strong style="color: #ff0000;">❌ Incorrect</strong><br>${explanation}`;
+            explanationDiv.style.display = 'block';
+        }
     }
     
     // Show correct answer
     options.forEach(opt => {
-        if (opt.onclick.toString().includes('true')) {
-            opt.style.background = '#00ff00';
-            opt.style.color = '#000';
+        const onclickStr = opt.getAttribute('onclick') || '';
+        if (onclickStr.includes('true')) {
+            opt.style.background = 'rgba(0,255,0,0.3)';
+            opt.style.color = '#00ff00';
+            opt.style.border = '2px solid #00ff00';
         }
     });
 }
@@ -447,10 +1180,18 @@ function initPhishingModule() {
     suspiciousLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            alert('This is a phishing link! Notice the suspicious domain and urgent language.');
+            alert('⚠️ This is a phishing link! Notice the suspicious domain and urgent language.');
         });
     });
 }
+
+// Show phishing analysis
+window.showPhishingAnalysis = function(element) {
+    const analysisDiv = element.querySelector('#phishingAnalysis');
+    if (analysisDiv) {
+        analysisDiv.style.display = analysisDiv.style.display === 'none' ? 'block' : 'none';
+    }
+};
 
 // Initialize browsing module
 function initBrowsingModule() {
@@ -488,14 +1229,177 @@ function encryptMessage() {
     addPoints(25);
 }
 
-// Start game
+// Game context data - Why This Matters
+const gameContext = {
+    'snake-ladder': {
+        whyMatters: 'Learning cybersecurity through interactive gameplay makes complex concepts easier to understand and remember.',
+        realWorldImpact: 'Gamified learning increases retention by 40% compared to traditional methods.',
+        quickTip: 'Answer questions correctly to advance faster on the board!'
+    },
+    'caesar-cipher': {
+        whyMatters: 'Understanding basic encryption helps you appreciate how modern security protects your data.',
+        realWorldImpact: 'Encryption protects trillions of dollars in online transactions daily.',
+        quickTip: 'Try different shift values - the most common shifts are 3, 13 (ROT13), and 25.'
+    },
+    'social-engineering': {
+        whyMatters: 'Social engineering attacks trick people into giving away sensitive information. 98% of cyberattacks use social engineering!',
+        realWorldImpact: 'In 2023, a company lost $50 million when an employee was tricked into transferring funds by a fake "CEO" email.',
+        quickTip: 'Always verify requests for sensitive information, even if they seem to come from someone you know.'
+    },
+    'phishing-detective': {
+        whyMatters: 'Phishing is the #1 cyber threat. 91% of successful data breaches start with a phishing email.',
+        realWorldImpact: 'A single phishing email can compromise an entire company\'s network in minutes, leading to millions in damages.',
+        quickTip: 'Check the sender\'s email address carefully - attackers often use similar-looking domains.'
+    },
+    'security-quiz': {
+        whyMatters: 'Testing your knowledge helps you identify gaps in your cybersecurity awareness.',
+        realWorldImpact: 'People who regularly test their security knowledge are 3x less likely to fall for scams.',
+        quickTip: 'Review wrong answers carefully - they show areas where you need more awareness.'
+    },
+    'spot-the-threat': {
+        whyMatters: 'Visual threat detection helps you recognize suspicious activity in real-time.',
+        realWorldImpact: 'Quick threat recognition can prevent data breaches and save companies millions.',
+        quickTip: 'Look for unusual patterns - legitimate activity follows predictable patterns.'
+    },
+    'password-cracker': {
+        whyMatters: 'Understanding how passwords are cracked helps you create stronger passwords that protect your accounts.',
+        realWorldImpact: 'Weak passwords are responsible for 81% of data breaches. Strong passwords can prevent most attacks.',
+        quickTip: 'Use long, complex passwords with a mix of letters, numbers, and symbols. Consider using a password manager!'
+    },
+    'incident-response': {
+        whyMatters: 'Knowing how to respond to security incidents can save companies millions and protect personal data.',
+        realWorldImpact: 'Companies that respond to breaches within 24 hours reduce costs by 40% compared to slower responses.',
+        quickTip: 'The first 15 minutes of an incident are critical - contain the threat immediately!'
+    },
+    'capture-the-flag': {
+        whyMatters: 'CTF challenges teach real-world security skills used by professionals to find and fix vulnerabilities.',
+        realWorldImpact: 'Many security professionals started with CTF challenges - it\'s how they learned to protect systems.',
+        quickTip: 'Start with cryptography challenges - they teach you how encryption works in real systems.'
+    },
+    'malware-analysis': {
+        whyMatters: 'Understanding malware helps you protect against it. Malware causes $6 trillion in damages annually.',
+        realWorldImpact: 'Security analysts who can analyze malware quickly can stop attacks before they spread.',
+        quickTip: 'Always analyze malware in a safe, isolated environment - never on your main computer!'
+    },
+    'phishing-detective': {
+        whyMatters: 'Phishing is the #1 cyber threat. 91% of successful data breaches start with a phishing email.',
+        realWorldImpact: 'A single phishing email can compromise an entire company\'s network in minutes.',
+        quickTip: 'Check the sender\'s email address carefully - attackers often use similar-looking domains.'
+    },
+    'security-quiz': {
+        whyMatters: 'Testing your knowledge helps you identify gaps in your cybersecurity awareness.',
+        realWorldImpact: 'People who regularly test their security knowledge are 3x less likely to fall for scams.',
+        quickTip: 'Review wrong answers carefully - they show areas where you need more awareness.'
+    },
+    'spot-the-threat': {
+        whyMatters: 'Visual threat detection helps you recognize suspicious activity in real-time.',
+        realWorldImpact: 'Quick threat recognition can prevent data breaches and save companies millions.',
+        quickTip: 'Look for unusual patterns - legitimate activity follows predictable patterns.'
+    }
+};
+
+// Start game with "Why This Matters" popup
 function startGame(gameName) {
     const gameData = getGameData(gameName);
     if (!gameData) return;
     
+    const context = gameContext[gameName];
+    
+    // Show "Why This Matters" popup first
+    if (context) {
+        showWhyThisMattersPopup(gameName, gameData, context);
+    } else {
+        // If no context, start game directly
+        openGameDirectly(gameName, gameData);
+    }
+}
+
+// Show "Why This Matters" popup
+function showWhyThisMattersPopup(gameName, gameData, context) {
+    const popup = document.createElement('div');
+    popup.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 2rem;';
+    popup.innerHTML = `
+        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 3rem; border-radius: 20px; border: 2px solid rgba(0,255,255,0.3); max-width: 700px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,255,255,0.2);">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🎯</div>
+                <h2 style="color: #00ffff; font-size: 2rem; margin-bottom: 0.5rem;">Why This Matters</h2>
+                <h3 style="color: #ffffff; font-size: 1.3rem;">${gameData.title}</h3>
+            </div>
+            
+            <div style="background: rgba(0,255,255,0.1); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #00ffff;">
+                <h4 style="color: #00ffff; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-lightbulb"></i> Why This Matters
+                </h4>
+                <p style="color: #ffffff; font-size: 1.1rem; line-height: 1.6;">${context.whyMatters}</p>
+            </div>
+            
+            <div style="background: rgba(255,107,107,0.1); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #ff6b6b;">
+                <h4 style="color: #ff6b6b; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-exclamation-triangle"></i> Real-World Impact
+                </h4>
+                <p style="color: #ffffff; font-size: 1.1rem; line-height: 1.6;">${context.realWorldImpact}</p>
+            </div>
+            
+            <div style="background: rgba(0,255,0,0.1); padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border-left: 4px solid #00ff00;">
+                <h4 style="color: #00ff00; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-tip"></i> Quick Tip
+                </h4>
+                <p style="color: #ffffff; font-size: 1.1rem; line-height: 1.6;">${context.quickTip}</p>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button onclick="this.parentElement.parentElement.parentElement.remove(); openGameDirectly('${gameName}', window.CyberArcadeGames['${gameName}']);" 
+                        style="padding: 1rem 2.5rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; cursor: pointer; font-weight: bold; font-size: 1.1rem; transition: all 0.3s ease;"
+                        onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 30px rgba(0,255,255,0.3)'"
+                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <i class="fas fa-play"></i> Start Game
+                </button>
+                <button onclick="this.parentElement.parentElement.parentElement.remove();" 
+                        style="padding: 1rem 2.5rem; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); border-radius: 50px; color: #ffffff; cursor: pointer; font-weight: bold; font-size: 1.1rem; transition: all 0.3s ease;"
+                        onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                        onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(popup);
+}
+
+// Open game directly (after popup or if no context)
+function openGameDirectly(gameName, gameData) {
     document.getElementById('gameTitle').textContent = gameData.title;
-    document.getElementById('gameContainer').innerHTML = gameData.content;
+    
+    // Add back button and quick tips sidebar
+    const context = gameContext[gameName];
+    const quickTipSidebar = context ? `
+        <div id="quickTipSidebar" style="position: fixed; right: 20px; top: 50%; transform: translateY(-50%); background: rgba(0,255,255,0.15); padding: 1.5rem; border-radius: 15px; border: 2px solid rgba(0,255,255,0.3); max-width: 250px; z-index: 1500; box-shadow: 0 10px 30px rgba(0,255,255,0.2);">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; color: #00ffff;">
+                <i class="fas fa-lightbulb"></i>
+                <h4 style="margin: 0; font-size: 1rem;">Quick Tip</h4>
+            </div>
+            <p style="color: #ffffff; font-size: 0.9rem; line-height: 1.5; margin: 0;">${context.quickTip}</p>
+        </div>
+    ` : '';
+    
+    const backButton = `
+        <div style="margin-bottom: 1rem; padding: 0.75rem; background: rgba(0,255,255,0.1); border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #cccccc; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> Press <strong>ESC</strong> or click <strong>×</strong> to close
+            </span>
+            <button onclick="closeGame(); showSection('games');" style="padding: 0.5rem 1rem; background: rgba(0,255,255,0.2); border: 1px solid rgba(0,255,255,0.5); border-radius: 5px; color: #00ffff; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(0,255,255,0.3)'" onmouseout="this.style.background='rgba(0,255,255,0.2)'">
+                <i class="fas fa-arrow-left"></i> Back to Games
+            </button>
+        </div>
+    `;
+    
+    document.getElementById('gameContainer').innerHTML = backButton + gameData.content;
     document.getElementById('gameModal').style.display = 'block';
+    
+    // Add quick tip sidebar
+    if (context) {
+        document.body.insertAdjacentHTML('beforeend', quickTipSidebar);
+    }
     
     // Initialize game
     if (gameData.init) {
@@ -506,1814 +1410,20 @@ function startGame(gameName) {
 // Close game
 function closeGame() {
     document.getElementById('gameModal').style.display = 'none';
+    // Remove quick tip sidebar if it exists
+    const sidebar = document.getElementById('quickTipSidebar');
+    if (sidebar) {
+        sidebar.remove();
+    }
 }
 
 // Get game data
 function getGameData(gameName) {
-    const games = {
-        'snake-ladder': {
-            title: 'Cyber Snake & Ladder',
-            content: `
-                <div class="game-container">
-                    <div class="game-board">
-                        <canvas id="snakeLadderCanvas" width="600" height="600"></canvas>
-                    </div>
-                    <div class="game-controls">
-                        <div class="dice-container">
-                            <div id="dice" class="dice">🎲</div>
-                            <button id="rollDice" class="btn btn-primary">Roll Dice</button>
-                        </div>
-                        <div class="game-info">
-                            <div class="player-info">
-                                <h4>Player Position: <span id="playerPosition">1</span></h4>
-                                <h4>Points: <span id="gamePoints">0</span></h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `,
-            init: initSnakeLadderGame
-        },
-        'capture-the-flag': {
-            title: 'Capture The Flag (CTF)',
-            content: `
-                <div class="ctf-container">
-                    <div class="ctf-header">
-                        <div class="ctf-title">🏴 Capture The Flag Challenge</div>
-                        <div class="ctf-subtitle">Professional cybersecurity competition</div>
-                    </div>
-                    <div class="ctf-challenges">
-                        <div class="challenge-card" data-challenge="crypto">
-                            <div class="challenge-icon">🔐</div>
-                            <div class="challenge-info">
-                                <h4>Cryptography (4 Challenges)</h4>
-                                <p>Caesar, RSA, Vigenère, and encoding challenges</p>
-                                <div class="challenge-difficulty">Medium</div>
-                            </div>
-                            <button class="challenge-btn" onclick="startCTFChallenge('crypto')">Start</button>
-                        </div>
-                        <div class="challenge-card" data-challenge="web">
-                            <div class="challenge-icon">🌐</div>
-                            <div class="challenge-info">
-                                <h4>Web Exploitation (4 Challenges)</h4>
-                                <p>SQL Injection, XSS, Directory Traversal, and more</p>
-                                <div class="challenge-difficulty">Hard</div>
-                            </div>
-                            <button class="challenge-btn" onclick="startCTFChallenge('web')">Start</button>
-                        </div>
-                        <div class="challenge-card" data-challenge="forensics">
-                            <div class="challenge-icon">🔍</div>
-                            <div class="challenge-info">
-                                <h4>Digital Forensics (4 Challenges)</h4>
-                                <p>Memory, Network, File Carving, and Steganography</p>
-                                <div class="challenge-difficulty">Expert</div>
-                            </div>
-                            <button class="challenge-btn" onclick="startCTFChallenge('forensics')">Start</button>
-                        </div>
-                        <div class="challenge-card" data-challenge="reverse">
-                            <div class="challenge-icon">🔄</div>
-                            <div class="challenge-info">
-                                <h4>Reverse Engineering</h4>
-                                <p>Analyze binaries and crack password protection</p>
-                                <div class="challenge-difficulty">Expert</div>
-                            </div>
-                            <button class="challenge-btn" onclick="startCTFChallenge('reverse')">Start</button>
-                        </div>
-                        <div class="challenge-card" data-challenge="pwn">
-                            <div class="challenge-icon">💥</div>
-                            <div class="challenge-info">
-                                <h4>Binary Exploitation</h4>
-                                <p>Buffer overflows and remote code execution</p>
-                                <div class="challenge-difficulty">Expert</div>
-                            </div>
-                            <button class="challenge-btn" onclick="startCTFChallenge('pwn')">Start</button>
-                        </div>
-                        <div class="challenge-card" data-challenge="stego">
-                            <div class="challenge-icon">🖼️</div>
-                            <div class="challenge-info">
-                                <h4>Steganography</h4>
-                                <p>Find hidden messages in images and files</p>
-                                <div class="challenge-difficulty">Medium</div>
-                            </div>
-                            <button class="challenge-btn" onclick="startCTFChallenge('stego')">Start</button>
-                        </div>
-                    </div>
-                    <div class="ctf-scoreboard">
-                        <h4>Scoreboard</h4>
-                        <div class="score-item">
-                            <span class="score-rank">1st</span>
-                            <span class="score-name">CyberMaster</span>
-                            <span class="score-points">1250 pts</span>
-                        </div>
-                        <div class="score-item">
-                            <span class="score-rank">2nd</span>
-                            <span class="score-name">HackNinja</span>
-                            <span class="score-points">980 pts</span>
-                        </div>
-                        <div class="score-item">
-                            <span class="score-rank">3rd</span>
-                            <span class="score-name">CodeBreaker</span>
-                            <span class="score-points">750 pts</span>
-                        </div>
-                    </div>
-                </div>
-            `,
-            init: initCTFGame
-        },
-        'caesar-cipher': {
-            title: 'Caesar Cipher Challenge',
-            content: `
-                <div class="cipher-game-container">
-                    <div class="cipher-challenge">
-                        <h3>Decode this message:</h3>
-                        <div class="cipher-message" id="cipherMessage">Hello World</div>
-                        <div class="cipher-shift-info">
-                            <p>Shift: <span id="cipherShiftValue">3</span></p>
-                        </div>
-                        <div class="cipher-input">
-                            <input type="text" id="cipherAnswer" placeholder="Your answer">
-                            <button class="btn btn-primary" onclick="checkCipherAnswer()">Submit</button>
-                        </div>
-                    </div>
-                    <div class="cipher-score">
-                        <h4>Score: <span id="cipherScore">0</span></h4>
-                    </div>
-                </div>
-            `,
-            init: initCaesarCipherGame
-        },
-        'network-scanner': {
-            title: 'Network Security Scanner',
-            content: `
-                <div class="network-scanner">
-                    <div class="scanner-header">
-                        <div class="scanner-title">🔍 Network Security Scanner v3.0</div>
-                        <div class="scanner-status">READY</div>
-                    </div>
-                    <div class="scanner-scenarios">
-                        <h4>Select Scan Scenario:</h4>
-                        <div class="scenario-buttons">
-                            <button class="scenario-btn active" onclick="switchScanScenario('corporate')">Corporate Network</button>
-                            <button class="scenario-btn" onclick="switchScanScenario('web-server')">Web Server</button>
-                            <button class="scenario-btn" onclick="switchScanScenario('iot-devices')">IoT Devices</button>
-                            <button class="scenario-btn" onclick="switchScanScenario('industrial')">Industrial Control</button>
-                            <button class="scenario-btn" onclick="switchScanScenario('cloud-infrastructure')">Cloud Infrastructure</button>
-                        </div>
-                        <div class="scenario-description" id="scenarioDescription">
-                            Scan a corporate network for security assessment
-                        </div>
-                    </div>
-                    <div class="scanner-output" id="scannerOutput">
-                        <div class="code-line">Welcome to CyberArcade Network Scanner v3.0</div>
-                        <div class="code-line">Initializing security protocols...</div>
-                        <div class="code-line">Loading threat intelligence database...</div>
-                        <div class="code-line">Ready to scan for vulnerabilities</div>
-                        <div class="code-line code-comment">// Select a scenario and enter target to begin scan</div>
-                    </div>
-                    <div class="scanner-controls">
-                        <input type="text" class="scanner-input" id="scanTarget" placeholder="Enter IP address or domain" value="192.168.1.0/24">
-                        <button class="scanner-btn" onclick="startNetworkScan()">Start Scan</button>
-                        <button class="scanner-btn" onclick="clearScannerOutput()">Clear</button>
-                    </div>
-                </div>
-            `,
-            init: initNetworkScannerGame
-        },
-        'password-cracker': {
-            title: 'Password Cracking Simulator',
-            content: `
-                <div class="password-cracker">
-                    <div class="cracker-header">
-                        <div class="cracker-title">🔓 Password Cracking Simulator v3.0</div>
-                        <div class="cracker-subtitle">Professional password cracking with multiple attack methods</div>
-                    </div>
-                    <div class="cracker-options">
-                        <div class="attack-methods">
-                            <h4>Attack Methods:</h4>
-                            <div class="method-buttons">
-                                <button class="method-btn active" onclick="switchAttackMethod('dictionary')">Dictionary</button>
-                                <button class="method-btn" onclick="switchAttackMethod('brute-force')">Brute Force</button>
-                                <button class="method-btn" onclick="switchAttackMethod('hybrid')">Hybrid</button>
-                                <button class="method-btn" onclick="switchAttackMethod('mask')">Mask</button>
-                            </div>
-                            <div class="method-info">
-                                <div id="attackDescription">Try common passwords from a dictionary</div>
-                                <div id="attackSpeed">Speed: 200ms per attempt</div>
-                                <div id="attackSize">Dictionary: 200+ passwords</div>
-                            </div>
-                        </div>
-                        <div class="target-selection">
-                            <h4>Target Selection:</h4>
-                            <div class="target-buttons">
-                                <button class="target-btn active" onclick="switchTarget('user')">Regular User</button>
-                                <button class="target-btn" onclick="switchTarget('admin')">System Admin</button>
-                                <button class="target-btn" onclick="switchTarget('ceo')">CEO Account</button>
-                                <button class="target-btn" onclick="switchTarget('developer')">Developer</button>
-                                <button class="target-btn" onclick="switchTarget('database')">Database Admin</button>
-                                <button class="target-btn" onclick="switchTarget('webmaster')">Webmaster</button>
-                                <button class="target-btn" onclick="switchTarget('security')">Security Officer</button>
-                                <button class="target-btn" onclick="switchTarget('guest')">Guest Account</button>
-                            </div>
-                            <div class="target-info">
-                                <div id="targetDescription">Regular User - Easy difficulty</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cracker-progress">
-                        <div class="progress-label">
-                            <span>Cracking Progress</span>
-                            <span id="crackProgress">0%</span>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill" id="crackProgress" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    <div class="cracker-stats">
-                        <div class="stat-item">
-                            <div class="stat-value" id="attemptsCount">0</div>
-                            <div class="stat-label">Attempts</div>
-                        </div>
-                    </div>
-                    <div class="cracker-controls">
-                        <button class="cracker-btn primary" onclick="startPasswordCrack()">Start Cracking</button>
-                        <button class="cracker-btn secondary" onclick="resetPasswordCrack()">Reset</button>
-                    </div>
-                    <div class="cracker-output" id="crackerOutput">
-                        Ready to crack passwords
-                    </div>
-                </div>
-            `,
-            init: initPasswordCrackerGame
-        },
-        'malware-analysis': {
-            title: 'Malware Analysis Lab',
-            content: `
-                <div class="malware-lab">
-                    <div class="lab-header">
-                        <div class="lab-title">🦠 Malware Analysis Lab</div>
-                        <div class="threat-level">HIGH RISK</div>
-                    </div>
-                    <div class="lab-tabs">
-                        <div class="lab-tab active" onclick="switchTab('static')">Static Analysis</div>
-                        <div class="lab-tab" onclick="switchTab('dynamic')">Dynamic Analysis</div>
-                        <div class="lab-tab" onclick="switchTab('network')">Network Analysis</div>
-                    </div>
-                    <div class="lab-content" id="labContent">
-                        <div class="code-block">
-                            <div class="code-line code-comment">// Malware Sample: Trojan.Win32.Banker</div>
-                            <div class="code-line code-comment">// File Size: 2.3 MB</div>
-                            <div class="code-line code-comment">// Detection Date: 2024-01-15</div>
-                            <div class="code-line code-comment">// Threat Level: HIGH</div>
-                            <div class="code-line"></div>
-                            <div class="code-line code-keyword">import</div> <div class="code-line code-string">"winapi"</div>
-                            <div class="code-line code-keyword">import</div> <div class="code-line code-string">"crypto"</div>
-                            <div class="code-line code-keyword">import</div> <div class="code-line code-string">"network"</div>
-                            <div class="code-line"></div>
-                            <div class="code-line code-comment">// Suspicious API calls detected</div>
-                            <div class="code-line code-highlight">CreateProcessA()</div>
-                            <div class="code-line code-highlight">WriteProcessMemory()</div>
-                            <div class="code-line code-highlight">InternetOpenA()</div>
-                            <div class="code-line code-highlight">HttpSendRequestA()</div>
-                        </div>
-                    </div>
-                </div>
-            `,
-            init: initMalwareAnalysisGame
-        },
-        'social-engineering': {
-            title: 'Social Engineering Simulator',
-            content: `
-                <div class="social-engineering">
-                    <div class="se-header">
-                        <div class="se-title">🎭 Social Engineering Simulator</div>
-                        <div class="se-subtitle">Test your ability to identify social engineering attacks</div>
-                    </div>
-                    <div class="se-scenario" id="seScenario">
-                        <div class="scenario-title">Scenario 1: Phishing Email</div>
-                        <div class="scenario-description">
-                            You receive an email claiming to be from your bank. The email asks you to verify your account information by clicking a link. What do you do?
-                        </div>
-                        <div class="scenario-email">
-                            <div class="email-header">
-                                <div class="email-from">From: security@yourbank.com</div>
-                                <div class="email-subject">Subject: URGENT: Account Verification Required</div>
-                            </div>
-                            <div class="email-body">
-                                <p>Dear Valued Customer,</p>
-                                <p>We have detected suspicious activity on your account. For your security, please verify your account information immediately.</p>
-                                <p><a href="http://bank-verification.com/verify">Click here to verify your account</a></p>
-                                <p>If you do not verify within 24 hours, your account will be suspended.</p>
-                                <p>Best regards,<br>Security Team</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="se-options" id="seOptions">
-                        <div class="se-option" onclick="selectSEOption(this, false)">
-                            Click the link to verify your account
-                        </div>
-                        <div class="se-option" onclick="selectSEOption(this, true)">
-                            Delete the email and contact the bank directly
-                        </div>
-                        <div class="se-option" onclick="selectSEOption(this, false)">
-                            Forward the email to your IT department
-                        </div>
-                        <div class="se-option" onclick="selectSEOption(this, false)">
-                            Reply with your account information
-                        </div>
-                    </div>
-                    <div class="se-feedback" id="seFeedback" style="display: none;"></div>
-                </div>
-            `,
-            init: initSocialEngineeringGame
-        },
-        'incident-response': {
-            title: 'Incident Response Simulator',
-            content: `
-                <div class="incident-response">
-                    <div class="ir-header">
-                        <div class="ir-title">🚨 Incident Response Simulator</div>
-                        <div class="ir-subtitle">Handle a real-time cybersecurity incident</div>
-                    </div>
-                    <div class="ir-alert">
-                        <div class="alert-title">🚨 SECURITY ALERT</div>
-                        <div class="alert-description">
-                            Multiple failed login attempts detected from suspicious IP addresses. 
-                            Potential brute force attack in progress. Immediate action required.
-                        </div>
-                        <div class="alert-severity">CRITICAL</div>
-                    </div>
-                    <div class="ir-timeline">
-                        <div class="timeline-title">Incident Timeline</div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">09:15</div>
-                            <div class="timeline-action">Failed login attempts detected</div>
-                            <div class="timeline-status pending">PENDING</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">09:16</div>
-                            <div class="timeline-action">Security team notified</div>
-                            <div class="timeline-status completed">COMPLETED</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">09:17</div>
-                            <div class="timeline-action">IP addresses blocked</div>
-                            <div class="timeline-status pending">PENDING</div>
-                        </div>
-                    </div>
-                    <div class="ir-actions">
-                        <div class="ir-action" onclick="executeIRAction(this, 'block-ip')">
-                            <div class="ir-action-title">Block Suspicious IPs</div>
-                            <div class="ir-action-description">Immediately block the attacking IP addresses</div>
-                        </div>
-                        <div class="ir-action" onclick="executeIRAction(this, 'reset-passwords')">
-                            <div class="ir-action-title">Reset Affected Passwords</div>
-                            <div class="ir-action-description">Force password reset for targeted accounts</div>
-                        </div>
-                        <div class="ir-action" onclick="executeIRAction(this, 'enable-2fa')">
-                            <div class="ir-action-title">Enable 2FA</div>
-                            <div class="ir-action-description">Activate two-factor authentication</div>
-                        </div>
-                        <div class="ir-action" onclick="executeIRAction(this, 'notify-users')">
-                            <div class="ir-action-title">Notify Affected Users</div>
-                            <div class="ir-action-description">Send security alerts to users</div>
-                        </div>
-                    </div>
-                </div>
-            `,
-            init: initIncidentResponseGame
-        }
-    };
-    
-    return games[gameName];
-}
-
-// Advanced Snake & Ladder Game with Visual Board
-function initSnakeLadderGame() {
-    const canvas = document.getElementById('snakeLadderCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    // Game state
-    let playerPosition = 1;
-    let isAnimating = false;
-    let diceValue = 0;
-    
-    // Board configuration
-    const boardSize = 10;
-    const cellSize = 60;
-    const boardWidth = boardSize * cellSize;
-    const boardHeight = boardSize * cellSize;
-    
-    // Snake and ladder positions
-    const snakes = {27: 5, 40: 3, 43: 18, 54: 38, 66: 45, 76: 58, 89: 53, 99: 41};
-    const ladders = {4: 25, 13: 46, 42: 63, 33: 49, 50: 69, 62: 81, 74: 92};
-    
-    // Cybersecurity questions (50+ questions across all categories)
-    const questions = [
-        // Basic Security Concepts
-        {
-            question: "What is the primary purpose of a firewall?",
-            options: ["To prevent unauthorized access", "To speed up internet", "To store passwords", "To create backups"],
-            correct: 0,
-            explanation: "Firewalls monitor and control network traffic to prevent unauthorized access."
-        },
-        {
-            question: "Which attack vector is most commonly used in phishing?",
-            options: ["Email", "Phone calls", "Physical mail", "Television ads"],
-            correct: 0,
-            explanation: "Email is the most common vector for phishing attacks due to its widespread use."
-        },
-        {
-            question: "What does '2FA' stand for?",
-            options: ["Two Factor Authentication", "Two File Access", "Two Function Analysis", "Two Factor Authorization"],
-            correct: 0,
-            explanation: "2FA adds an extra layer of security by requiring two forms of verification."
-        },
-        {
-            question: "What is the most common type of cyber attack?",
-            options: ["Phishing", "Malware", "DDoS", "SQL Injection"],
-            correct: 0,
-            explanation: "Phishing is the most common cyber attack, accounting for over 80% of security incidents."
-        },
-        {
-            question: "What does HTTPS stand for?",
-            options: ["HyperText Transfer Protocol Secure", "HyperTransfer Protocol Secure", "HyperLink Transfer Protocol Secure", "None of the above"],
-            correct: 0,
-            explanation: "HTTPS stands for HyperText Transfer Protocol Secure, providing encrypted communication."
-        },
-        {
-            question: "What is a VPN?",
-            options: ["Virtual Private Network", "Very Private Network", "Virtual Public Network", "Verified Private Network"],
-            correct: 0,
-            explanation: "VPN stands for Virtual Private Network, creating a secure connection over the internet."
-        },
-        
-        // Password Security
-        {
-            question: "What makes a strong password?",
-            options: ["Short and simple", "Long, complex, and unique", "Your name and birth year", "123456"],
-            correct: 1,
-            explanation: "Strong passwords are long (12+ characters), complex (mixed case, numbers, symbols), and unique."
-        },
-        {
-            question: "How often should you change your passwords?",
-            options: ["Never", "Every 3-6 months", "Every day", "Only when hacked"],
-            correct: 1,
-            explanation: "Passwords should be changed every 3-6 months, or immediately if a breach is suspected."
-        },
-        {
-            question: "What is a password manager?",
-            options: ["A person who remembers passwords", "Software that stores and manages passwords", "A type of virus", "A physical device"],
-            correct: 1,
-            explanation: "Password managers are software tools that securely store and manage your passwords."
-        },
-        
-        // Malware and Viruses
-        {
-            question: "What is malware?",
-            options: ["Good software", "Malicious software", "Old software", "Expensive software"],
-            correct: 1,
-            explanation: "Malware is malicious software designed to damage, disrupt, or gain unauthorized access to systems."
-        },
-        {
-            question: "What is ransomware?",
-            options: ["Software that protects from ransom", "Malware that encrypts files and demands payment", "A type of firewall", "A password manager"],
-            correct: 1,
-            explanation: "Ransomware encrypts files and demands payment (ransom) to restore access."
-        },
-        {
-            question: "What is a trojan horse?",
-            options: ["A wooden horse", "Malware disguised as legitimate software", "A type of firewall", "A password"],
-            correct: 1,
-            explanation: "A trojan horse is malware disguised as legitimate software to trick users into installing it."
-        },
-        
-        // Network Security
-        {
-            question: "What is a DDoS attack?",
-            options: ["A type of virus", "Distributed Denial of Service attack", "A password attack", "A firewall"],
-            correct: 1,
-            explanation: "DDoS attacks overwhelm servers with traffic from multiple sources to make them unavailable."
-        },
-        {
-            question: "What is an IP address?",
-            options: ["A password", "A unique identifier for devices on a network", "A type of virus", "A firewall"],
-            correct: 1,
-            explanation: "An IP address is a unique numerical identifier assigned to devices on a network."
-        },
-        {
-            question: "What is port scanning?",
-            options: ["Scanning for viruses", "Checking which network ports are open", "Looking for passwords", "Installing software"],
-            correct: 1,
-            explanation: "Port scanning checks which network ports are open on a system to identify services."
-        },
-        
-        // Encryption
-        {
-            question: "What is encryption?",
-            options: ["Making files smaller", "Converting data into unreadable format", "Deleting files", "Copying files"],
-            correct: 1,
-            explanation: "Encryption converts data into an unreadable format that can only be decoded with a key."
-        },
-        {
-            question: "What is end-to-end encryption?",
-            options: ["Encryption at the beginning only", "Encryption that only the sender can decrypt", "Encryption that travels with the data", "No encryption"],
-            correct: 2,
-            explanation: "End-to-end encryption ensures data remains encrypted throughout its entire journey."
-        },
-        {
-            question: "What is a public key?",
-            options: ["A key everyone knows", "A key used for encryption that can be shared", "A password", "A virus"],
-            correct: 1,
-            explanation: "A public key is used for encryption and can be freely shared, while the private key is kept secret."
-        },
-        
-        // Social Engineering
-        {
-            question: "What is social engineering?",
-            options: ["Building social networks", "Manipulating people to reveal information", "Using social media", "Making friends"],
-            correct: 1,
-            explanation: "Social engineering manipulates people into revealing confidential information or performing actions."
-        },
-        {
-            question: "What is pretexting?",
-            options: ["A type of virus", "Creating a false scenario to gain information", "A password", "A firewall"],
-            correct: 1,
-            explanation: "Pretexting involves creating a false scenario or identity to trick people into revealing information."
-        },
-        {
-            question: "What is tailgating?",
-            options: ["Following someone through a secure door", "A type of malware", "A password attack", "A firewall technique"],
-            correct: 0,
-            explanation: "Tailgating is following someone through a secure door without proper authorization."
-        },
-        
-        // Incident Response
-        {
-            question: "What is incident response?",
-            options: ["Preventing attacks", "Responding to security incidents", "Installing software", "Changing passwords"],
-            correct: 1,
-            explanation: "Incident response is the process of handling and managing security incidents when they occur."
-        },
-        {
-            question: "What is a security breach?",
-            options: ["A broken computer", "Unauthorized access to data or systems", "A virus", "A firewall"],
-            correct: 1,
-            explanation: "A security breach is unauthorized access to data, applications, or systems."
-        },
-        {
-            question: "What is forensics in cybersecurity?",
-            options: ["Preventing attacks", "Investigating security incidents", "Installing software", "Changing passwords"],
-            correct: 1,
-            explanation: "Digital forensics involves investigating and analyzing security incidents and evidence."
-        },
-        
-        // Advanced Topics
-        {
-            question: "What is a zero-day vulnerability?",
-            options: ["A vulnerability that's never been seen", "A vulnerability with no patch available", "A fake vulnerability", "A password"],
-            correct: 1,
-            explanation: "Zero-day vulnerabilities are unknown to vendors and have no available patches."
-        },
-        {
-            question: "What is penetration testing?",
-            options: ["Testing pens", "Authorized simulated attacks on systems", "Installing software", "Changing passwords"],
-            correct: 1,
-            explanation: "Penetration testing involves authorized simulated attacks to test security defenses."
-        },
-        {
-            question: "What is a honeypot?",
-            options: ["A sweet treat", "A decoy system to trap attackers", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "A honeypot is a decoy system designed to attract and trap attackers."
-        },
-        
-        // Compliance and Standards
-        {
-            question: "What is GDPR?",
-            options: ["A type of virus", "General Data Protection Regulation", "A password", "A firewall"],
-            correct: 1,
-            explanation: "GDPR is the General Data Protection Regulation governing data privacy in the EU."
-        },
-        {
-            question: "What is ISO 27001?",
-            options: ["A type of malware", "International standard for information security", "A password", "A virus"],
-            correct: 1,
-            explanation: "ISO 27001 is an international standard for information security management systems."
-        },
-        {
-            question: "What is PCI DSS?",
-            options: ["A type of attack", "Payment Card Industry Data Security Standard", "A password", "A firewall"],
-            correct: 1,
-            explanation: "PCI DSS is a security standard for organizations that handle credit card data."
-        },
-        
-        // Cloud Security
-        {
-            question: "What is cloud security?",
-            options: ["Security for clouds", "Protecting data in cloud services", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "Cloud security involves protecting data, applications, and infrastructure in cloud environments."
-        },
-        {
-            question: "What is multi-tenancy?",
-            options: ["Having multiple tenants", "Multiple customers sharing cloud resources", "A type of attack", "A password"],
-            correct: 1,
-            explanation: "Multi-tenancy allows multiple customers to share cloud resources while maintaining isolation."
-        },
-        {
-            question: "What is a CASB?",
-            options: ["A type of virus", "Cloud Access Security Broker", "A password", "A firewall"],
-            correct: 1,
-            explanation: "CASB (Cloud Access Security Broker) provides security controls for cloud services."
-        },
-        
-        // Mobile Security
-        {
-            question: "What is mobile device management?",
-            options: ["Managing mobile phones", "Controlling and securing mobile devices", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "MDM involves controlling, monitoring, and securing mobile devices in an organization."
-        },
-        {
-            question: "What is BYOD?",
-            options: ["A type of attack", "Bring Your Own Device", "A password", "A virus"],
-            correct: 1,
-            explanation: "BYOD (Bring Your Own Device) allows employees to use personal devices for work."
-        },
-        {
-            question: "What is mobile app security?",
-            options: ["Security for mobile apps", "Protecting mobile applications", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "Mobile app security involves protecting mobile applications from various threats."
-        },
-        
-        // IoT Security
-        {
-            question: "What is IoT?",
-            options: ["Internet of Things", "A type of virus", "A password", "A firewall"],
-            correct: 0,
-            explanation: "IoT (Internet of Things) refers to connected devices that can communicate over the internet."
-        },
-        {
-            question: "What is IoT security?",
-            options: ["Security for IoT devices", "Protecting connected devices", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "IoT security involves protecting connected devices from cyber threats."
-        },
-        {
-            question: "What is a botnet?",
-            options: ["A type of virus", "Network of compromised devices", "A password", "A firewall"],
-            correct: 1,
-            explanation: "A botnet is a network of compromised devices controlled by attackers."
-        },
-        
-        // Cryptocurrency Security
-        {
-            question: "What is blockchain?",
-            options: ["A type of virus", "Distributed ledger technology", "A password", "A firewall"],
-            correct: 1,
-            explanation: "Blockchain is a distributed ledger technology that maintains a continuously growing list of records."
-        },
-        {
-            question: "What is a cryptocurrency wallet?",
-            options: ["A physical wallet", "Software that stores cryptocurrency keys", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "A cryptocurrency wallet stores the private keys needed to access and manage cryptocurrency."
-        },
-        {
-            question: "What is a smart contract?",
-            options: ["A regular contract", "Self-executing contract with terms in code", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "Smart contracts are self-executing contracts with terms directly written into code."
-        },
-        
-        // Threat Intelligence
-        {
-            question: "What is threat intelligence?",
-            options: ["A type of virus", "Information about cyber threats", "A password", "A firewall"],
-            correct: 1,
-            explanation: "Threat intelligence is information about cyber threats that helps organizations defend against attacks."
-        },
-        {
-            question: "What is an APT?",
-            options: ["A type of virus", "Advanced Persistent Threat", "A password", "A firewall"],
-            correct: 1,
-            explanation: "APT (Advanced Persistent Threat) is a long-term targeted attack by skilled adversaries."
-        },
-        {
-            question: "What is threat hunting?",
-            options: ["Hunting for threats", "Proactively searching for threats", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "Threat hunting is proactively searching for threats that may have evaded security controls."
-        },
-        
-        // Security Awareness
-        {
-            question: "What is security awareness training?",
-            options: ["Training for security guards", "Educating users about security", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "Security awareness training educates users about security threats and best practices."
-        },
-        {
-            question: "What is the principle of least privilege?",
-            options: ["Giving maximum access", "Giving minimum necessary access", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "Least privilege means giving users only the minimum access necessary to perform their job."
-        },
-        {
-            question: "What is defense in depth?",
-            options: ["One security layer", "Multiple layers of security", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "Defense in depth uses multiple layers of security controls to protect systems."
-        },
-        
-        // Emerging Threats
-        {
-            question: "What is AI security?",
-            options: ["Security for AI", "Protecting AI systems", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "AI security involves protecting artificial intelligence systems from attacks and misuse."
-        },
-        {
-            question: "What is quantum computing security?",
-            options: ["Security for quantum computers", "Preparing for quantum threats", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "Quantum computing security prepares for threats posed by quantum computers to current encryption."
-        },
-        {
-            question: "What is supply chain security?",
-            options: ["Security for supply chains", "Protecting software supply chains", "A type of virus", "A password"],
-            correct: 1,
-            explanation: "Supply chain security protects against attacks through compromised software or hardware components."
-        }
-    ];
-    
-    // Draw the game board
-    function drawBoard() {
-        // Clear canvas
-        ctx.fillStyle = '#0a0a0a';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Draw grid
-        ctx.strokeStyle = '#00ffff';
-        ctx.lineWidth = 2;
-        ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 10;
-        
-        for (let i = 0; i <= boardSize; i++) {
-            // Vertical lines
-            ctx.beginPath();
-            ctx.moveTo(i * cellSize, 0);
-            ctx.lineTo(i * cellSize, boardHeight);
-            ctx.stroke();
-            
-            // Horizontal lines
-            ctx.beginPath();
-            ctx.moveTo(0, i * cellSize);
-            ctx.lineTo(boardWidth, i * cellSize);
-            ctx.stroke();
-        }
-        
-        // Draw numbers
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 16px Arial';
-        ctx.shadowBlur = 0;
-        
-        let number = 100;
-        for (let row = 0; row < boardSize; row++) {
-            for (let col = 0; col < boardSize; col++) {
-                const x = col * cellSize + cellSize / 2;
-                const y = row * cellSize + cellSize / 2;
-                
-                // Alternate row direction
-                const displayNumber = row % 2 === 0 ? number : number - (boardSize - 1 - col);
-                
-                ctx.fillText(displayNumber.toString(), x - 10, y + 5);
-                number--;
-            }
-        }
-        
-        // Draw snakes
-        drawSnakes();
-        
-        // Draw ladders
-        drawLadders();
-        
-        // Draw player
-        drawPlayer();
+    if (!window.CyberArcadeGames || !window.CyberArcadeGames[gameName]) {
+        console.warn(`Game not found: ${gameName}`);
+        return null;
     }
-    
-    function drawSnakes() {
-        ctx.strokeStyle = '#ff0000';
-        ctx.lineWidth = 8;
-        ctx.shadowColor = '#ff0000';
-        ctx.shadowBlur = 15;
-        
-        Object.entries(snakes).forEach(([start, end]) => {
-            const startPos = getPositionFromNumber(parseInt(start));
-            const endPos = getPositionFromNumber(end);
-            
-            ctx.beginPath();
-            ctx.moveTo(startPos.x, startPos.y);
-            ctx.quadraticCurveTo(
-                startPos.x + (endPos.x - startPos.x) / 2,
-                startPos.y - 50,
-                endPos.x,
-                endPos.y
-            );
-            ctx.stroke();
-            
-            // Draw snake head
-            ctx.fillStyle = '#ff0000';
-            ctx.beginPath();
-            ctx.arc(startPos.x, startPos.y, 8, 0, 2 * Math.PI);
-            ctx.fill();
-        });
-    }
-    
-    function drawLadders() {
-        ctx.strokeStyle = '#00ff00';
-        ctx.lineWidth = 6;
-        ctx.shadowColor = '#00ff00';
-        ctx.shadowBlur = 10;
-        
-        Object.entries(ladders).forEach(([start, end]) => {
-            const startPos = getPositionFromNumber(parseInt(start));
-            const endPos = getPositionFromNumber(end);
-            
-            // Draw ladder sides
-            ctx.beginPath();
-            ctx.moveTo(startPos.x - 15, startPos.y);
-            ctx.lineTo(endPos.x - 15, endPos.y);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.moveTo(startPos.x + 15, startPos.y);
-            ctx.lineTo(endPos.x + 15, endPos.y);
-            ctx.stroke();
-            
-            // Draw ladder rungs
-            const steps = 5;
-            for (let i = 1; i < steps; i++) {
-                const ratio = i / steps;
-                const x1 = startPos.x - 15 + (endPos.x - startPos.x) * ratio;
-                const y1 = startPos.y + (endPos.y - startPos.y) * ratio;
-                const x2 = startPos.x + 15 + (endPos.x - startPos.x) * ratio;
-                const y2 = startPos.y + (endPos.y - startPos.y) * ratio;
-                
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-            }
-        });
-    }
-    
-    function drawPlayer() {
-        const pos = getPositionFromNumber(playerPosition);
-        
-        // Player glow effect
-        ctx.shadowColor = '#ffff00';
-        ctx.shadowBlur = 20;
-        ctx.fillStyle = '#ffff00';
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, 15, 0, 2 * Math.PI);
-        ctx.fill();
-        
-        // Player body
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = '#ff6600';
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, 12, 0, 2 * Math.PI);
-        ctx.fill();
-        
-        // Player face
-        ctx.fillStyle = '#000000';
-        ctx.font = 'bold 12px Arial';
-        ctx.fillText('😎', pos.x - 6, pos.y + 4);
-    }
-    
-    function getPositionFromNumber(number) {
-        const row = Math.floor((100 - number) / boardSize);
-        const col = (100 - number) % boardSize;
-        
-        // Alternate row direction
-        const actualCol = row % 2 === 0 ? col : boardSize - 1 - col;
-        
-        return {
-            x: actualCol * cellSize + cellSize / 2,
-            y: row * cellSize + cellSize / 2
-        };
-    }
-    
-    function rollDice() {
-        if (isAnimating) return;
-        
-        // Animate dice
-        let rollCount = 0;
-        const maxRolls = 10;
-        const rollInterval = setInterval(() => {
-            diceValue = Math.floor(Math.random() * 6) + 1;
-            document.getElementById('dice').textContent = `🎲 ${diceValue}`;
-            rollCount++;
-            
-            if (rollCount >= maxRolls) {
-                clearInterval(rollInterval);
-                movePlayer();
-            }
-        }, 100);
-    }
-    
-    function movePlayer() {
-        isAnimating = true;
-        const targetPosition = Math.min(playerPosition + diceValue, 100);
-        
-        // Animate movement
-        const startPos = getPositionFromNumber(playerPosition);
-        const endPos = getPositionFromNumber(targetPosition);
-        
-        let progress = 0;
-        const animationDuration = 1000; // 1 second
-        const startTime = Date.now();
-        
-        function animate() {
-            const elapsed = Date.now() - startTime;
-            progress = Math.min(elapsed / animationDuration, 1);
-            
-            // Easing function
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-            
-            const currentX = startPos.x + (endPos.x - startPos.x) * easeProgress;
-            const currentY = startPos.y + (endPos.y - startPos.y) * easeProgress;
-            
-            // Clear and redraw
-            drawBoard();
-            
-            // Draw player at current position
-            ctx.shadowColor = '#ffff00';
-            ctx.shadowBlur = 20;
-            ctx.fillStyle = '#ffff00';
-            ctx.beginPath();
-            ctx.arc(currentX, currentY, 15, 0, 2 * Math.PI);
-            ctx.fill();
-            
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = '#ff6600';
-            ctx.beginPath();
-            ctx.arc(currentX, currentY, 12, 0, 2 * Math.PI);
-            ctx.fill();
-            
-            ctx.fillStyle = '#000000';
-            ctx.font = 'bold 12px Arial';
-            ctx.fillText('😎', currentX - 6, currentY + 4);
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                playerPosition = targetPosition;
-                updatePlayerDisplay();
-                checkSpecialSquares();
-                isAnimating = false;
-            }
-        }
-        
-        animate();
-    }
-    
-    function checkSpecialSquares() {
-        if (snakes[playerPosition]) {
-            showSnakeQuestion();
-        } else if (ladders[playerPosition]) {
-            showLadderBonus();
-        } else if (playerPosition === 100) {
-            showVictory();
-        } else if (playerPosition % 11 === 0 && playerPosition !== 99) {
-            showRandomFact();
-        }
-    }
-    
-    function showSnakeQuestion() {
-        const question = questions[Math.floor(Math.random() * questions.length)];
-        
-        const modal = document.createElement('div');
-        modal.className = 'snake-question-modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3>🐍 Snake Challenge!</h3>
-                <p>Answer correctly to avoid going down the snake!</p>
-                <div class="question">
-                    <h4>${question.question}</h4>
-                    <div class="options">
-                        ${question.options.map((option, index) => 
-                            `<button class="option-btn" data-index="${index}">${option}</button>`
-                        ).join('')}
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Add event listeners
-        modal.querySelectorAll('.option-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const selectedIndex = parseInt(this.dataset.index);
-                const isCorrect = selectedIndex === question.correct;
-                
-                if (isCorrect) {
-                    showCorrectAnswer(question.explanation);
-                    addPoints(50);
-                } else {
-                    showWrongAnswer(question.explanation);
-                    // Move down the snake
-                    playerPosition = snakes[playerPosition];
-                    updatePlayerDisplay();
-                    drawBoard();
-                }
-                
-                document.body.removeChild(modal);
-            });
-        });
-    }
-    
-    function showLadderBonus() {
-        const bonusPoints = 100;
-        addPoints(bonusPoints);
-        
-        // Move up the ladder
-        playerPosition = ladders[playerPosition];
-        updatePlayerDisplay();
-        drawBoard();
-        
-        // Show bonus animation
-        showNotification(`🪜 Ladder Bonus! +${bonusPoints} points!`, '#00ff00');
-    }
-    
-    function showRandomFact() {
-        const facts = [
-            "💡 Did you know? 95% of cybersecurity breaches are due to human error!",
-            "🔐 Strong passwords should be at least 12 characters long!",
-            "🛡️ Two-factor authentication prevents 99.9% of automated attacks!",
-            "📧 Phishing emails are getting more sophisticated every day!",
-            "🌐 HTTPS encrypts data between your browser and websites!"
-        ];
-        
-        const fact = facts[Math.floor(Math.random() * facts.length)];
-        showNotification(fact, '#00ffff');
-    }
-    
-    function showVictory() {
-        const modal = document.createElement('div');
-        modal.className = 'victory-modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2>🎉 VICTORY! 🎉</h2>
-                <p>Congratulations! You've mastered cybersecurity!</p>
-                <div class="victory-stats">
-                    <p>Final Score: <span id="finalScore">0</span></p>
-                    <p>Questions Answered: <span id="questionsAnswered">0</span></p>
-                </div>
-                <button onclick="location.reload()">Play Again</button>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        addPoints(500);
-        addAchievement('snake_master', 'Snake Master', 'Completed the Cyber Snake & Ladder!');
-    }
-    
-    function showCorrectAnswer(explanation) {
-        showNotification(`✅ Correct! ${explanation}`, '#00ff00');
-    }
-    
-    function showWrongAnswer(explanation) {
-        showNotification(`❌ Wrong! ${explanation}`, '#ff0000');
-    }
-    
-    function showNotification(message, color) {
-        const notification = document.createElement('div');
-        notification.className = 'game-notification';
-        notification.style.background = color;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 3000);
-    }
-    
-    function updatePlayerDisplay() {
-        document.getElementById('playerPosition').textContent = playerPosition;
-        document.getElementById('gamePoints').textContent = appState.currentUser.points;
-    }
-    
-    // Initialize the game
-    drawBoard();
-    updatePlayerDisplay();
-    
-    // Add dice roll functionality
-    document.getElementById('rollDice').addEventListener('click', rollDice);
-}
-
-// Initialize Capture The Flag game
-function initCTFGame() {
-    window.startCTFChallenge = function(challengeType) {
-        const challenges = {
-            crypto: {
-                title: "🔐 Cryptography Challenge",
-                description: "Decrypt this message using Caesar cipher with shift 13:",
-                encrypted: "GUR FRPERG ZRFFNTR VF: CTF{CRYPTO_MASTER_2024}",
-                hint: "ROT13 is a special case of Caesar cipher",
-                solution: "THE SECRET MESSAGE IS: CTF{CRYPTO_MASTER_2024}",
-                points: 200
-            },
-            web: {
-                title: "🌐 Web Exploitation Challenge",
-                description: "Find the hidden flag in this simulated web application:",
-                scenario: "You're testing a login page. The admin panel is at /admin but requires authentication. The flag is hidden in the source code.",
-                hint: "Check the page source for comments or hidden elements",
-                solution: "CTF{WEB_EXPLOIT_MASTER}",
-                points: 300
-            },
-            forensics: {
-                title: "🔍 Digital Forensics Challenge",
-                description: "Analyze this suspicious file and find the hidden flag:",
-                scenario: "A suspicious image file was found on a compromised system. The flag is hidden using steganography.",
-                hint: "Look for hidden data in the image metadata or use steganography tools",
-                solution: "CTF{FORENSICS_EXPERT}",
-                points: 400
-            },
-            reverse: {
-                title: "🔄 Reverse Engineering Challenge",
-                description: "Analyze this binary and find the hidden flag:",
-                scenario: "A suspicious executable was found. When run, it asks for a password. Find the correct password to get the flag.",
-                hint: "The password is hardcoded in the binary. Look for string comparisons.",
-                solution: "CTF{REVERSE_ENGINEER}",
-                points: 500
-            },
-            pwn: {
-                title: "💥 Binary Exploitation Challenge",
-                description: "Exploit this vulnerable binary to get shell access:",
-                scenario: "A server application has a buffer overflow vulnerability. Craft an exploit to gain remote code execution.",
-                hint: "The buffer is 64 bytes. You need to overwrite the return address.",
-                solution: "CTF{PWN_MASTER}",
-                points: 600
-            },
-            stego: {
-                title: "🖼️ Steganography Challenge",
-                description: "Find the hidden message in this image:",
-                scenario: "A suspect sent an image file. Intelligence suggests it contains hidden information.",
-                hint: "Try different steganography tools. The message might be in the LSB of pixels.",
-                solution: "CTF{STEGO_EXPERT}",
-                points: 350
-            },
-            crypto2: {
-                title: "🔐 Advanced Cryptography",
-                description: "Break this RSA encryption:",
-                scenario: "Intercepted encrypted message. The public key is (n=143, e=7). Decrypt the message.",
-                hint: "Factor n to find p and q, then calculate the private key d.",
-                solution: "CTF{RSA_BREAKER}",
-                points: 700
-            },
-            web2: {
-                title: "🌐 SQL Injection Challenge",
-                description: "Exploit the SQL injection vulnerability:",
-                scenario: "A login form is vulnerable to SQL injection. Bypass authentication and extract the flag.",
-                hint: "Try ' OR '1'='1' -- as username. The flag is in the users table.",
-                solution: "CTF{SQL_INJECTION_MASTER}",
-                points: 450
-            },
-            forensics2: {
-                title: "🔍 Memory Forensics",
-                description: "Analyze this memory dump:",
-                scenario: "A system was compromised. Analyze the memory dump to find evidence of the attack.",
-                hint: "Look for suspicious processes and network connections. The flag is in a process name.",
-                solution: "CTF{MEMORY_FORENSICS}",
-                points: 550
-            },
-            crypto3: {
-                title: "🔐 Vigenère Cipher",
-                description: "Decrypt this Vigenère cipher:",
-                scenario: "Intercepted encrypted message. The key is 'CYBER'. Decrypt using Vigenère cipher.",
-                hint: "Use the Vigenère square. Each letter is shifted by the corresponding key letter.",
-                solution: "CTF{VIGENERE_CRACKER}",
-                points: 300
-            },
-            web3: {
-                title: "🌐 XSS Challenge",
-                description: "Exploit the Cross-Site Scripting vulnerability:",
-                scenario: "A search form is vulnerable to XSS. Inject JavaScript to steal the admin's session cookie.",
-                hint: "Try <script>alert('XSS')</script> first. The flag is in the admin's cookie.",
-                solution: "CTF{XSS_EXPLOITER}",
-                points: 400
-            },
-            forensics3: {
-                title: "🔍 Network Forensics",
-                description: "Analyze this network traffic:",
-                scenario: "Suspicious network activity detected. Analyze the pcap file to find the attacker's IP.",
-                hint: "Look for unusual traffic patterns. The flag is the attacker's IP address.",
-                solution: "CTF{NETWORK_FORENSICS}",
-                points: 450
-            },
-            crypto4: {
-                title: "🔐 Base64 & Hex Challenge",
-                description: "Decode this multi-layer encoding:",
-                scenario: "Message is encoded multiple times. Decode: 48656c6c6f20576f726c64",
-                hint: "First convert hex to ASCII, then decode the Base64.",
-                solution: "CTF{ENCODING_MASTER}",
-                points: 250
-            },
-            web4: {
-                title: "🌐 Directory Traversal",
-                description: "Exploit the path traversal vulnerability:",
-                scenario: "A file download feature is vulnerable to directory traversal. Access /etc/passwd to get the flag.",
-                hint: "Try ../../../etc/passwd in the filename parameter.",
-                solution: "CTF{PATH_TRAVERSAL}",
-                points: 350
-            },
-            forensics4: {
-                title: "🔍 File Carving",
-                description: "Recover deleted files from this disk image:",
-                scenario: "A USB drive was found. Recover the deleted files to find the hidden flag.",
-                hint: "Look for file signatures. The flag is in a deleted text file.",
-                solution: "CTF{FILE_CARVER}",
-                points: 400
-            }
-        };
-        
-        const challenge = challenges[challengeType];
-        if (!challenge) return;
-        
-        // Create challenge modal
-        const modal = document.createElement('div');
-        modal.className = 'ctf-challenge-modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <div class="challenge-header">
-                    <h3>${challenge.title}</h3>
-                    <div class="challenge-points">${challenge.points} points</div>
-                </div>
-                <div class="challenge-body">
-                    <p class="challenge-description">${challenge.description}</p>
-                    <div class="challenge-scenario">
-                        <h4>Scenario:</h4>
-                        <p>${challenge.scenario}</p>
-                    </div>
-                    <div class="challenge-data">
-                        <h4>Data:</h4>
-                        <div class="data-box">${challenge.encrypted || challenge.scenario}</div>
-                    </div>
-                    <div class="challenge-input">
-                        <label>Enter the flag (format: CTF{...}):</label>
-                        <input type="text" id="flagInput" placeholder="CTF{...}">
-                        <button onclick="submitFlag('${challengeType}')">Submit Flag</button>
-                    </div>
-                    <div class="challenge-hint">
-                        <button onclick="showHint('${challengeType}')">Show Hint</button>
-                        <div id="hintText" style="display: none; margin-top: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 5px;">
-                            <strong>Hint:</strong> ${challenge.hint}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Store challenge data globally
-        window.currentCTFChallenge = challenge;
-    };
-    
-    window.submitFlag = function(challengeType) {
-        const userInput = document.getElementById('flagInput').value.trim();
-        const challenge = window.currentCTFChallenge;
-        
-        if (userInput === challenge.solution) {
-            alert('🎉 Correct! Flag captured successfully!');
-            addPoints(challenge.points);
-            addAchievement('ctf_master', 'CTF Master', `Completed ${challengeType} challenge!`);
-            document.body.removeChild(document.querySelector('.ctf-challenge-modal'));
-        } else {
-            alert('❌ Incorrect flag. Try again!');
-        }
-    };
-    
-    window.showHint = function(challengeType) {
-        const hintText = document.getElementById('hintText');
-        hintText.style.display = hintText.style.display === 'none' ? 'block' : 'none';
-    };
-}
-
-
-
-// Initialize Caesar Cipher game
-function initCaesarCipherGame() {
-    const messages = [
-        { text: "Hello World", shift: 3, answer: "Khoor Zruog" },
-        { text: "Cyber Security", shift: 5, answer: "Hdgjw Xjhwytw" }
-    ];
-    
-    let currentMessage = 0;
-    let score = 0;
-    
-    function showMessage() {
-        if (currentMessage < messages.length) {
-            const message = messages[currentMessage];
-            document.getElementById('cipherMessage').textContent = message.text;
-            document.getElementById('cipherShiftValue').textContent = message.shift;
-        } else {
-            alert(`Game Complete! Final Score: ${score}`);
-            addAchievement('cipher_master', 'Cipher Master', 'Completed the Caesar Cipher Challenge!');
-        }
-    }
-    
-    window.checkCipherAnswer = function() {
-        const userAnswer = document.getElementById('cipherAnswer').value;
-        const correctAnswer = messages[currentMessage].answer;
-        
-        if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-            score += 20;
-            addPoints(20);
-            alert('Correct!');
-        } else {
-            alert(`Incorrect! The answer was: ${correctAnswer}`);
-        }
-        
-        currentMessage++;
-        showMessage();
-    };
-    
-    showMessage();
-}
-
-// Initialize Network Scanner game
-function initNetworkScannerGame() {
-    const scanScenarios = {
-        'corporate': {
-            name: 'Corporate Network',
-            description: 'Scan a corporate network for security assessment',
-            target: '192.168.1.0/24',
-            ports: [
-                {port: '22/tcp', service: 'SSH', state: 'open', version: 'OpenSSH 8.2p1'},
-                {port: '80/tcp', service: 'HTTP', state: 'open', version: 'Apache 2.4.41'},
-                {port: '443/tcp', service: 'HTTPS', state: 'open', version: 'Apache 2.4.41'},
-                {port: '3389/tcp', service: 'RDP', state: 'open', version: 'Microsoft Terminal Services'},
-                {port: '445/tcp', service: 'SMB', state: 'open', version: 'Samba 4.7.6'},
-                {port: '1433/tcp', service: 'MSSQL', state: 'open', version: 'Microsoft SQL Server 2019'},
-                {port: '3306/tcp', service: 'MySQL', state: 'open', version: 'MySQL 8.0.25'},
-                {port: '5432/tcp', service: 'PostgreSQL', state: 'open', version: 'PostgreSQL 13.3'},
-                {port: '21/tcp', service: 'FTP', state: 'open', version: 'vsftpd 3.0.3'},
-                {port: '25/tcp', service: 'SMTP', state: 'open', version: 'Postfix 3.4.13'}
-            ],
-            vulnerabilities: [
-                'RDP exposed without proper authentication',
-                'SMB version 1 enabled (CVE-2017-0144)',
-                'FTP anonymous login allowed',
-                'MySQL root access without password',
-                'Outdated Apache version with known vulnerabilities'
-            ]
-        },
-        'web-server': {
-            name: 'Web Server Assessment',
-            description: 'Comprehensive web server security scan',
-            target: 'web-server.example.com',
-            ports: [
-                {port: '80/tcp', service: 'HTTP', state: 'open', version: 'nginx 1.18.0'},
-                {port: '443/tcp', service: 'HTTPS', state: 'open', version: 'nginx 1.18.0'},
-                {port: '8080/tcp', service: 'HTTP-Alt', state: 'open', version: 'Apache Tomcat 9.0.50'},
-                {port: '8443/tcp', service: 'HTTPS-Alt', state: 'open', version: 'Apache Tomcat 9.0.50'},
-                {port: '22/tcp', service: 'SSH', state: 'open', version: 'OpenSSH 8.2p1'},
-                {port: '3306/tcp', service: 'MySQL', state: 'open', version: 'MySQL 8.0.25'},
-                {port: '6379/tcp', service: 'Redis', state: 'open', version: 'Redis 6.2.5'},
-                {port: '9200/tcp', service: 'Elasticsearch', state: 'open', version: 'Elasticsearch 7.13.2'}
-            ],
-            vulnerabilities: [
-                'HTTP to HTTPS redirect not configured',
-                'Tomcat default credentials (admin:admin)',
-                'Redis exposed without authentication',
-                'Elasticsearch exposed without security',
-                'Missing security headers (HSTS, CSP, X-Frame-Options)',
-                'Outdated nginx version with CVE-2021-23017'
-            ]
-        },
-        'iot-devices': {
-            name: 'IoT Network Scan',
-            description: 'Scan IoT devices for security vulnerabilities',
-            target: '192.168.0.0/24',
-            ports: [
-                {port: '80/tcp', service: 'HTTP', state: 'open', version: 'lighttpd 1.4.59'},
-                {port: '443/tcp', service: 'HTTPS', state: 'open', version: 'lighttpd 1.4.59'},
-                {port: '22/tcp', service: 'SSH', state: 'open', version: 'Dropbear SSH 2020.81'},
-                {port: '23/tcp', service: 'Telnet', state: 'open', version: 'BusyBox telnetd'},
-                {port: '554/tcp', service: 'RTSP', state: 'open', version: 'LIVE555 Media Server'},
-                {port: '8080/tcp', service: 'HTTP-Alt', state: 'open', version: 'Boa/0.94.14rc21'},
-                {port: '8888/tcp', service: 'HTTP-Alt', state: 'open', version: 'uhttpd 1.0.0'},
-                {port: '9999/tcp', service: 'HTTP-Alt', state: 'open', version: 'mini_httpd 1.19'},
-                {port: '1883/tcp', service: 'MQTT', state: 'open', version: 'Mosquitto MQTT Broker'},
-                {port: '5683/udp', service: 'CoAP', state: 'open', version: 'Eclipse Californium'}
-            ],
-            vulnerabilities: [
-                'Telnet service enabled (unencrypted)',
-                'Default credentials on web interface (admin:admin)',
-                'MQTT broker without authentication',
-                'Outdated firmware with known CVEs',
-                'RTSP stream accessible without authentication',
-                'CoAP service without proper security',
-                'Missing firmware update mechanism'
-            ]
-        },
-        'industrial': {
-            name: 'Industrial Control System',
-            description: 'Scan industrial control systems for OT security',
-            target: '10.0.0.0/24',
-            ports: [
-                {port: '502/tcp', service: 'Modbus', state: 'open', version: 'Modbus TCP'},
-                {port: '102/tcp', service: 'S7', state: 'open', version: 'Siemens S7 PLC'},
-                {port: '44818/tcp', service: 'EtherNet/IP', state: 'open', version: 'Rockwell Automation'},
-                {port: '47808/tcp', service: 'BACnet', state: 'open', version: 'BACnet Building Automation'},
-                {port: '80/tcp', service: 'HTTP', state: 'open', version: 'Apache 2.4.41'},
-                {port: '443/tcp', service: 'HTTPS', state: 'open', version: 'Apache 2.4.41'},
-                {port: '22/tcp', service: 'SSH', state: 'open', version: 'OpenSSH 7.4'},
-                {port: '161/udp', service: 'SNMP', state: 'open', version: 'SNMP v1/v2c'},
-                {port: '623/udp', service: 'IPMI', state: 'open', version: 'IPMI 2.0'},
-                {port: '1911/tcp', service: 'Niagara', state: 'open', version: 'Tridium Niagara 4.8'}
-            ],
-            vulnerabilities: [
-                'Modbus TCP without authentication',
-                'SNMP using default community strings',
-                'IPMI with weak authentication',
-                'Outdated firmware on PLCs',
-                'Industrial protocols over unencrypted connections',
-                'Default credentials on HMI interfaces',
-                'Missing network segmentation'
-            ]
-        },
-        'cloud-infrastructure': {
-            name: 'Cloud Infrastructure',
-            description: 'Scan cloud infrastructure for misconfigurations',
-            target: 'cloud.example.com',
-            ports: [
-                {port: '80/tcp', service: 'HTTP', state: 'open', version: 'nginx 1.20.1'},
-                {port: '443/tcp', service: 'HTTPS', state: 'open', version: 'nginx 1.20.1'},
-                {port: '22/tcp', service: 'SSH', state: 'open', version: 'OpenSSH 8.2p1'},
-                {port: '3306/tcp', service: 'MySQL', state: 'open', version: 'MySQL 8.0.25'},
-                {port: '5432/tcp', service: 'PostgreSQL', state: 'open', version: 'PostgreSQL 13.3'},
-                {port: '6379/tcp', service: 'Redis', state: 'open', version: 'Redis 6.2.5'},
-                {port: '9200/tcp', service: 'Elasticsearch', state: 'open', version: 'Elasticsearch 7.13.2'},
-                {port: '27017/tcp', service: 'MongoDB', state: 'open', version: 'MongoDB 4.4.6'},
-                {port: '5984/tcp', service: 'CouchDB', state: 'open', version: 'CouchDB 3.1.1'},
-                {port: '11211/tcp', service: 'Memcached', state: 'open', version: 'Memcached 1.6.9'}
-            ],
-            vulnerabilities: [
-                'Database exposed to public internet',
-                'MongoDB without authentication',
-                'CouchDB admin interface accessible',
-                'Memcached exposed without authentication',
-                'Elasticsearch without security enabled',
-                'Missing database encryption at rest',
-                'Insufficient network access controls'
-            ]
-        }
-    };
-    
-    let currentScenario = 'corporate';
-    
-    window.startNetworkScan = function() {
-        const target = document.getElementById('scanTarget').value;
-        const output = document.getElementById('scannerOutput');
-        
-        if (!target) {
-            alert('Please enter a target IP or domain');
-            return;
-        }
-        
-        // Simulate network scan with progress
-        output.innerHTML = `
-            <div class="code-line">🔍 Starting comprehensive network scan...</div>
-            <div class="code-line">Target: ${target}</div>
-            <div class="code-line">Scanning ports 1-65535...</div>
-        `;
-        
-        let progress = 0;
-        const progressInterval = setInterval(() => {
-            progress += 2;
-            output.innerHTML += `<div class="code-line">Progress: ${progress}% - Scanning port ${Math.floor(progress * 655.35)}</div>`;
-            
-            if (progress >= 100) {
-                clearInterval(progressInterval);
-                displayScanResults(target, scanScenarios[currentScenario]);
-            }
-        }, 100);
-    };
-    
-    function displayScanResults(target, scenario) {
-        const output = document.getElementById('scannerOutput');
-        let html = `
-            <div class="code-line">✅ Scan completed!</div>
-            <div class="code-line code-comment">// ==========================================</div>
-            <div class="code-line code-comment">// SCAN RESULTS FOR ${target.toUpperCase()}</div>
-            <div class="code-line code-comment">// ==========================================</div>
-            <div class="code-line">Scenario: ${scenario.name}</div>
-            <div class="code-line">Description: ${scenario.description}</div>
-            <div class="code-line">Scan Time: ${new Date().toLocaleTimeString()}</div>
-            <div class="code-line code-comment">// Open Ports & Services</div>
-        `;
-        
-        scenario.ports.forEach(port => {
-            html += `<div class="code-line code-highlight">${port.port} - ${port.service} - ${port.version} - ${port.state.toUpperCase()}</div>`;
-        });
-        
-        html += `
-            <div class="code-line code-comment">// Security Vulnerabilities Found</div>
-        `;
-        
-        scenario.vulnerabilities.forEach(vuln => {
-            html += `<div class="code-line code-error">⚠️  ${vuln}</div>`;
-        });
-        
-        html += `
-            <div class="code-line code-comment">// Security Recommendations</div>
-            <div class="code-line">1. Implement proper authentication on all services</div>
-            <div class="code-line">2. Enable encryption for all network communications</div>
-            <div class="code-line">3. Update all software to latest versions</div>
-            <div class="code-line">4. Implement network segmentation</div>
-            <div class="code-line">5. Configure proper firewall rules</div>
-            <div class="code-line">6. Enable security monitoring and logging</div>
-            <div class="code-line code-comment">// Risk Level: HIGH - Immediate action required</div>
-        `;
-        
-        output.innerHTML = html;
-        addPoints(200);
-    }
-    
-    window.switchScanScenario = function(scenario) {
-        currentScenario = scenario;
-        const scenarioInfo = scanScenarios[scenario];
-        document.getElementById('scanTarget').value = scenarioInfo.target;
-        document.getElementById('scenarioDescription').textContent = scenarioInfo.description;
-    };
-    
-    window.clearScannerOutput = function() {
-        document.getElementById('scannerOutput').innerHTML = `
-            <div class="code-line">Welcome to CyberArcade Network Scanner v3.0</div>
-            <div class="code-line">Initializing security protocols...</div>
-            <div class="code-line">Loading threat intelligence database...</div>
-            <div class="code-line">Ready to scan for vulnerabilities</div>
-            <div class="code-line code-comment">// Select a scenario and enter target to begin scan</div>
-        `;
-    };
-}
-
-// Initialize Password Cracker game
-function initPasswordCrackerGame() {
-    let isCracking = false;
-    let attempts = 0;
-    let currentAttack = 'dictionary';
-    let currentTarget = 'user';
-    
-    const attackMethods = {
-        'dictionary': {
-            name: 'Dictionary Attack',
-            description: 'Try common passwords from a dictionary',
-            passwords: ['password', '123456', 'admin', 'qwerty', 'letmein', 'welcome', 'monkey', 'dragon', 'master', 'hello', 'iloveyou', 'princess', 'rockyou', '1234567890', 'abc123', 'nicole', 'daniel', 'babygirl', 'monkey', 'lovely', 'jessica', '654321', 'michael', 'ashley', 'qwerty', '111111', 'iloveyou', '000000', 'michelle', 'tigger', 'sunshine', 'chocolate', 'password1', 'soccer', 'anthony', 'friends', 'butterfly', 'purple', 'angel', 'jordan', 'liverpool', 'justin', 'loveme', 'fuckyou', '123123', 'football', 'secret', 'andrea', 'carlos', 'jennifer', 'joshua', 'basketball', 'superman', 'hannah', 'amanda', 'love', 'jessica', 'cheese', 'metallica', 'liverpool', 'jennifer', 'jordan23', 'believe', 'hunter', 'michelle', 'andrew', 'love', '2000', 'chicken', 'monster', 'sandra', 'harley', 'charlie', 'andrea', 'fuckme', 'tigger', 'sunshine', 'iloveyou', '2000', 'charlie', 'robert', 'thomas', 'hockey', 'ranger', 'daniel', 'starwars', 'klaster', '112233', 'george', 'asshole', 'computer', 'michelle', 'jessica', 'pepper', 'zxcvbn', '555555', '111111', '131313', 'freedom', '777777', 'pass', 'maggie', '159753', 'aaaaaa', 'ginger', 'princess', 'joshua', 'cheese', 'amanda', 'summer', 'love', 'ashley', '6969', 'nicole', 'chelsea', 'biteme', 'matthew', 'access', 'yankees', '987654321', 'dallas', 'austin', 'thunder', 'taylor', 'matrix', 'william', 'corvette', 'hello', 'martin', 'heather', 'secret', 'fucker', 'merlin', 'diamond', '1234qwer', 'gfhjkm', 'hammer', 'silver', '222222', '88888888', 'anthony', 'justin', 'test', 'bailey', 'q1w2e3r4t5', 'patrick', 'internet', 'scooter', 'orange', '11111', 'jordan', 'harley', 'rangers', 'dirty', 'bigdick', 'suckit', 'porn', 'fuck', 'alexis', 'ferrari', 'knight', 'skywalker', 'playboy', 'rainbow', 'asshole', 'thx1138', 'thomas', 'soccer', 'hockey', 'killer', 'george', 'sexy', 'andrew', 'charlie', 'superman', 'asshole', 'dallas', 'jessica', 'panties', 'pepper', '1234', 'skippy', 'zombie'],
-            speed: 200
-        },
-        'brute-force': {
-            name: 'Brute Force Attack',
-            description: 'Try all possible character combinations',
-            passwords: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'aa', 'ab', 'ac', 'ad', 'ae', 'af', 'ag', 'ah', 'ai', 'aj', 'ak', 'al', 'am', 'an', 'ao', 'ap', 'aq', 'ar', 'as', 'at', 'au', 'av', 'aw', 'ax', 'ay', 'az', 'ba', 'bb', 'bc', 'bd', 'be', 'bf', 'bg', 'bh', 'bi', 'bj', 'bk', 'bl', 'bm', 'bn', 'bo', 'bp', 'bq', 'br', 'bs', 'bt', 'bu', 'bv', 'bw', 'bx', 'by', 'bz', 'ca', 'cb', 'cc', 'cd', 'ce', 'cf', 'cg', 'ch', 'ci', 'cj', 'ck', 'cl', 'cm', 'cn', 'co', 'cp', 'cq', 'cr', 'cs', 'ct', 'cu', 'cv', 'cw', 'cx', 'cy', 'cz', 'da', 'db', 'dc', 'dd', 'de', 'df', 'dg', 'dh', 'di', 'dj', 'dk', 'dl', 'dm', 'dn', 'do', 'dp', 'dq', 'dr', 'ds', 'dt', 'du', 'dv', 'dw', 'dx', 'dy', 'dz', 'ea', 'eb', 'ec', 'ed', 'ee', 'ef', 'eg', 'eh', 'ei', 'ej', 'ek', 'el', 'em', 'en', 'eo', 'ep', 'eq', 'er', 'es', 'et', 'eu', 'ev', 'ew', 'ex', 'ey', 'ez', 'fa', 'fb', 'fc', 'fd', 'fe', 'ff', 'fg', 'fh', 'fi', 'fj', 'fk', 'fl', 'fm', 'fn', 'fo', 'fp', 'fq', 'fr', 'fs', 'ft', 'fu', 'fv', 'fw', 'fx', 'fy', 'fz', 'ga', 'gb', 'gc', 'gd', 'ge', 'gf', 'gg', 'gh', 'gi', 'gj', 'gk', 'gl', 'gm', 'gn', 'go', 'gp', 'gq', 'gr', 'gs', 'gt', 'gu', 'gv', 'gw', 'gx', 'gy', 'gz', 'ha', 'hb', 'hc', 'hd', 'he', 'hf', 'hg', 'hh', 'hi', 'hj', 'hk', 'hl', 'hm', 'hn', 'ho', 'hp', 'hq', 'hr', 'hs', 'ht', 'hu', 'hv', 'hw', 'hx', 'hy', 'hz', 'ia', 'ib', 'ic', 'id', 'ie', 'if', 'ig', 'ih', 'ii', 'ij', 'ik', 'il', 'im', 'in', 'io', 'ip', 'iq', 'ir', 'is', 'it', 'iu', 'iv', 'iw', 'ix', 'iy', 'iz', 'ja', 'jb', 'jc', 'jd', 'je', 'jf', 'jg', 'jh', 'ji', 'jj', 'jk', 'jl', 'jm', 'jn', 'jo', 'jp', 'jq', 'jr', 'js', 'jt', 'ju', 'jv', 'jw', 'jx', 'jy', 'jz', 'ka', 'kb', 'kc', 'kd', 'ke', 'kf', 'kg', 'kh', 'ki', 'kj', 'kk', 'kl', 'km', 'kn', 'ko', 'kp', 'kq', 'kr', 'ks', 'kt', 'ku', 'kv', 'kw', 'kx', 'ky', 'kz', 'la', 'lb', 'lc', 'ld', 'le', 'lf', 'lg', 'lh', 'li', 'lj', 'lk', 'll', 'lm', 'ln', 'lo', 'lp', 'lq', 'lr', 'ls', 'lt', 'lu', 'lv', 'lw', 'lx', 'ly', 'lz', 'ma', 'mb', 'mc', 'md', 'me', 'mf', 'mg', 'mh', 'mi', 'mj', 'mk', 'ml', 'mm', 'mn', 'mo', 'mp', 'mq', 'mr', 'ms', 'mt', 'mu', 'mv', 'mw', 'mx', 'my', 'mz', 'na', 'nb', 'nc', 'nd', 'ne', 'nf', 'ng', 'nh', 'ni', 'nj', 'nk', 'nl', 'nm', 'nn', 'no', 'np', 'nq', 'nr', 'ns', 'nt', 'nu', 'nv', 'nw', 'nx', 'ny', 'nz', 'oa', 'ob', 'oc', 'od', 'oe', 'of', 'og', 'oh', 'oi', 'oj', 'ok', 'ol', 'om', 'on', 'oo', 'op', 'oq', 'or', 'os', 'ot', 'ou', 'ov', 'ow', 'ox', 'oy', 'oz', 'pa', 'pb', 'pc', 'pd', 'pe', 'pf', 'pg', 'ph', 'pi', 'pj', 'pk', 'pl', 'pm', 'pn', 'po', 'pp', 'pq', 'pr', 'ps', 'pt', 'pu', 'pv', 'pw', 'px', 'py', 'pz', 'qa', 'qb', 'qc', 'qd', 'qe', 'qf', 'qg', 'qh', 'qi', 'qj', 'qk', 'ql', 'qm', 'qn', 'qo', 'qp', 'qq', 'qr', 'qs', 'qt', 'qu', 'qv', 'qw', 'qx', 'qy', 'qz', 'ra', 'rb', 'rc', 'rd', 're', 'rf', 'rg', 'rh', 'ri', 'rj', 'rk', 'rl', 'rm', 'rn', 'ro', 'rp', 'rq', 'rr', 'rs', 'rt', 'ru', 'rv', 'rw', 'rx', 'ry', 'rz', 'sa', 'sb', 'sc', 'sd', 'se', 'sf', 'sg', 'sh', 'si', 'sj', 'sk', 'sl', 'sm', 'sn', 'so', 'sp', 'sq', 'sr', 'ss', 'st', 'su', 'sv', 'sw', 'sx', 'sy', 'sz', 'ta', 'tb', 'tc', 'td', 'te', 'tf', 'tg', 'th', 'ti', 'tj', 'tk', 'tl', 'tm', 'tn', 'to', 'tp', 'tq', 'tr', 'ts', 'tt', 'tu', 'tv', 'tw', 'tx', 'ty', 'tz', 'ua', 'ub', 'uc', 'ud', 'ue', 'uf', 'ug', 'uh', 'ui', 'uj', 'uk', 'ul', 'um', 'un', 'uo', 'up', 'uq', 'ur', 'us', 'ut', 'uu', 'uv', 'uw', 'ux', 'uy', 'uz', 'va', 'vb', 'vc', 'vd', 've', 'vf', 'vg', 'vh', 'vi', 'vj', 'vk', 'vl', 'vm', 'vn', 'vo', 'vp', 'vq', 'vr', 'vs', 'vt', 'vu', 'vv', 'vw', 'vx', 'vy', 'vz', 'wa', 'wb', 'wc', 'wd', 'we', 'wf', 'wg', 'wh', 'wi', 'wj', 'wk', 'wl', 'wm', 'wn', 'wo', 'wp', 'wq', 'wr', 'ws', 'wt', 'wu', 'wv', 'ww', 'wx', 'wy', 'wz', 'xa', 'xb', 'xc', 'xd', 'xe', 'xf', 'xg', 'xh', 'xi', 'xj', 'xk', 'xl', 'xm', 'xn', 'xo', 'xp', 'xq', 'xr', 'xs', 'xt', 'xu', 'xv', 'xw', 'xx', 'xy', 'xz', 'ya', 'yb', 'yc', 'yd', 'ye', 'yf', 'yg', 'yh', 'yi', 'yj', 'yk', 'yl', 'ym', 'yn', 'yo', 'yp', 'yq', 'yr', 'ys', 'yt', 'yu', 'yv', 'yw', 'yx', 'yy', 'yz', 'za', 'zb', 'zc', 'zd', 'ze', 'zf', 'zg', 'zh', 'zi', 'zj', 'zk', 'zl', 'zm', 'zn', 'zo', 'zp', 'zq', 'zr', 'zs', 'zt', 'zu', 'zv', 'zw', 'zx', 'zy', 'zz'],
-            speed: 100
-        },
-        'hybrid': {
-            name: 'Hybrid Attack',
-            description: 'Combine dictionary words with numbers and symbols',
-            passwords: ['password123', 'admin123', 'qwerty123', 'letmein123', 'welcome123', 'monkey123', 'dragon123', 'master123', 'hello123', 'iloveyou123', 'princess123', 'rockyou123', 'abc123456', 'nicole123', 'daniel123', 'babygirl123', 'monkey123', 'lovely123', 'jessica123', 'michael123', 'ashley123', 'qwerty123', 'michelle123', 'tigger123', 'sunshine123', 'chocolate123', 'soccer123', 'anthony123', 'friends123', 'butterfly123', 'purple123', 'angel123', 'jordan123', 'liverpool123', 'justin123', 'loveme123', 'football123', 'secret123', 'andrea123', 'carlos123', 'jennifer123', 'joshua123', 'basketball123', 'superman123', 'hannah123', 'amanda123', 'love123', 'jessica123', 'cheese123', 'metallica123', 'liverpool123', 'jennifer123', 'jordan123', 'believe123', 'hunter123', 'michelle123', 'andrew123', 'love123', 'chicken123', 'monster123', 'sandra123', 'harley123', 'charlie123', 'andrea123', 'tigger123', 'sunshine123', 'iloveyou123', 'charlie123', 'robert123', 'thomas123', 'hockey123', 'ranger123', 'daniel123', 'starwars123', 'klaster123', 'george123', 'computer123', 'michelle123', 'jessica123', 'pepper123', 'pass123', 'maggie123', 'ginger123', 'princess123', 'joshua123', 'cheese123', 'amanda123', 'summer123', 'love123', 'ashley123', 'nicole123', 'chelsea123', 'matthew123', 'access123', 'yankees123', 'dallas123', 'austin123', 'thunder123', 'taylor123', 'matrix123', 'william123', 'corvette123', 'hello123', 'martin123', 'heather123', 'secret123', 'merlin123', 'diamond123', 'patrick123', 'internet123', 'scooter123', 'orange123', 'jordan123', 'harley123', 'rangers123', 'dirty123', 'alexis123', 'ferrari123', 'knight123', 'skywalker123', 'playboy123', 'rainbow123', 'thomas123', 'soccer123', 'hockey123', 'killer123', 'george123', 'sexy123', 'andrew123', 'charlie123', 'superman123', 'dallas123', 'jessica123', 'pepper123', 'skippy123', 'zombie123', 'password123', 'orange123', 'princess123', 'merlin123', 'diamond123', 'patrick123', 'internet123', 'scooter123', 'orange123', 'jordan123', 'harley123', 'rangers123', 'dirty123', 'alexis123', 'ferrari123', 'knight123', 'skywalker123', 'playboy123', 'rainbow123', 'thomas123', 'soccer123', 'hockey123', 'killer123', 'george123', 'sexy123', 'andrew123', 'charlie123', 'superman123', 'dallas123', 'jessica123', 'pepper123', 'skippy123', 'zombie123'],
-            speed: 150
-        },
-        'mask': {
-            name: 'Mask Attack',
-            description: 'Target specific patterns (e.g., 8 digits, 4 letters + 4 digits)',
-            passwords: ['12345678', '87654321', '11111111', '00000000', '99999999', '1234567890', '0987654321', 'abcdefgh', 'hgfedcba', 'qwertyui', 'iuytrewq', 'asdfghjk', 'kjhgfdsa', 'zxcvbnm,', ',mnbvcxz', 'password', 'drowssap', 'admin123', '321nimda', 'qwerty123', '321ytrewq', 'letmein123', '321niemtel', 'welcome123', '321emoclew', 'monkey123', '321yeknom', 'dragon123', '321nogard', 'master123', '321retsam', 'hello123', '321olleh', 'iloveyou123', '321uoyevoli', 'princess123', '321ssecnirp', 'rockyou123', '321uoykcor', 'abc123456', '654321cba', 'nicole123', '321elocin', 'daniel123', '321leinad', 'babygirl123', '321lrigybab', 'lovely123', '321ylevol', 'jessica123', '321acissej', 'michael123', '321leahcim', 'ashley123', '321yelhsa', 'michelle123', '321ellehcim', 'tigger123', '321reggit', 'sunshine123', '321enihsnus', 'chocolate123', '321etalocohc', 'soccer123', '321reccos', 'anthony123', '321ynohtna', 'friends123', '321sdnierf', 'butterfly123', '321ylfrettub', 'purple123', '321elprup', 'angel123', '321legna', 'jordan123', '321nadroj', 'liverpool123', '321looprevil', 'justin123', '321nitsuj', 'loveme123', '321emevol', 'football123', '321llabtoof', 'secret123', '321terces', 'andrea123', '321aerdna', 'carlos123', '321solrac', 'jennifer123', '321refinnej', 'joshua123', '321auhsoj', 'basketball123', '321llabteksab', 'superman123', '321namrepus', 'hannah123', '321hannah', 'amanda123', '321adnama', 'love123', '321evol', 'cheese123', '321eseehc', 'metallica123', '321acillatem', 'believe123', '321eveileb', 'hunter123', '321retnuh', 'andrew123', '321werdna', 'chicken123', '321nekcihc', 'monster123', '321retsnom', 'sandra123', '321ardnas', 'harley123', '321yelrah', 'charlie123', '321eilrahc', 'robert123', '321trebor', 'thomas123', '321samoh', 'hockey123', '321yekcoh', 'ranger123', '321regnar', 'daniel123', '321leinad', 'starwars123', '321srawrats', 'klaster123', '321retsalk', 'george123', '321egroeg', 'computer123', '321retupmoc', 'pepper123', '321reppep', 'pass123', '321ssap', 'maggie123', '321eiggam', 'ginger123', '321regnig', 'summer123', '321remmus', 'internet123', '321tenretni', 'scooter123', '321retoocs', 'orange123', '321egnaro', 'dirty123', '321ytrid', 'alexis123', '321sixela', 'ferrari123', '321irarref', 'knight123', '321thgink', 'skywalker123', '321reklawyks', 'playboy123', '321yobyalp', 'rainbow123', '321wobniar', 'killer123', '321rellik', 'sexy123', '321yxes', 'panties123', '321seitnap', 'skippy123', '321yppiks', 'zombie123', '321eibmoz'],
-            speed: 120
-        }
-    };
-    
-    const targets = {
-        'user': { name: 'Regular User', password: 'password123', difficulty: 'Easy' },
-        'admin': { name: 'System Administrator', password: 'admin123', difficulty: 'Medium' },
-        'ceo': { name: 'CEO Account', password: 'dragon123', difficulty: 'Hard' },
-        'developer': { name: 'Developer Account', password: 'qwerty123', difficulty: 'Medium' },
-        'database': { name: 'Database Admin', password: 'master123', difficulty: 'Hard' },
-        'webmaster': { name: 'Webmaster', password: 'welcome123', difficulty: 'Easy' },
-        'security': { name: 'Security Officer', password: 'letmein123', difficulty: 'Very Hard' },
-        'guest': { name: 'Guest Account', password: 'hello123', difficulty: 'Easy' }
-    };
-    
-    let targetPassword = targets['user'].password;
-    
-    window.startPasswordCrack = function() {
-        if (isCracking) return;
-        
-        isCracking = true;
-        attempts = 0;
-        const output = document.getElementById('crackerOutput');
-        const progressBar = document.getElementById('crackProgress');
-        const attackMethod = attackMethods[currentAttack];
-        
-        output.innerHTML = `
-            <div class="crack-line">🔓 Starting ${attackMethod.name}...</div>
-            <div class="crack-line">Target: ${targets[currentTarget].name} (${targets[currentTarget].difficulty})</div>
-            <div class="crack-line">Method: ${attackMethod.description}</div>
-            <div class="crack-line">Dictionary size: ${attackMethod.passwords.length} passwords</div>
-        `;
-        progressBar.style.width = '0%';
-        
-        const crackInterval = setInterval(() => {
-            attempts++;
-            const progress = (attempts / attackMethod.passwords.length) * 100;
-            progressBar.style.width = progress + '%';
-            
-            const currentPassword = attackMethod.passwords[attempts - 1];
-            output.innerHTML += `<div class="crack-line">Attempt ${attempts}: "${currentPassword}" - FAILED</div>`;
-            
-            if (currentPassword === targetPassword) {
-                clearInterval(crackInterval);
-                output.innerHTML += `<div class="crack-line crack-success">🎉 SUCCESS! Password found: "${targetPassword}"</div>`;
-                output.innerHTML += `<div class="crack-line">Cracked in ${attempts} attempts</div>`;
-                output.innerHTML += `<div class="crack-line">Time taken: ${(attempts * attackMethod.speed / 1000).toFixed(1)} seconds</div>`;
-                output.innerHTML += `<div class="crack-line">Attack method: ${attackMethod.name}</div>`;
-                addPoints(200);
-                isCracking = false;
-            } else if (attempts >= attackMethod.passwords.length) {
-                clearInterval(crackInterval);
-                output.innerHTML += `<div class="crack-line crack-fail">❌ Password not found in dictionary</div>`;
-                output.innerHTML += `<div class="crack-line">Try a different attack method or target</div>`;
-                isCracking = false;
-            }
-        }, attackMethod.speed);
-    };
-    
-    window.switchAttackMethod = function(method) {
-        currentAttack = method;
-        const methodInfo = attackMethods[method];
-        document.getElementById('attackDescription').textContent = methodInfo.description;
-        document.getElementById('attackSpeed').textContent = `Speed: ${methodInfo.speed}ms per attempt`;
-        document.getElementById('attackSize').textContent = `Dictionary: ${methodInfo.passwords.length} passwords`;
-    };
-    
-    window.switchTarget = function(target) {
-        currentTarget = target;
-        targetPassword = targets[target].password;
-        const targetInfo = targets[target];
-        document.getElementById('targetDescription').textContent = `${targetInfo.name} - ${targetInfo.difficulty} difficulty`;
-    };
-    
-    window.resetPasswordCrack = function() {
-        isCracking = false;
-        attempts = 0;
-        document.getElementById('crackerOutput').innerHTML = '<div class="crack-line">Ready to crack passwords</div>';
-        document.getElementById('crackProgress').style.width = '0%';
-    };
-}
-
-// Initialize Malware Analysis game
-function initMalwareAnalysisGame() {
-    window.switchTab = function(tab) {
-        // Remove active class from all tabs
-        document.querySelectorAll('.lab-tab').forEach(t => t.classList.remove('active'));
-        // Add active class to clicked tab
-        event.target.classList.add('active');
-        
-        const content = document.getElementById('labContent');
-        
-        switch(tab) {
-            case 'static':
-                content.innerHTML = `
-                    <div class="code-block">
-                        <div class="code-line code-comment">// Static Analysis Results</div>
-                        <div class="code-line code-comment">// File: malware_sample.exe</div>
-                        <div class="code-line code-comment">// Size: 2.3 MB</div>
-                        <div class="code-line code-comment">// MD5: a1b2c3d4e5f6...</div>
-                        <div class="code-line"></div>
-                        <div class="code-line code-comment">// Suspicious strings found:</div>
-                        <div class="code-line code-highlight">"C:\\Windows\\System32\\"</div>
-                        <div class="code-line code-highlight">"http://malicious-server.com"</div>
-                        <div class="code-line code-highlight">"encrypt_user_data"</div>
-                        <div class="code-line code-highlight">"keylogger.dll"</div>
-                    </div>
-                `;
-                break;
-            case 'dynamic':
-                content.innerHTML = `
-                    <div class="code-block">
-                        <div class="code-line code-comment">// Dynamic Analysis Results</div>
-                        <div class="code-line code-comment">// Running in sandbox environment...</div>
-                        <div class="code-line"></div>
-                        <div class="code-line code-comment">// Process activities:</div>
-                        <div class="code-line code-highlight">Created process: explorer.exe</div>
-                        <div class="code-line code-highlight">Modified registry: HKEY_CURRENT_USER</div>
-                        <div class="code-line code-highlight">Network connection: 192.168.1.100:443</div>
-                        <div class="code-line code-highlight">File created: C:\\temp\\data.txt</div>
-                        <div class="code-line code-highlight">Screenshot captured: desktop.png</div>
-                    </div>
-                `;
-                break;
-            case 'network':
-                content.innerHTML = `
-                    <div class="code-block">
-                        <div class="code-line code-comment">// Network Analysis Results</div>
-                        <div class="code-line code-comment">// Monitoring network traffic...</div>
-                        <div class="code-line"></div>
-                        <div class="code-line code-comment">// Detected connections:</div>
-                        <div class="code-line code-highlight">TCP 192.168.1.100:443 -> 45.32.123.45:80</div>
-                        <div class="code-line code-highlight">UDP 192.168.1.100:53 -> 8.8.8.8:53</div>
-                        <div class="code-line code-comment">// Suspicious domains:</div>
-                        <div class="code-line code-highlight">malicious-site.com</div>
-                        <div class="code-line code-highlight">data-exfiltrate.net</div>
-                        <div class="code-line code-comment">// Data exfiltration detected!</div>
-                    </div>
-                `;
-                break;
-        }
-        
-        addPoints(25);
-    };
-}
-
-// Initialize Social Engineering game
-function initSocialEngineeringGame() {
-    window.selectSEOption = function(element, isCorrect) {
-        // Remove previous selections
-        document.querySelectorAll('.se-option').forEach(opt => {
-            opt.classList.remove('selected', 'correct', 'incorrect');
-        });
-        
-        // Mark selected option
-        element.classList.add('selected');
-        
-        const feedback = document.getElementById('seFeedback');
-        
-        if (isCorrect) {
-            element.classList.add('correct');
-            feedback.className = 'se-feedback correct';
-            feedback.textContent = '✅ Correct! You identified this as a phishing attempt. Always verify suspicious emails directly with the organization.';
-            feedback.style.display = 'block';
-            addPoints(100);
-        } else {
-            element.classList.add('incorrect');
-            feedback.className = 'se-feedback incorrect';
-            feedback.textContent = '❌ Incorrect! This is a classic phishing email. Look for suspicious domains, urgent language, and requests for personal information.';
-            feedback.style.display = 'block';
-        }
-        
-        // Show explanation
-        setTimeout(() => {
-            feedback.innerHTML += '<br><br><strong>Red Flags in this email:</strong><br>• Suspicious domain (bank-verification.com)<br>• Urgent language ("URGENT", "24 hours")<br>• Request for personal information<br>• HTTP instead of HTTPS link';
-        }, 1000);
-    };
-}
-
-// Initialize Incident Response game
-function initIncidentResponseGame() {
-    let completedActions = 0;
-    const totalActions = 4;
-    
-    window.executeIRAction = function(element, actionType) {
-        if (element.classList.contains('completed')) return;
-        
-        element.classList.add('completed');
-        completedActions++;
-        
-        // Update timeline
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        if (completedActions <= timelineItems.length) {
-            const status = timelineItems[completedActions - 1].querySelector('.timeline-status');
-            status.textContent = 'COMPLETED';
-            status.className = 'timeline-status completed';
-        }
-        
-        // Show feedback
-        const feedback = document.createElement('div');
-        feedback.className = 'ir-feedback';
-        feedback.innerHTML = `
-            <div style="background: rgba(0, 255, 0, 0.2); padding: 1rem; border-radius: 10px; margin-top: 1rem; border: 1px solid #00ff00;">
-                <strong>✅ Action Completed: ${element.querySelector('.ir-action-title').textContent}</strong><br>
-                <span style="color: #cccccc;">This action helps secure the system and prevent further attacks.</span>
-            </div>
-        `;
-        
-        element.appendChild(feedback);
-        
-        addPoints(75);
-        
-        // Check if all actions completed
-        if (completedActions >= totalActions) {
-            setTimeout(() => {
-                alert('🎉 Incident Response Complete! You successfully contained the security breach.');
-                addAchievement('incident_responder', 'Incident Responder', 'Successfully handled a cybersecurity incident!');
-            }, 1000);
-        }
-    };
+    return window.CyberArcadeGames[gameName];
 }
 
 // Close modals when clicking outside
@@ -2707,3 +1817,1038 @@ const additionalStyles = `
 const styleSheet = document.createElement('style');
 styleSheet.textContent = additionalStyles;
 document.head.appendChild(styleSheet);
+
+// Flashcards Data
+const flashcardsData = [
+    {
+        title: "Phishing Recognition",
+        icon: "fas fa-fish",
+        content: `
+            <h4>🎣 The Digital Fishing Net</h4>
+            <p>Imagine someone casting a fishing line with bait, hoping you'll bite. That's exactly what phishing is - but instead of fish, they're after your personal information.</p>
+            
+            <p style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ff0000; margin: 1rem 0;">
+                <strong>Real Story:</strong> Sarah got a text: "Your Netflix account is suspended! Click here to reactivate." She clicked, entered her password, and within hours, someone was using her account. The link looked real, but it wasn't Netflix at all.
+            </p>
+            
+            <h4>🎯 What They're Really After</h4>
+            <p>Attackers want one thing: <strong>access to your accounts</strong>. Once they have your password or OTP, they can:</p>
+            <ul>
+                <li>Drain your bank account</li>
+                <li>Steal your identity</li>
+                <li>Access your photos and messages</li>
+                <li>Use your accounts to scam your friends</li>
+            </ul>
+            
+            <h4>📱 Where Phishing Lurks</h4>
+            <p>You'll find phishing attempts everywhere:</p>
+            <ul>
+                <li><strong>Email:</strong> "Your package couldn't be delivered" (but you didn't order anything)</li>
+                <li><strong>SMS:</strong> "Your bank account needs verification" (from a random number)</li>
+                <li><strong>WhatsApp:</strong> "You've won a prize! Click here!" (from an unknown contact)</li>
+                <li><strong>Social Media:</strong> Fake friend requests with suspicious links</li>
+            </ul>
+            
+            <h4>🚨 Red Flags to Watch For</h4>
+            <div style="background: rgba(255,215,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>⚠️ Urgency:</strong> "Act now or your account will be closed in 24 hours!"</p>
+                <p><strong>⚠️ Suspicious Sender:</strong> Email from "support@amaz0n.com" (notice the zero instead of 'o')</p>
+                <p><strong>⚠️ Generic Greeting:</strong> "Dear Customer" instead of your name</p>
+                <p><strong>⚠️ Poor Grammar:</strong> "Youre account has been suspened"</p>
+                <p><strong>⚠️ Asking for Sensitive Info:</strong> Real companies never ask for passwords via email!</p>
+            </div>
+            
+            <h4>🛡️ Your Defense Strategy</h4>
+            <ol>
+                <li><strong>Pause before clicking:</strong> Ask yourself - did I expect this message?</li>
+                <li><strong>Check the sender:</strong> Hover over links to see the real URL</li>
+                <li><strong>Type it yourself:</strong> Instead of clicking, go directly to the website</li>
+                <li><strong>Never share OTPs:</strong> Legitimate services never ask for OTPs via phone/email</li>
+                <li><strong>When in doubt, verify:</strong> Call the company directly using their official number</li>
+            </ol>
+            
+            <p style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ff00; margin-top: 1rem;">
+                <strong>💡 Pro Tip:</strong> If something feels off, it probably is. Trust your gut and verify before clicking!
+            </p>
+        `
+    },
+    {
+        title: "Password Safety",
+        icon: "fas fa-key",
+        content: `
+            <h4>🔐 Your Digital Front Door</h4>
+            <p>Your password is like the key to your house. If it's weak, anyone can break in. If it's strong, you're safe.</p>
+            
+            <p style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ff0000; margin: 1rem 0;">
+                <strong>Shocking Fact:</strong> "123456" and "password" are still the most common passwords. Hackers try these FIRST. Using them is like leaving your front door wide open!
+            </p>
+            
+            <h4>💀 Passwords That Get Hacked in Seconds</h4>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin: 1rem 0;">
+                <div style="background: rgba(255,0,0,0.1); padding: 0.75rem; border-radius: 8px; text-align: center;">
+                    <code style="color: #ff0000; font-size: 1.1rem;">123456</code>
+                    <p style="font-size: 0.85rem; color: #cccccc; margin-top: 0.25rem;">Hacked in 0.1 seconds</p>
+                </div>
+                <div style="background: rgba(255,0,0,0.1); padding: 0.75rem; border-radius: 8px; text-align: center;">
+                    <code style="color: #ff0000; font-size: 1.1rem;">password</code>
+                    <p style="font-size: 0.85rem; color: #cccccc; margin-top: 0.25rem;">Hacked in 0.2 seconds</p>
+                </div>
+                <div style="background: rgba(255,0,0,0.1); padding: 0.75rem; border-radius: 8px; text-align: center;">
+                    <code style="color: #ff0000; font-size: 1.1rem;">qwerty</code>
+                    <p style="font-size: 0.85rem; color: #cccccc; margin-top: 0.25rem;">Hacked in 0.3 seconds</p>
+                </div>
+                <div style="background: rgba(255,0,0,0.1); padding: 0.75rem; border-radius: 8px; text-align: center;">
+                    <code style="color: #ff0000; font-size: 1.1rem;">yourname123</code>
+                    <p style="font-size: 0.85rem; color: #cccccc; margin-top: 0.25rem;">Hacked in 5 seconds</p>
+                </div>
+            </div>
+            
+            <h4>💪 The Password Formula</h4>
+            <p>Think of it like a recipe - mix these ingredients:</p>
+            <ul>
+                <li><strong>Uppercase letters:</strong> A, B, C... (at least 2)</li>
+                <li><strong>Lowercase letters:</strong> a, b, c... (at least 2)</li>
+                <li><strong>Numbers:</strong> 0-9 (at least 2)</li>
+                <li><strong>Symbols:</strong> @, #, $, !... (at least 1)</li>
+                <li><strong>Length:</strong> 12+ characters (longer = stronger!)</li>
+            </ul>
+            
+            <h4>⭐ Real Examples</h4>
+            <div style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Weak:</strong> <code style="color: #ff0000;">mypassword123</code> ❌ (Too simple, no symbols)</p>
+                <p><strong>Better:</strong> <code style="color: #ffaa00;">MyPass123!</code> ⚠️ (Good mix, but too short)</p>
+                <p><strong>Strong:</strong> <code style="color: #00ff00;">Tr0ub@dor&3</code> ✅ (Has everything, but hard to remember)</p>
+                <p><strong>Perfect:</strong> <code style="color: #00ff00;">Blue$ky#2024!Mount@in</code> ✅✅ (Long, memorable phrase with symbols)</p>
+            </div>
+            
+            <h4>🎨 The Passphrase Trick</h4>
+            <p>Instead of one word, use a sentence you can remember:</p>
+            <p style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <strong>Example:</strong> "I love pizza on Fridays!" becomes <code>ILovePizzaOnFridays!</code><br>
+                Add numbers and symbols: <code>ILovePizzaOnFridays!2024</code>
+            </p>
+            
+            <h4>🔑 The Golden Rules</h4>
+            <ol>
+                <li><strong>One password per account</strong> - If one gets hacked, others stay safe</li>
+                <li><strong>Never share passwords</strong> - Not even with friends or family</li>
+                <li><strong>Use a password manager</strong> - It remembers all your passwords securely</li>
+                <li><strong>Change passwords if breached</strong> - Check haveibeenpwned.com</li>
+            </ol>
+            
+            <p style="background: rgba(255,215,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ffd700; margin-top: 1rem;">
+                <strong>💡 Remember:</strong> A strong password is like a good lock - it won't stop determined thieves, but it will stop 99% of them!
+            </p>
+        `
+    },
+    {
+        title: "Secure Browsing",
+        icon: "fas fa-globe",
+        content: `
+            <h4>🌐 The Internet: Your Digital Playground</h4>
+            <p>The internet is amazing - you can learn anything, connect with anyone, play games, watch videos. But just like a real playground, you need to know which areas are safe and which to avoid.</p>
+            
+            <p style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ff0000; margin: 1rem 0;">
+                <strong>Real Story:</strong> Jake wanted free game currency. He clicked a link promising "Free 10,000 coins!" and downloaded an app. Within days, his phone was slow, ads popped up everywhere, and his battery drained fast. He'd downloaded malware disguised as a game hack.
+            </p>
+            
+            <h4>🚫 The Danger Zone</h4>
+            <p>These are red flags - avoid them like you'd avoid a dark alley at night:</p>
+            <ul>
+                <li><strong>"Free" anything suspicious:</strong> Free money, free diamonds, free premium accounts</li>
+                <li><strong>Download sites:</strong> "Download latest movies free" (often full of viruses)</li>
+                <li><strong>Pop-up ads:</strong> "You've won! Click here!" (you didn't win anything)</li>
+                <li><strong>Adult content sites:</strong> Often loaded with malware</li>
+                <li><strong>Torrent sites:</strong> Illegal downloads = high malware risk</li>
+            </ul>
+            
+            <h4>🔒 The HTTPS Lock</h4>
+            <p>Look at your browser's address bar right now. See the lock icon? That's HTTPS - your safety indicator.</p>
+            
+            <div style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>✅ Safe:</strong> <code style="color: #00ff00;">https://google.com</code> (has lock, encrypted)</p>
+                <p><strong>❌ Dangerous:</strong> <code style="color: #ff0000;">http://random-site.com</code> (no lock, unencrypted)</p>
+            </div>
+            
+            <p><strong>Rule of thumb:</strong> If there's no lock icon, don't enter any personal information!</p>
+            
+            <h4>🛡️ Your Browsing Safety Checklist</h4>
+            <ol>
+                <li><strong>Check the lock:</strong> Always look for HTTPS before entering passwords</li>
+                <li><strong>Read URLs carefully:</strong> "amaz0n.com" is NOT "amazon.com" (see the zero?)</li>
+                <li><strong>Don't click random links:</strong> Especially in emails or messages from strangers</li>
+                <li><strong>Use incognito mode:</strong> When using public computers or browsing sensitive topics</li>
+                <li><strong>Keep your browser updated:</strong> Updates fix security holes</li>
+                <li><strong>Install an ad blocker:</strong> Reduces risk of malicious ads</li>
+            </ol>
+            
+            <h4>📱 Mobile Browsing Tips</h4>
+            <p>On your phone, be extra careful:</p>
+            <ul>
+                <li>Only download apps from official stores (Google Play, App Store)</li>
+                <li>Read app reviews before downloading</li>
+                <li>Check app permissions - why does a calculator need access to your contacts?</li>
+                <li>Don't click links in SMS from unknown numbers</li>
+            </ul>
+            
+            <p style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ffff; margin-top: 1rem;">
+                <strong>💡 Pro Tip:</strong> When in doubt, don't click. If something seems too good to be true, it probably is. Trust your instincts!
+            </p>
+        `
+    },
+    {
+        title: "Encryption Basics",
+        icon: "fas fa-lock",
+        content: `
+            <h4>🔐 Your Digital Secret Code</h4>
+            <p>Remember writing secret notes to friends in school? You'd use a code so only they could read it. Encryption is the same thing, but for computers - it scrambles your data so only the right person can unscramble it.</p>
+            
+            <h4>🎭 The Magic Trick</h4>
+            <p>Imagine you write "Hello" on a piece of paper, but before sending it, you scramble it to "Khoor" (shifted by 3 letters). Anyone who intercepts it sees gibberish. Only someone who knows the "shift by 3" rule can decode it back to "Hello".</p>
+            
+            <p style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ffff; margin: 1rem 0;">
+                <strong>Real Example:</strong> When you send "I love you" on WhatsApp, it gets encrypted to something like "X7#mK9@2pQ". Even if hackers intercept it, they see nonsense. Only your friend's phone has the key to decode it back to "I love you".
+            </p>
+            
+            <h4>🏦 Where You Use Encryption Every Day</h4>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 1rem 0;">
+                <div style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #00ffff;">💬 Messaging Apps</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">WhatsApp, Signal, iMessage</p>
+                </div>
+                <div style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #00ffff;">💳 Online Payments</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Credit cards, UPI, PayPal</p>
+                </div>
+                <div style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #00ffff;">🏦 Banking</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">ATM transactions, online banking</p>
+                </div>
+                <div style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #00ffff;">☁️ Cloud Storage</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Google Drive, iCloud, Dropbox</p>
+                </div>
+            </div>
+            
+            <h4>🔒 Why It Matters</h4>
+            <p>Without encryption, your data travels through the internet like a postcard - anyone can read it. With encryption, it's like a sealed envelope - only the recipient can open it.</p>
+            
+            <div style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ff0000; margin: 1rem 0;">
+                <p><strong>⚠️ Without Encryption:</strong> Your password "MyPass123" travels as "MyPass123" - hackers can see it!</p>
+                <p><strong>✅ With Encryption:</strong> Your password "MyPass123" becomes "9X#mP2@kL7" - hackers see gibberish!</p>
+            </div>
+            
+            <h4>🔑 Types of Encryption</h4>
+            <ul>
+                <li><strong>Symmetric:</strong> Same key to lock and unlock (like a regular door key)</li>
+                <li><strong>Asymmetric:</strong> Different keys to lock and unlock (like a mailbox - anyone can drop mail, only you have the key to open)</li>
+                <li><strong>Caesar Cipher:</strong> Simple shift cipher (what we practice in the Caesar Cipher game!)</li>
+            </ul>
+            
+            <h4>💡 How to Know You're Protected</h4>
+            <p>Look for these signs:</p>
+            <ul>
+                <li>🔒 Lock icon in your browser (HTTPS)</li>
+                <li>🔒 "End-to-end encrypted" message in WhatsApp</li>
+                <li>🔒 "Secure connection" in banking apps</li>
+            </ul>
+            
+            <p style="background: rgba(255,215,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ffd700; margin-top: 1rem;">
+                <strong>💡 Remember:</strong> Encryption is everywhere protecting you. You don't need to understand the math - just know that when you see that lock icon, your data is safe!
+            </p>
+        `
+    },
+    {
+        title: "Firewall",
+        icon: "fas fa-shield-alt",
+        content: `
+            <h4>🛡️ Your Digital Bodyguard</h4>
+            <p>Think of a firewall as a bouncer at a club. It stands between your device and the internet, checking every single thing trying to get in or out. If something looks suspicious, it gets blocked immediately.</p>
+            
+            <p style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ffff; margin: 1rem 0;">
+                <strong>Real Example:</strong> A hacker tries to connect to your computer on port 3389 (Remote Desktop). Your firewall sees this suspicious connection attempt and immediately blocks it. You never even know it happened - that's how good firewalls are!
+            </p>
+            
+            <h4>🚪 How It Works</h4>
+            <p>Your device has "ports" - like doors. Port 80 is for web browsing, port 443 for secure browsing, etc. A firewall decides which ports are open and which are closed.</p>
+            
+            <div style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>✅ Allowed:</strong> Your browser connecting to websites (port 443)</p>
+                <p><strong>❌ Blocked:</strong> Random stranger trying to access your files (port 445)</p>
+            </div>
+            
+            <h4>🔥 What Firewalls Stop</h4>
+            <ul>
+                <li><strong>Hackers:</strong> Trying to break into your device</li>
+                <li><strong>Malware:</strong> Trying to send your data to attackers</li>
+                <li><strong>Unauthorized apps:</strong> Trying to access the internet without permission</li>
+                <li><strong>Port scanners:</strong> Attackers checking for open doors</li>
+            </ul>
+            
+            <h4>💻 Built-In Protection</h4>
+            <p>Good news - you probably already have one! Windows has Windows Firewall, Mac has built-in firewall, and routers have firewalls too. They're usually on by default, protecting you 24/7.</p>
+            
+            <p style="background: rgba(255,215,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ffd700; margin-top: 1rem;">
+                <strong>💡 Pro Tip:</strong> Keep your firewall enabled! It's like having a security guard that never sleeps, never takes breaks, and works for free.
+            </p>
+        `
+    },
+    {
+        title: "VPN (Virtual Private Network)",
+        icon: "fas fa-network-wired",
+        content: `
+            <h4>🌍 What is a VPN?</h4>
+            <p>A Virtual Private Network hides your location and encrypts your internet connection.</p>
+            
+            <h4>🎧 Story Example</h4>
+            <p>Using open Wi-Fi at a café is like talking loudly — anyone can overhear.<br>
+            A VPN turns your conversation into a private whisper.</p>
+            
+            <h4>📌 Uses</h4>
+            <ul>
+                <li>Protects you on public Wi-Fi</li>
+                <li>Hides your real IP address</li>
+                <li>Prevents tracking</li>
+            </ul>
+        `
+    },
+    {
+        title: "Ransomware",
+        icon: "fas fa-bug",
+        content: `
+            <h4>💣 The Digital Kidnapper</h4>
+            <p>Imagine someone breaking into your house, locking all your important stuff in a safe, and demanding money to give you the combination. That's ransomware - but for your digital files.</p>
+            
+            <p style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ff0000; margin: 1rem 0;">
+                <strong>Real Horror Story:</strong> A hospital's entire system got hit by ransomware. Patient records, appointment schedules, everything was locked. The attackers demanded $1 million. The hospital couldn't access anything for days. They had to pay because lives were at stake. This is why ransomware is so dangerous!
+            </p>
+            
+            <h4>🎯 How It Happens</h4>
+            <p>You click a suspicious link or download a file. The ransomware installs silently, then:</p>
+            <ol>
+                <li>Scans your computer for important files (photos, documents, videos)</li>
+                <li>Encrypts them all (locks them with a secret code)</li>
+                <li>Shows a message: "Pay $500 in Bitcoin to get your files back"</li>
+                <li>Your files are now useless until you pay (or restore from backup)</li>
+            </ol>
+            
+            <h4>🚨 Warning Signs</h4>
+            <ul>
+                <li>Files have weird extensions (.locked, .encrypted, .crypto)</li>
+                <li>You see a ransom note on your screen</li>
+                <li>Your files won't open</li>
+                <li>Strange file names appear (like "DECRYPT_INSTRUCTIONS.txt")</li>
+            </ul>
+            
+            <h4>🛡️ Your Defense Plan</h4>
+            <div style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>1. Backups are your lifeline:</strong> If you have backups, you can restore everything without paying</p>
+                <p><strong>2. Don't click suspicious links:</strong> Especially in emails from unknown senders</p>
+                <p><strong>3. Keep software updated:</strong> Updates patch security holes</p>
+                <p><strong>4. Use antivirus:</strong> It can catch ransomware before it activates</p>
+                <p><strong>5. Never pay the ransom:</strong> There's no guarantee you'll get your files back, and you're funding criminals</p>
+            </div>
+            
+            <p style="background: rgba(255,215,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ffd700; margin-top: 1rem;">
+                <strong>💡 Golden Rule:</strong> If you have backups, ransomware is just an inconvenience. If you don't have backups, it's a disaster. Back up your important files regularly!
+            </p>
+        `
+    },
+    {
+        title: "Two-Factor Authentication (2FA)",
+        icon: "fas fa-mobile-alt",
+        content: `
+            <h4>🔐 Double the Security, Double the Protection</h4>
+            <p>Your password is like a key. But what if someone steals your key? 2FA adds a second lock - even if they have your password, they can't get in without the second factor.</p>
+            
+            <p style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ff0000; margin: 1rem 0;">
+                <strong>Real Story:</strong> Mike's password got leaked in a data breach. Hackers tried to log into his account, but he had 2FA enabled. They entered the password correctly, but then the site asked for a code from his phone. They didn't have his phone, so they couldn't get in. Mike got a notification, changed his password, and stayed safe!
+            </p>
+            
+            <h4>🎯 How It Works</h4>
+            <p>Step 1: Enter your password (something you KNOW)<br>
+            Step 2: Enter a code from your phone (something you HAVE)</p>
+            
+            <p>Even if hackers steal your password, they don't have your phone, so they're stuck!</p>
+            
+            <h4>📱 Types of 2FA</h4>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 1rem 0;">
+                <div style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #00ffff;">📲 SMS/OTP</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Code sent to your phone</p>
+                </div>
+                <div style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #00ffff;">👆 Fingerprint</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Your unique fingerprint</p>
+                </div>
+                <div style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #00ffff;">😊 Face ID</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Facial recognition</p>
+                </div>
+                <div style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #00ffff;">🔐 Authenticator App</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Google Authenticator, Authy</p>
+                </div>
+            </div>
+            
+            <h4>✅ Where to Enable 2FA</h4>
+            <p>Enable it on these accounts ASAP:</p>
+            <ul>
+                <li>Email (Gmail, Outlook)</li>
+                <li>Banking apps</li>
+                <li>Social media (Facebook, Instagram, Twitter)</li>
+                <li>Cloud storage (Google Drive, iCloud)</li>
+                <li>Gaming accounts (Steam, Epic Games)</li>
+            </ul>
+            
+            <p style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ff00; margin-top: 1rem;">
+                <strong>💡 Remember:</strong> 2FA makes your account 99% more secure. It's like having two locks instead of one - even if someone picks the first lock, they still can't get in!
+            </p>
+        `
+    },
+    {
+        title: "Malware",
+        icon: "fas fa-virus",
+        content: `
+            <h4>🦠 The Digital Disease</h4>
+            <p>Malware is like a computer virus - but for your devices. It's malicious software designed to harm, steal, or spy. Just like you can catch a cold, your computer can catch malware.</p>
+            
+            <p style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ff0000; margin: 1rem 0;">
+                <strong>Real Story:</strong> Emma downloaded a "free ringtone app" that looked cool. Within hours, her phone was showing constant ads, her battery died quickly, and her data usage skyrocketed. The app was actually adware - malware that shows ads and steals data. She had to factory reset her phone to fix it.
+            </p>
+            
+            <h4>🧟 The Malware Family</h4>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 1rem 0;">
+                <div style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #ff0000;">🦠 Virus</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Spreads like a disease, infects files</p>
+                </div>
+                <div style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #ff0000;">🐛 Worm</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Spreads through networks automatically</p>
+                </div>
+                <div style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #ff0000;">🐴 Trojan</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Hides inside legitimate-looking software</p>
+                </div>
+                <div style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #ff0000;">👁️ Spyware</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Watches everything you do</p>
+                </div>
+                <div style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #ff0000;">💣 Ransomware</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Locks your files for money</p>
+                </div>
+                <div style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #ff0000;">📢 Adware</strong>
+                    <p style="font-size: 0.9rem; color: #cccccc; margin-top: 0.5rem;">Shows annoying ads everywhere</p>
+                </div>
+            </div>
+            
+            <h4>🚨 How You Get Infected</h4>
+            <ul>
+                <li><strong>Downloading pirated software:</strong> "Free" games, movies, software</li>
+                <li><strong>Clicking suspicious links:</strong> In emails, messages, pop-ups</li>
+                <li><strong>Using infected USB drives:</strong> From unknown sources</li>
+                <li><strong>Visiting malicious websites:</strong> Especially adult or torrent sites</li>
+                <li><strong>Opening email attachments:</strong> From unknown senders</li>
+            </ul>
+            
+            <h4>🛡️ How to Stay Safe</h4>
+            <ol>
+                <li><strong>Use antivirus software:</strong> And keep it updated!</li>
+                <li><strong>Don't download from sketchy sites:</strong> Stick to official app stores</li>
+                <li><strong>Keep your system updated:</strong> Updates fix security holes</li>
+                <li><strong>Think before you click:</strong> If it seems too good to be true, it probably is</li>
+                <li><strong>Back up your data:</strong> So you can recover if infected</li>
+            </ol>
+            
+            <p style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ff00; margin-top: 1rem;">
+                <strong>💡 Remember:</strong> Prevention is easier than cure. A good antivirus and smart browsing habits will protect you from 99% of malware!
+            </p>
+        `
+    },
+    {
+        title: "Social Engineering",
+        icon: "fas fa-user-secret",
+        content: `
+            <h4>🎭 The Art of Human Hacking</h4>
+            <p>Social engineering doesn't hack computers - it hacks people. Attackers use psychology, manipulation, and trust to trick you into giving them what they want. It's like a con artist, but digital.</p>
+            
+            <p style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ff0000; margin: 1rem 0;">
+                <strong>Real Scam:</strong> A "Microsoft support" caller told John his computer had a virus. They asked him to download software to "fix" it. John did, and they got remote access to his computer. They stole all his passwords, bank details, and personal files. It wasn't Microsoft - it was scammers using social engineering!
+            </p>
+            
+            <h4>🎯 Common Tactics</h4>
+            <ul>
+                <li><strong>Authority:</strong> "I'm calling from your bank" (but they're not)</li>
+                <li><strong>Urgency:</strong> "Your account will be closed in 1 hour!" (creates panic)</li>
+                <li><strong>Familiarity:</strong> "Hi, it's your friend from school" (pretending to know you)</li>
+                <li><strong>Helpfulness:</strong> "I'm here to help fix your problem" (but they created it)</li>
+                <li><strong>Rewards:</strong> "You've won a prize! Just verify your details" (too good to be true)</li>
+            </ul>
+            
+            <h4>📞 Real-World Examples</h4>
+            <div style="background: rgba(255,215,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Phone Call:</strong> "This is Amazon. Your account was hacked. Give me your password to secure it."</p>
+                <p style="color: #ff0000; margin-top: 0.5rem;">❌ REAL companies NEVER ask for passwords over the phone!</p>
+            </div>
+            
+            <div style="background: rgba(255,215,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Email:</strong> "Your Netflix payment failed. Click here to update your card."</p>
+                <p style="color: #ff0000; margin-top: 0.5rem;">❌ Check the sender - it's probably not really Netflix!</p>
+            </div>
+            
+            <div style="background: rgba(255,215,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>In Person:</strong> "I'm from IT. I need to check your computer. What's your password?"</p>
+                <p style="color: #ff0000; margin-top: 0.5rem;">❌ Real IT staff have their own access - they don't need your password!</p>
+            </div>
+            
+            <h4>🛡️ How to Protect Yourself</h4>
+            <ol>
+                <li><strong>Verify the source:</strong> Call the company back using their official number</li>
+                <li><strong>Never share OTPs:</strong> Legitimate services never ask for OTPs</li>
+                <li><strong>Question urgency:</strong> Real problems don't need immediate action</li>
+                <li><strong>Trust but verify:</strong> If something feels off, it probably is</li>
+                <li><strong>Hang up and call back:</strong> If someone calls you, hang up and call the official number</li>
+            </ol>
+            
+            <p style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ff00; margin-top: 1rem;">
+                <strong>💡 Golden Rule:</strong> When someone asks for sensitive information, pause. Real companies have proper channels. Scammers create fake urgency. Take your time and verify!
+            </p>
+        `
+    },
+    {
+        title: "Network Security",
+        icon: "fas fa-server",
+        content: `
+            <h4>🌐 Meaning</h4>
+            <p>Protecting the whole network — routers, devices, data — from attacks.</p>
+            
+            <h4>🏠 Story Example</h4>
+            <p>Your home Wi-Fi is like your house.<br>
+            Network security adds:</p>
+            <ul>
+                <li>Doors (passwords)</li>
+                <li>Windows bars (firewall)</li>
+                <li>CCTV (monitoring software)</li>
+            </ul>
+        `
+    },
+    {
+        title: "HTTPS",
+        icon: "fas fa-lock",
+        content: `
+            <h4>🔒 What is HTTPS?</h4>
+            <p>HyperText Transfer Protocol Secure<br>
+            It ensures a website is safe and encrypted.</p>
+            
+            <h4>📮 Story</h4>
+            <p>HTTP = postcard (anyone can read)<br>
+            HTTPS = sealed envelope (private)</p>
+            
+            <h4>✔️ Look for:</h4>
+            <ul>
+                <li>Lock symbol</li>
+                <li>https://</li>
+            </ul>
+        `
+    },
+    {
+        title: "Caesar Cipher",
+        icon: "fas fa-code",
+        content: `
+            <h4>🧩 What It Is</h4>
+            <p>Shift each letter by a fixed number.</p>
+            
+            <h4>📜 Example (Shift by 3)</h4>
+            <p><strong>HELLO</strong> → <strong>KHOOR</strong></p>
+            
+            <h4>🤺 History</h4>
+            <p>Used by Julius Caesar to secretly communicate during battles.</p>
+        `
+    },
+    {
+        title: "Password Manager",
+        icon: "fas fa-database",
+        content: `
+            <h4>🔐 What It Does</h4>
+            <p>Stores all your passwords safely.</p>
+            
+            <h4>🗃️ Story Example</h4>
+            <p>Think of it as a vault filled with all your keys — and only you have the main master key.</p>
+            
+            <h4>✔️ Benefits</h4>
+            <ul>
+                <li>Strong auto-generated passwords</li>
+                <li>No need to remember all passwords</li>
+            </ul>
+        `
+    },
+    {
+        title: "DDoS Attack",
+        icon: "fas fa-exclamation-triangle",
+        content: `
+            <h4>⚡ What Happens</h4>
+            <p>Thousands of fake computers send requests to a website until it crashes.</p>
+            
+            <h4>🗣️ Story</h4>
+            <p>Imagine thousands of people shouting your name at the same time — you can't respond to anyone.<br>
+            Same happens to websites.</p>
+        `
+    },
+    {
+        title: "SQL Injection",
+        icon: "fas fa-database",
+        content: `
+            <h4>🧨 Meaning</h4>
+            <p>Hackers put harmful code into website input boxes to access or damage the database.</p>
+            
+            <h4>🍏 Story Example</h4>
+            <p>Login box expects your name.<br>
+            A hacker writes:</p>
+            <p><code>'or '1'='1</code></p>
+            <p>Now the system gets tricked into letting them in.</p>
+        `
+    },
+    {
+        title: "XSS (Cross-Site Scripting)",
+        icon: "fas fa-code",
+        content: `
+            <h4>🧪 What It Is</h4>
+            <p>Attackers put harmful scripts into websites that can steal cookies, show fake pages, or take control of accounts.</p>
+            
+            <h4>👀 Scenario</h4>
+            <p>Someone posts a comment like:<br>
+            <code>&lt;script&gt;stealCookie()&lt;/script&gt;</code></p>
+            <p>Anyone who views that page gets affected.</p>
+        `
+    },
+    {
+        title: "Capture The Flag (CTF) - How to Play",
+        icon: "fas fa-flag",
+        content: `
+            <h4>🏁 What is CTF?</h4>
+            <p>Capture The Flag (CTF) is like a cybersecurity treasure hunt! You solve puzzles and challenges to find hidden "flags" (secret codes).</p>
+            
+            <h4>🎮 How CTF Works (Simple Explanation)</h4>
+            <p>Think of it like a video game where:</p>
+            <ul>
+                <li>Each challenge is a level</li>
+                <li>The flag (CTF{...}) is the treasure you need to find</li>
+                <li>You use cybersecurity skills to solve puzzles</li>
+            </ul>
+            
+            <h4>🔍 Types of CTF Challenges</h4>
+            <ul>
+                <li><strong>🔐 Cryptography:</strong> Decode secret messages (like Caesar Cipher)</li>
+                <li><strong>🌐 Web Exploitation:</strong> Find hidden flags in websites</li>
+                <li><strong>🔍 Forensics:</strong> Analyze files to find clues</li>
+                <li><strong>🔄 Reverse Engineering:</strong> Understand how programs work</li>
+                <li><strong>💻 Binary Exploitation:</strong> Find bugs in programs</li>
+                <li><strong>📡 Network Analysis:</strong> Analyze network traffic</li>
+            </ul>
+            
+            <h4>📝 How to Play CTF in CyberArcade</h4>
+            <ol>
+                <li><strong>Choose a Challenge:</strong> Click on any challenge card (Crypto, Web, Forensics, etc.)</li>
+                <li><strong>Read the Tutorial:</strong> Each challenge has a step-by-step guide - read it first!</li>
+                <li><strong>Use the Tools:</strong> We provide tools to help you (like the Caesar Cipher decoder)</li>
+                <li><strong>Find the Flag:</strong> Look for text that looks like <code>CTF{...}</code></li>
+                <li><strong>Submit Your Answer:</strong> Enter the flag in the input box and click "Submit Flag"</li>
+            </ol>
+            
+            <h4>💡 Example: Crypto Challenge</h4>
+            <p>You see: <code>GUR FRPERG ZRFFNTR VF: CTF{CRYPTO_MASTER_2024}</code></p>
+            <p>This is encrypted with Caesar Cipher (shift 13).</p>
+            <p>Use the decoder tool to decrypt it → Find the flag → Submit!</p>
+            
+            <h4>🎯 Tips for Beginners</h4>
+            <ul>
+                <li>Start with Cryptography challenges (they're the easiest!)</li>
+                <li>Always read the tutorial first</li>
+                <li>Use hints if you're stuck</li>
+                <li>Flags always look like: <code>CTF{SOMETHING_HERE}</code></li>
+                <li>Don't worry if you can't solve everything - it's about learning!</li>
+            </ul>
+            
+            <h4>🚀 Why Learn CTF?</h4>
+            <ul>
+                <li>It's fun and gamified learning</li>
+                <li>Teaches real cybersecurity skills</li>
+                <li>Great practice for cybersecurity careers</li>
+                <li>Builds problem-solving skills</li>
+            </ul>
+            
+            <h4>📚 Before Playing CTF</h4>
+            <p>We recommend learning these basics first:</p>
+            <ul>
+                <li>✅ Encryption Basics (Caesar Cipher)</li>
+                <li>✅ Secure Browsing (to understand web challenges)</li>
+                <li>✅ Network Security (for network challenges)</li>
+            </ul>
+            <p><strong>Ready to try? Go to Games → Capture The Flag!</strong></p>
+        `
+    },
+    {
+        title: "Quiz Notes - All Topics",
+        icon: "fas fa-book",
+        content: `
+            <h4>📚 Complete Quiz Notes - Study Guide</h4>
+            
+            <h4>🔍 Phishing Recognition</h4>
+            <ul>
+                <li>Fake messages/emails/SMS that steal passwords, OTPs, bank details</li>
+                <li>Red flags: Urgent language, suspicious sender, generic greetings, poor grammar</li>
+                <li>Protection: Don't click unknown links, verify sender, never share OTPs, use 2FA</li>
+                <li>Common tricks: "Account blocked", "You won a prize", fake delivery messages</li>
+            </ul>
+            
+            <h4>🔐 Password Safety</h4>
+            <ul>
+                <li>Weak passwords: 123456, password, qwerty, personal info, birthdate</li>
+                <li>Strong password needs: Uppercase, lowercase, numbers, symbols, 12+ characters</li>
+                <li>Golden rule: Different password for every account</li>
+                <li>Example strong: RiverSky#2035</li>
+                <li>Use password manager to store unique passwords</li>
+            </ul>
+            
+            <h4>🌐 Secure Browsing</h4>
+            <ul>
+                <li>Only visit websites with HTTPS (look for lock icon and https://)</li>
+                <li>Don't download unknown apps or click random ads</li>
+                <li>Avoid sites promising "free diamonds", "free movies", "free money"</li>
+                <li>Keep browser updated, use private/incognito mode when needed</li>
+            </ul>
+            
+            <h4>🔑 Encryption Basics</h4>
+            <ul>
+                <li>Turns readable data into unreadable code - only key holder can decode</li>
+                <li>Used in: WhatsApp, online payments, ATM, banking apps, cloud storage</li>
+                <li>Even if data is stolen, it cannot be read without the key</li>
+            </ul>
+            
+            <h4>🧱 Firewall</h4>
+            <ul>
+                <li>Checks all data going in/out of device, blocks suspicious traffic</li>
+                <li>Like a security guard checking bags at mall entrance</li>
+                <li>Blocks: Hackers, malware, unauthorized traffic</li>
+            </ul>
+            
+            <h4>🌍 VPN (Virtual Private Network)</h4>
+            <ul>
+                <li>Hides your location and encrypts internet connection</li>
+                <li>Protects on public Wi-Fi (like private whisper vs loud talking)</li>
+                <li>Hides real IP address, prevents tracking</li>
+            </ul>
+            
+            <h4>💣 Ransomware</h4>
+            <ul>
+                <li>Malware that locks files and demands money to unlock</li>
+                <li>Like someone locking your homework notebook and asking payment</li>
+                <li>Protection: Don't download unknown attachments, keep backups, use antivirus</li>
+            </ul>
+            
+            <h4>🛡️ Two-Factor Authentication (2FA)</h4>
+            <ul>
+                <li>Extra step after password to verify it's really you</li>
+                <li>Like house with lock + fingerprint scanner</li>
+                <li>Forms: OTP, Fingerprint, Face ID, Authenticator apps</li>
+                <li>Protects even if password is stolen</li>
+            </ul>
+            
+            <h4>🦠 Malware</h4>
+            <ul>
+                <li>Harmful software that damages systems or steals information</li>
+                <li>Types: Virus, Worm, Trojan, Spyware, Ransomware, Adware</li>
+                <li>Example: Downloading "game hack tool" makes phone slow - malware entered</li>
+            </ul>
+            
+            <h4>🎭 Social Engineering</h4>
+            <ul>
+                <li>Hackers trick people into giving personal information</li>
+                <li>Example: Fake bank officer calls asking for OTP</li>
+                <li>Never share: OTP, Password, Bank info, Personal address</li>
+            </ul>
+            
+            <h4>🏠 Network Security</h4>
+            <ul>
+                <li>Protects whole network (routers, devices, data) from attacks</li>
+                <li>Like home security: Doors (passwords), Windows bars (firewall), CCTV (monitoring)</li>
+            </ul>
+            
+            <h4>🔒 HTTPS</h4>
+            <ul>
+                <li>HyperText Transfer Protocol Secure - safe and encrypted websites</li>
+                <li>HTTP = postcard (anyone can read), HTTPS = sealed envelope (private)</li>
+                <li>Look for: Lock symbol and https:// in URL</li>
+            </ul>
+            
+            <h4>🧩 Caesar Cipher</h4>
+            <ul>
+                <li>Shift each letter by fixed number (e.g., shift 3: HELLO → KHOOR)</li>
+                <li>Used by Julius Caesar for secret communication in battles</li>
+                <li>Historical encryption method, not secure today</li>
+            </ul>
+            
+            <h4>🗃️ Password Manager</h4>
+            <ul>
+                <li>Stores all passwords safely - like vault with all keys</li>
+                <li>Benefits: Strong auto-generated passwords, no need to remember all</li>
+                <li>Only you have the master key</li>
+            </ul>
+            
+            <h4>⚡ DDoS Attack</h4>
+            <ul>
+                <li>Thousands of fake computers send requests until website crashes</li>
+                <li>Like thousands of people shouting your name - you can't respond</li>
+            </ul>
+            
+            <h4>🧨 SQL Injection</h4>
+            <ul>
+                <li>Hackers put harmful code into website input boxes to access/damage database</li>
+                <li>Example: Login box gets tricked with code like 'or '1'='1</li>
+            </ul>
+            
+            <h4>🧪 XSS (Cross-Site Scripting)</h4>
+            <ul>
+                <li>Attackers put harmful scripts into websites</li>
+                <li>Can steal cookies, show fake pages, take control of accounts</li>
+                <li>Example: Comment with &lt;script&gt;stealCookie()&lt;/script&gt; affects viewers</li>
+            </ul>
+            
+            <h4>💡 Quick Quiz Tips</h4>
+            <ul>
+                <li>Phishing = Fake messages stealing info</li>
+                <li>Strong password = Mix of letters, numbers, symbols, 12+ chars</li>
+                <li>HTTPS = Safe encrypted websites (look for lock)</li>
+                <li>Firewall = Security guard blocking suspicious traffic</li>
+                <li>VPN = Hides identity on public Wi-Fi</li>
+                <li>2FA = Extra login protection (password + OTP/fingerprint)</li>
+                <li>Ransomware = Locks files, demands money</li>
+                <li>Malware = Harmful software (virus, trojan, worm, etc.)</li>
+                <li>Social Engineering = Tricking people, not computers</li>
+                <li>DDoS = Website flooding attack</li>
+                <li>SQL Injection = Code attack on input boxes</li>
+                <li>XSS = Harmful scripts in websites</li>
+            </ul>
+        `
+    }
+];
+
+// Initialize Flashcards
+// Load Security Checklist
+function loadSecurityChecklist() {
+    const checklistItems = [
+        { id: 'strong-passwords', text: 'Use strong, unique passwords (12+ characters)' },
+        { id: 'password-manager', text: 'Use a password manager' },
+        { id: 'two-factor', text: 'Enable two-factor authentication (2FA) on important accounts' },
+        { id: 'software-updates', text: 'Keep software and operating system updated' },
+        { id: 'antivirus', text: 'Have antivirus/anti-malware software installed and updated' },
+        { id: 'backup-data', text: 'Regularly back up important data' },
+        { id: 'https-check', text: 'Always check for HTTPS (padlock icon) on websites' },
+        { id: 'suspicious-emails', text: 'Know how to identify suspicious emails' },
+        { id: 'public-wifi', text: 'Avoid sensitive activities on public WiFi' },
+        { id: 'privacy-settings', text: 'Review and adjust privacy settings on social media' },
+        { id: 'software-sources', text: 'Only download software from trusted sources' },
+        { id: 'bank-statements', text: 'Regularly check bank/credit card statements' }
+    ];
+    
+    const container = document.getElementById('securityChecklist');
+    if (!container) return;
+    
+    container.innerHTML = checklistItems.map(item => `
+        <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 10px; border-left: 4px solid rgba(0,255,255,0.5);">
+            <input type="checkbox" id="${item.id}" style="width: 20px; height: 20px; cursor: pointer;" onchange="updateChecklistProgress()">
+            <label for="${item.id}" style="color: #ffffff; font-size: 1.1rem; cursor: pointer; flex: 1; margin: 0;">${item.text}</label>
+        </div>
+    `).join('');
+    
+    // Load saved checklist state
+    const savedChecklist = localStorage.getItem('securityChecklist');
+    if (savedChecklist) {
+        const checked = JSON.parse(savedChecklist);
+        checked.forEach(id => {
+            const checkbox = document.getElementById(id);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+}
+
+// Update checklist progress
+function updateChecklistProgress() {
+    const checkboxes = document.querySelectorAll('#securityChecklist input[type="checkbox"]');
+    const checked = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.id);
+    localStorage.setItem('securityChecklist', JSON.stringify(checked));
+}
+
+// Download Security Checklist
+function downloadSecurityChecklist() {
+    const checklistItems = [
+        'Use strong, unique passwords (12+ characters)',
+        'Use a password manager',
+        'Enable two-factor authentication (2FA) on important accounts',
+        'Keep software and operating system updated',
+        'Have antivirus/anti-malware software installed and updated',
+        'Regularly back up important data',
+        'Always check for HTTPS (padlock icon) on websites',
+        'Know how to identify suspicious emails',
+        'Avoid sensitive activities on public WiFi',
+        'Review and adjust privacy settings on social media',
+        'Only download software from trusted sources',
+        'Regularly check bank/credit card statements'
+    ];
+    
+    const content = `CYBERSECURITY AWARENESS CHECKLIST\n` +
+                   `==================================\n\n` +
+                   `Use this checklist to ensure you're following best practices:\n\n` +
+                   checklistItems.map((item, index) => `[ ] ${index + 1}. ${item}`).join('\n') +
+                   `\n\n` +
+                   `Generated by CyberArcade - Cybersecurity Awareness & Education Platform\n` +
+                   `Date: ${new Date().toLocaleDateString()}\n`;
+    
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'cybersecurity-checklist.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function initializeFlashcards() {
+    const container = document.getElementById('flashcardsContainer');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    flashcardsData.forEach((card, index) => {
+        const flashcard = document.createElement('div');
+        flashcard.className = 'flashcard';
+        flashcard.setAttribute('data-index', index);
+        
+        flashcard.innerHTML = `
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="flashcard-icon">
+                        <i class="${card.icon}"></i>
+                    </div>
+                    <div class="flashcard-title">${card.title}</div>
+                    <div class="flashcard-hint">
+                        <i class="fas fa-hand-pointer"></i>
+                        Click to learn more
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add click event to open full-screen modal
+        flashcard.addEventListener('click', function() {
+            openFlashcardModal(index);
+        });
+        
+        container.appendChild(flashcard);
+    });
+}
+
+// Map flashcards to related games
+const flashcardGameMap = {
+    'Phishing Recognition': ['phishing-detective', 'social-engineering'],
+    'Password Safety': ['password-cracker'],
+    'Secure Browsing': ['spot-the-threat', 'security-quiz'],
+    'Encryption Basics': ['caesar-cipher'],
+    'Firewall': ['security-quiz'],
+    'Two-Factor Authentication (2FA)': ['security-quiz'],
+    'Ransomware': ['spot-the-threat'],
+    'Malware': ['spot-the-threat'],
+    'Social Engineering': ['social-engineering', 'phishing-detective'],
+    'Network Security': ['security-quiz'],
+    'HTTPS': ['security-quiz', 'spot-the-threat'],
+    'Caesar Cipher': ['caesar-cipher'],
+    'Password Manager': ['password-cracker'],
+    'Complete Quiz Notes': ['security-quiz', 'snake-ladder']
+};
+
+// Open flashcard in full-screen modal
+function openFlashcardModal(index) {
+    const card = flashcardsData[index];
+    if (!card) return;
+    
+    const modal = document.getElementById('flashcardModal');
+    const modalIcon = document.getElementById('flashcardModalIcon');
+    const modalTitle = document.getElementById('flashcardModalTitle');
+    const modalContent = document.getElementById('flashcardModalContent');
+    
+    if (!modal || !modalIcon || !modalTitle || !modalContent) return;
+    
+    // Set modal content
+    modalIcon.innerHTML = `<i class="${card.icon}"></i>`;
+    modalTitle.textContent = card.title;
+    
+    // Get related games for this flashcard
+    const relatedGames = flashcardGameMap[card.title] || [];
+    
+    // Build game buttons HTML
+    let gameButtonsHTML = '';
+    if (relatedGames.length > 0) {
+        gameButtonsHTML = `
+            <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,128,255,0.1)); border-radius: 10px; border: 2px solid rgba(0,255,255,0.3); text-align: center;">
+                <h4 style="color: #00ffff; margin-bottom: 1rem; font-size: 1.2rem;">🎮 Play Games to Practice!</h4>
+                <p style="color: #cccccc; margin-bottom: 1rem; font-size: 0.95rem;">Test your knowledge with interactive games related to this topic:</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    ${relatedGames.map(gameId => {
+                        const game = window.CyberArcadeGames && window.CyberArcadeGames[gameId];
+                        const gameTitle = game ? game.title : gameId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        return `
+                            <button onclick="closeFlashcardModal(); startGame('${gameId}');" 
+                                    style="padding: 0.8rem 1.5rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,255,255,0.3);" 
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,255,255,0.5)'" 
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.3)'">
+                                <i class="fas fa-gamepad"></i> ${gameTitle}
+                            </button>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    } else {
+        // Generic "Play Games" button if no specific games mapped
+        gameButtonsHTML = `
+            <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,128,255,0.1)); border-radius: 10px; border: 2px solid rgba(0,255,255,0.3); text-align: center;">
+                <h4 style="color: #00ffff; margin-bottom: 1rem; font-size: 1.2rem;">🎮 Play Games to Know More!</h4>
+                <p style="color: #cccccc; margin-bottom: 1rem; font-size: 0.95rem;">Explore our interactive games to practice what you've learned!</p>
+                <button onclick="closeFlashcardModal(); showSection('games');" 
+                        style="padding: 0.8rem 1.5rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,255,255,0.3);" 
+                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,255,255,0.5)'" 
+                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.3)'">
+                    <i class="fas fa-gamepad"></i> Play Games to Know More!
+                </button>
+            </div>
+        `;
+    }
+    
+    // Set modal content with game buttons appended
+    modalContent.innerHTML = card.content + gameButtonsHTML;
+    
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+// Close flashcard modal
+function closeFlashcardModal() {
+    const modal = document.getElementById('flashcardModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeFlashcardModal();
+    }
+});

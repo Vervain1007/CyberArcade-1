@@ -159,6 +159,26 @@ body {
 .hero-buttons {
     display: flex;
     gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.hero-value-prop {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.value-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #00ffff;
+    font-size: 0.95rem;
+}
+
+.value-item i {
+    color: #00ff00;
 }
 
 .btn {
@@ -274,6 +294,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
+    padding: 1rem 0;
 }
 
 .module-card {
@@ -360,6 +381,259 @@ body {
 .btn-module:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3);
+}
+
+/* Learning Paths */
+.learning-paths-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    margin-top: 2rem;
+    padding: 0 1rem;
+    justify-items: stretch;
+}
+
+/* Responsive: 2 columns on medium screens */
+@media (max-width: 1200px) {
+    .learning-paths-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Center the last item when there are 3 items in a 2-column grid */
+    .learning-paths-container .learning-path-card:last-child:nth-child(3) {
+        grid-column: 1 / -1;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+/* Responsive: 1 column on small screens */
+@media (max-width: 768px) {
+    .learning-paths-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .learning-paths-container .learning-path-card:last-child:nth-child(3) {
+        grid-column: 1;
+        max-width: 100%;
+    }
+}
+
+.learning-path-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 2.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.learning-path-card:hover {
+    transform: translateY(-5px);
+    border-color: #00ffff;
+    box-shadow: 0 15px 40px rgba(0, 255, 255, 0.2);
+}
+
+.path-header {
+    margin-bottom: 2rem;
+}
+
+.path-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.path-header h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.path-description {
+    color: #cccccc;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.path-meta {
+    display: flex;
+    gap: 1.5rem;
+    color: #00ffff;
+    font-size: 0.9rem;
+}
+
+.path-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Progress Visual - Cleaner Design */
+.path-progress-visual {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.progress-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.progress-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(0, 255, 255, 0.05);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.progress-step:hover {
+    background: rgba(0, 255, 255, 0.15);
+    transform: translateX(5px);
+}
+
+.step-connector {
+    position: absolute;
+    left: 2.5rem;
+    top: 3.5rem;
+    width: 2px;
+    height: 2rem;
+    background: rgba(0, 255, 255, 0.3);
+}
+
+.step-connector.last {
+    display: none;
+}
+
+.step-circle {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #00ffff, #0080ff);
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.step-info {
+    flex: 1;
+}
+
+.step-info h5 {
+    color: #ffffff;
+    margin: 0 0 0.25rem 0;
+    font-size: 1.1rem;
+}
+
+.step-info p {
+    color: #cccccc;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.outcome-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(0, 255, 0, 0.1);
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.outcome-item i {
+    color: #00ff00;
+}
+
+.path-outcomes-compact {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(0, 255, 0, 0.05);
+    border-radius: 10px;
+    border-left: 3px solid #00ff00;
+}
+
+.path-outcomes-compact h4 {
+    color: #00ff00;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.path-outcomes {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 255, 0, 0.05);
+    border-radius: 10px;
+    border-left: 3px solid #00ff00;
+}
+
+.path-outcomes h4 {
+    color: #00ff00;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.path-outcomes ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.path-outcomes li {
+    color: #cccccc;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.path-outcomes li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #00ff00;
+    font-weight: bold;
+}
+
+.path-next-steps {
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 10px;
+    border-left: 3px solid #ffd700;
+    margin-bottom: 1.5rem;
+    color: #ffd700;
+    font-size: 0.95rem;
+}
+
+.path-start-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 /* Games Grid */
@@ -565,13 +839,13 @@ body {
 
 .modal-content {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    margin: 2% auto;
+    margin: 1% auto;
     padding: 0;
     border: 1px solid rgba(0, 255, 255, 0.3);
     border-radius: 20px;
-    width: 90%;
-    max-width: 1000px;
-    max-height: 90vh;
+    width: 95%;
+    max-width: 1400px;
+    max-height: 95vh;
     overflow: hidden;
     position: relative;
 }
@@ -592,24 +866,32 @@ body {
 }
 
 .close-btn {
-    background: none;
-    border: none;
-    color: #ffffff;
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid #ff0000;
+    color: #ff0000;
     font-size: 1.5rem;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 50%;
     transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
 }
 
 .close-btn:hover {
-    background: rgba(255, 0, 0, 0.2);
-    color: #ff0000;
+    background: rgba(255, 0, 0, 0.4);
+    color: #ffffff;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
 }
 
 .modal-body {
     padding: 2rem;
-    max-height: calc(90vh - 100px);
+    max-height: calc(95vh - 100px);
     overflow-y: auto;
 }
 
@@ -1161,7 +1443,144 @@ body {
     line-height: 1.4;
 }
 
-/* Social Engineering Simulator */
+/* Interactive Malware Analysis */
+.malware-analysis-content {
+    padding: 1rem;
+}
+
+.analysis-intro {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    border-left: 3px solid #00ffff;
+}
+
+.analysis-intro h4 {
+    color: #00ffff;
+    margin-bottom: 0.5rem;
+}
+
+.step-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.step-card:hover {
+    background: rgba(0, 255, 255, 0.1);
+    border-color: #00ffff;
+    transform: translateX(5px);
+}
+
+.step-card.completed {
+    background: rgba(0, 255, 0, 0.1);
+    border-color: #00ff00;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #00ffff, #0080ff);
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.step-content h5 {
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+}
+
+.step-content p {
+    color: #cccccc;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.suspicious-string,
+.api-call {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid rgba(255, 0, 0, 0.5);
+    border-radius: 3px;
+    margin: 0.25rem 0.25rem 0.25rem 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: monospace;
+}
+
+.suspicious-string:hover,
+.api-call:hover {
+    background: rgba(255, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+.api-call {
+    display: block;
+    margin: 0.5rem 0;
+}
+
+.quiz-option-btn {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.quiz-option-btn:hover {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: #ffd700;
+}
+
+.ctf-tutorial {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 5px;
+    margin: 1rem 0;
+    border-left: 3px solid #00ffff;
+}
+
+.ctf-tutorial h4 {
+    color: #00ffff;
+    margin-bottom: 1rem;
+}
+
+.ctf-tutorial ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+    color: #cccccc;
+}
+
+.ctf-tutorial li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.tutorial-tip {
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 5px;
+    border-left: 3px solid #ffd700;
+    color: #ffd700;
+    margin-top: 1rem;
+}
+
 .social-engineering {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 15px;
@@ -1201,6 +1620,7 @@ body {
     margin-bottom: 1.5rem;
 }
 
+/* Email card inside scenario */
 .scenario-email {
     background: #ffffff;
     color: #000;
@@ -1231,6 +1651,7 @@ body {
     line-height: 1.6;
 }
 
+/* Options and states (keeps your existing visual identity) */
 .se-options {
     display: grid;
     gap: 1rem;
@@ -1275,16 +1696,32 @@ body {
 }
 
 .se-feedback.correct {
-    background: rgba(0, 255, 0, 0.2);
+    background: rgba(0, 255, 0, 0.12);
     color: #00ff00;
     border: 1px solid #00ff00;
 }
 
 .se-feedback.incorrect {
-    background: rgba(255, 0, 0, 0.2);
+    background: rgba(255, 0, 0, 0.08);
     color: #ff0000;
     border: 1px solid #ff0000;
 }
+
+/* Next button container */
+.se-next {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.se-next-btn {
+    background: linear-gradient(45deg, #ffd700, #ffb347);
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
 
 /* Incident Response Simulator */
 .incident-response {
@@ -1889,7 +2326,466 @@ body {
     font-weight: bold;
 }
 
+/* Flashcards Section */
+.flashcards-section {
+    margin-top: 2rem;
+    padding: 2rem 0;
+}
+
+.flashcards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.flashcard {
+    background: transparent;
+    width: 100%;
+    height: 350px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.flashcard-front {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 128, 255, 0.1) 100%);
+    border-color: rgba(0, 255, 255, 0.5);
+}
+
+.flashcard-back {
+    background: linear-gradient(135deg, rgba(0, 128, 255, 0.15) 0%, rgba(0, 255, 255, 0.15) 100%);
+    border-color: rgba(0, 128, 255, 0.5);
+    transform: rotateY(180deg);
+    overflow-y: auto;
+}
+
+.flashcard:hover .flashcard-front,
+.flashcard:hover .flashcard-back {
+    border-color: #00ffff;
+    box-shadow: 0 15px 40px rgba(0, 255, 255, 0.4);
+    transform: translateY(-5px);
+}
+
+.flashcard-icon {
+    font-size: 4rem;
+    color: #00ffff;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.flashcard-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.flashcard-content {
+    color: #cccccc;
+    line-height: 1.8;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.flashcard-content h4 {
+    color: #00ffff;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.flashcard-content ul {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.flashcard-content li {
+    margin-bottom: 0.5rem;
+}
+
+.flashcard-content strong {
+    color: #00ffff;
+}
+
+.flashcard-hint {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.flashcard-hint i {
+    margin-right: 0.5rem;
+}
+
+/* Flashcard Full-Screen Modal */
+.flashcard-modal {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease;
+}
+
+.flashcard-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.flashcard-modal-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    margin: 2% auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3);
+    animation: slideUp 0.4s ease;
+    overflow: hidden;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.flashcard-modal-header {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(0, 128, 255, 0.2) 100%);
+    padding: 2rem;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+}
+
+.flashcard-modal-icon {
+    font-size: 3rem;
+    color: #00ffff;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    min-width: 60px;
+    text-align: center;
+}
+
+.flashcard-modal-header h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    flex: 1;
+    background: linear-gradient(45deg, #00ffff, #0080ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.flashcard-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    font-size: 1.5rem;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+}
+
+.flashcard-close-btn:hover {
+    background: rgba(255, 0, 0, 0.2);
+    border-color: #ff0000;
+    color: #ff0000;
+    transform: rotate(90deg);
+}
+
+.flashcard-modal-body {
+    padding: 3rem;
+    max-height: calc(90vh - 150px);
+    overflow-y: auto;
+    color: #ffffff;
+}
+
+.flashcard-modal-body h4 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    color: #00ffff;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+}
+
+.flashcard-modal-body h4:first-child {
+    margin-top: 0;
+}
+
+.flashcard-modal-body p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #cccccc;
+    margin-bottom: 1.5rem;
+}
+
+.flashcard-modal-body ul {
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.flashcard-modal-body li {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #cccccc;
+    margin-bottom: 0.8rem;
+}
+
+.flashcard-modal-body li strong {
+    color: #00ffff;
+    font-weight: 600;
+}
+
+.flashcard-modal-body code {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    color: #00ffff;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.flashcard-modal-body a {
+    color: #00ffff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.flashcard-modal-body a:hover {
+    color: #0080ff;
+    border-bottom-color: #0080ff;
+}
+
+/* Career Roadmap Styles */
+.roadmap-section {
+    margin-bottom: 4rem;
+}
+
+.roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.roadmap-card {
+    transition: all 0.3s ease;
+}
+
+.roadmap-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 255, 255, 0.2);
+}
+
+.roadmap-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.roadmap-icon {
+    font-size: 3rem;
+}
+
+.roadmap-skills {
+    margin: 1.5rem 0;
+}
+
+.roadmap-path {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+}
+
+.roadmap-next-steps {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid #ffd700;
+}
+
+.learning-paths-section {
+    margin-top: 4rem;
+    padding-top: 4rem;
+    border-top: 2px solid rgba(0, 255, 255, 0.2);
+}
+
+/* Responsive roadmap */
+@media (max-width: 768px) {
+    .roadmap-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .roadmap-card {
+        padding: 1.5rem;
+    }
+}
+
+/* Responsive flashcards */
+@media (max-width: 768px) {
+    .flashcards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .flashcard {
+        height: 300px;
+    }
+    
+    .flashcard-icon {
+        font-size: 3rem;
+    }
+    
+    .flashcard-title {
+        font-size: 1.2rem;
+    }
+    
+    .flashcard-content {
+        font-size: 0.9rem;
+    }
+    
+    .flashcard-modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+    
+    .flashcard-modal-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .flashcard-modal-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .flashcard-modal-icon {
+        font-size: 2.5rem;
+    }
+    
+    .flashcard-modal-body {
+        padding: 2rem 1.5rem;
+    }
+    
+    .flashcard-modal-body h4 {
+        font-size: 1.2rem;
+    }
+    
+    .flashcard-modal-body p,
+    .flashcard-modal-body li {
+        font-size: 1rem;
+    }
+}
+
 .crack-fail {
     color: #ff6b6b !important;
     font-weight: bold;
+}
+
+/* Email example styling inside scenario */
+.email-example {
+    background: #ffffff;
+    color: #000;
+    padding: 1.5rem;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+/* Plain text example blocks */
+.tailgating-example,
+.baiting-example,
+.vishing-example {
+    background: #f0f8ff;
+    color: #333;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    font-style: italic;
+    border: 1px solid #add8e6;
+    margin-bottom: 1rem;
+}
+
+/* Add some spacing below scenario title for clarity */
+.scenario-title {
+    margin-bottom: 0.5rem;
 }

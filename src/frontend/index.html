@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberArcade - Learn Cybersecurity Through Gaming</title>
+    <title>CyberArcade - Cybersecurity Awareness & Education Platform</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -18,6 +18,7 @@
             </div>
             <div class="nav-menu">
                 <a href="#home" class="nav-link active">Home</a>
+                <a href="#paths" class="nav-link">Paths</a>
                 <a href="#learn" class="nav-link">Learn</a>
                 <a href="#games" class="nav-link">Games</a>
                 <a href="#progress" class="nav-link">Progress</a>
@@ -42,22 +43,37 @@
             <div class="hero">
                 <div class="hero-content">
                     <h1 class="hero-title">
-                        <span class="gradient-text">Master Cybersecurity</span>
-                        <br>Through Gaming
+                        <span class="gradient-text">Cybersecurity Awareness</span>
+                        <br>& Education Platform
             </h1>
                     <p class="hero-subtitle">
-                        Learn essential cybersecurity skills through interactive games, 
-                        challenges, and real-world scenarios. Turn education into an adventure!
+                        Build practical cybersecurity awareness through interactive games and real-world scenarios. 
+                        Learn to recognize threats, protect yourself online, and understand essential security practices. 
+                        A practical, awareness-focused platform for everyone - from kids to professionals.
                     </p>
                     <div class="hero-buttons">
-                        <button class="btn btn-primary" onclick="showSection('learn')">
-                            <i class="fas fa-graduation-cap"></i>
-                            Start Learning
+                        <button class="btn btn-primary" onclick="showSection('paths')">
+                            <i class="fas fa-shield-alt"></i>
+                            Build Awareness
                         </button>
-                        <button class="btn btn-secondary" onclick="showSection('games')">
-                            <i class="fas fa-gamepad"></i>
-                            Play Games
+                        <button class="btn btn-secondary" onclick="showSection('learn')">
+                            <i class="fas fa-lightbulb"></i>
+                            Learn Essentials
                         </button>
+                    </div>
+                    <div class="hero-value-prop">
+                        <div class="value-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Practical Awareness</span>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Real-World Scenarios</span>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>For Everyone</span>
+                        </div>
                     </div>
                 </div>
                 <div class="hero-visual">
@@ -75,6 +91,17 @@
                 </div>
             </div>
 
+            <!-- Today's Security Tip -->
+            <div class="security-tip-section" style="background: linear-gradient(135deg, rgba(0,255,255,0.15), rgba(0,128,255,0.15)); padding: 2rem; border-radius: 20px; border: 2px solid rgba(0,255,255,0.3); margin: 3rem 0; text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                    <i class="fas fa-lightbulb" style="font-size: 2rem; color: #00ffff;"></i>
+                    <h2 style="color: #00ffff; font-size: 1.8rem; margin: 0;">Today's Security Tip</h2>
+                </div>
+                <div id="todaysSecurityTip" style="color: #ffffff; font-size: 1.3rem; line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                    <p style="margin: 0;">Loading tip...</p>
+                </div>
+            </div>
+
             <!-- Quick Stats -->
             <div class="quick-stats">
                 <div class="stat-card">
@@ -83,7 +110,7 @@
                     </div>
                     <div class="stat-content">
                         <h3 id="totalBadges">0</h3>
-                        <p>Badges Earned</p>
+                        <p>Awareness Badges</p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -97,12 +124,45 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
+                        <i class="fas fa-shield-alt"></i>
                     </div>
                     <div class="stat-content">
                         <h3 id="totalTime">0h</h3>
-                        <p>Learning Time</p>
+                        <p>Awareness Time</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Paths Section -->
+        <section id="paths" class="section">
+            <div class="breadcrumb" style="margin-bottom: 1.5rem; padding: 0.75rem 1rem; background: rgba(0,255,255,0.1); border-radius: 10px; font-size: 0.9rem;">
+                <a href="#home" onclick="showSection('home'); return false;" style="color: #00ffff; text-decoration: none;">Home</a>
+                <span style="margin: 0 0.5rem; color: #cccccc;">→</span>
+                <span style="color: #ffffff;">Learning Paths</span>
+            </div>
+            
+            <!-- Cybersecurity Career Roadmap -->
+            <div class="roadmap-section" style="margin-bottom: 4rem;">
+                <div class="section-header">
+                    <h2>🚀 Your Cybersecurity Adventure Map</h2>
+                    <p>Explore different cybersecurity roles and understand what awareness and skills they require</p>
+                </div>
+                
+                <div class="roadmap-container" id="roadmapContainer">
+                    <!-- Roadmap will be loaded dynamically -->
+                </div>
+            </div>
+            
+            <!-- Structured Learning Paths -->
+            <div class="learning-paths-section">
+                <div class="section-header">
+                    <h2>Awareness Learning Paths</h2>
+                    <p>Build practical cybersecurity awareness step-by-step through structured paths</p>
+                </div>
+
+                <div class="learning-paths-container" id="learningPathsContainer">
+                    <!-- Learning paths will be loaded dynamically -->
                 </div>
             </div>
         </section>
@@ -110,89 +170,14 @@
         <!-- Learn Section -->
         <section id="learn" class="section">
             <div class="section-header">
-                <h2>Learning Modules</h2>
-                <p>Build your cybersecurity foundation with interactive lessons</p>
+                <h2>Cybersecurity Awareness Essentials</h2>
+                <p>Learn practical cybersecurity awareness through interactive flashcards and real-world examples</p>
             </div>
 
-            <div class="learning-modules">
-                <div class="module-card" data-module="passwords">
-                    <div class="module-icon">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3>Password Security</h3>
-                        <p>Learn to create strong passwords and protect your accounts</p>
-                        <div class="module-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%"></div>
-                            </div>
-                            <span class="progress-text">0% Complete</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-module" onclick="openModule('passwords')">
-                        <i class="fas fa-play"></i>
-                        Start
-                    </button>
-                </div>
-
-                <div class="module-card" data-module="phishing">
-                    <div class="module-icon">
-                        <i class="fas fa-fish"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3>Phishing Recognition</h3>
-                        <p>Identify and avoid phishing attacks and scams</p>
-                        <div class="module-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%"></div>
-                            </div>
-                            <span class="progress-text">0% Complete</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-module" onclick="openModule('phishing')">
-                        <i class="fas fa-play"></i>
-                        Start
-                    </button>
-                </div>
-
-                <div class="module-card" data-module="browsing">
-                    <div class="module-icon">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3>Secure Browsing</h3>
-                        <p>Navigate the internet safely and protect your privacy</p>
-                        <div class="module-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%"></div>
-                            </div>
-                            <span class="progress-text">0% Complete</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-module" onclick="openModule('browsing')">
-                        <i class="fas fa-play"></i>
-                        Start
-                    </button>
-                </div>
-
-                <div class="module-card" data-module="encryption">
-                    <div class="module-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3>Encryption Basics</h3>
-                        <p>Understand how encryption protects your data</p>
-                        <div class="module-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%"></div>
-                            </div>
-                            <span class="progress-text">0% Complete</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-module" onclick="openModule('encryption')">
-                        <i class="fas fa-play"></i>
-                        Start
-                    </button>
+            <!-- Flashcards Section -->
+            <div class="flashcards-section">
+                <div class="flashcards-container" id="flashcardsContainer">
+                    <!-- Flashcards will be dynamically generated here -->
                 </div>
             </div>
         </section>
@@ -201,10 +186,11 @@
         <section id="games" class="section">
             <div class="section-header">
                 <h2>Game Center</h2>
-                <p>Test your knowledge through interactive games and challenges</p>
+                <p>Practice cybersecurity awareness through hands-on games and real-world scenarios</p>
             </div>
 
             <div class="games-grid">
+                <!-- 1. Snake & Ladder -->
                 <div class="game-card" data-game="snake-ladder">
                     <div class="game-image">
                         <i class="fas fa-dice"></i>
@@ -223,98 +209,26 @@
                     </button>
                 </div>
 
-                <div class="game-card" data-game="capture-the-flag">
+                <!-- 2. Phishing Detective (Enhanced) -->
+                <div class="game-card" data-game="phishing-detective">
                     <div class="game-image">
-                        <i class="fas fa-flag"></i>
+                        <i class="fas fa-envelope-open-text"></i>
                     </div>
                     <div class="game-content">
-                        <h3>Capture The Flag (CTF)</h3>
-                        <p>15+ Professional hacking challenges across 6 categories</p>
-                        <div class="game-stats">
-                            <span class="difficulty">Expert</span>
-                            <span class="duration">60+ min</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-game" onclick="startGame('capture-the-flag')">
-                        <i class="fas fa-play"></i>
-                        Play
-                    </button>
-                </div>
-
-
-
-                <div class="game-card" data-game="caesar-cipher">
-                    <div class="game-image">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="game-content">
-                        <h3>Caesar Cipher</h3>
-                        <p>Learn encryption by mastering the Caesar cipher</p>
+                        <h3>Phishing Detective</h3>
+                        <p>Identify phishing in emails, WhatsApp, websites, and more</p>
                         <div class="game-stats">
                             <span class="difficulty">Medium</span>
-                            <span class="duration">10-15 min</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-game" onclick="startGame('caesar-cipher')">
-                        <i class="fas fa-play"></i>
-                        Play
-                    </button>
-                </div>
-
-                <div class="game-card" data-game="network-scanner">
-                    <div class="game-image">
-                        <i class="fas fa-network-wired"></i>
-                    </div>
-                    <div class="game-content">
-                        <h3>Network Security Scanner</h3>
-                        <p>Professional network vulnerability scanning tool</p>
-                        <div class="game-stats">
-                            <span class="difficulty">Advanced</span>
-                            <span class="duration">10-15 min</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-game" onclick="startGame('network-scanner')">
-                        <i class="fas fa-play"></i>
-                        Play
-                    </button>
-                </div>
-
-                <div class="game-card" data-game="password-cracker">
-                    <div class="game-image">
-                        <i class="fas fa-unlock-alt"></i>
-                    </div>
-                    <div class="game-content">
-                        <h3>Password Cracking Simulator</h3>
-                        <p>Demonstrate password vulnerability through realistic simulation</p>
-                        <div class="game-stats">
-                            <span class="difficulty">Medium</span>
-                            <span class="duration">5-10 min</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-game" onclick="startGame('password-cracker')">
-                        <i class="fas fa-play"></i>
-                        Play
-                    </button>
-                </div>
-
-                <div class="game-card" data-game="malware-analysis">
-                    <div class="game-image">
-                        <i class="fas fa-bug"></i>
-                    </div>
-                    <div class="game-content">
-                        <h3>Malware Analysis Lab</h3>
-                        <p>Interactive malware analysis with static and dynamic techniques</p>
-                        <div class="game-stats">
-                            <span class="difficulty">Expert</span>
                             <span class="duration">15-20 min</span>
                         </div>
                     </div>
-                    <button class="btn btn-game" onclick="startGame('malware-analysis')">
+                    <button class="btn btn-game" onclick="startGame('phishing-detective')">
                         <i class="fas fa-play"></i>
                         Play
                     </button>
                 </div>
 
+                <!-- 3. Social Engineering Simulator -->
                 <div class="game-card" data-game="social-engineering">
                     <div class="game-image">
                         <i class="fas fa-user-secret"></i>
@@ -333,6 +247,64 @@
                     </button>
                 </div>
 
+                <!-- 4. Caesar Cipher -->
+                <div class="game-card" data-game="caesar-cipher">
+                    <div class="game-image">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="game-content">
+                        <h3>Caesar Cipher</h3>
+                        <p>Learn encryption by mastering the Caesar cipher</p>
+                        <div class="game-stats">
+                            <span class="difficulty">Medium</span>
+                            <span class="duration">10-15 min</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-game" onclick="startGame('caesar-cipher')">
+                        <i class="fas fa-play"></i>
+                        Play
+                    </button>
+                </div>
+
+                <!-- 5. Security Quiz Challenge -->
+                <div class="game-card" data-game="security-quiz">
+                    <div class="game-image">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="game-content">
+                        <h3>Security Quiz Challenge</h3>
+                        <p>Test your cybersecurity knowledge with interactive quizzes</p>
+                        <div class="game-stats">
+                            <span class="difficulty">Medium</span>
+                            <span class="duration">10-15 min</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-game" onclick="startGame('security-quiz')">
+                        <i class="fas fa-play"></i>
+                        Play
+                    </button>
+                </div>
+
+                <!-- 6. Spot the Threat -->
+                <div class="game-card" data-game="spot-the-threat">
+                    <div class="game-image">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="game-content">
+                        <h3>Spot the Threat</h3>
+                        <p>Visual threat detection - identify security risks in scenarios</p>
+                        <div class="game-stats">
+                            <span class="difficulty">Medium</span>
+                            <span class="duration">12-18 min</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-game" onclick="startGame('spot-the-threat')">
+                        <i class="fas fa-play"></i>
+                        Play
+                    </button>
+                </div>
+
+                <!-- 5. Incident Response Simulator -->
                 <div class="game-card" data-game="incident-response">
                     <div class="game-image">
                         <i class="fas fa-exclamation-triangle"></i>
@@ -350,14 +322,52 @@
                         Play
                     </button>
                 </div>
+
+                <!-- 6. Password Cracking Simulator -->
+                <div class="game-card" data-game="password-cracker">
+                    <div class="game-image">
+                        <i class="fas fa-unlock-alt"></i>
+                    </div>
+                    <div class="game-content">
+                        <h3>Password Cracking Simulator</h3>
+                        <p>Demonstrate password vulnerability through realistic simulation</p>
+                        <div class="game-stats">
+                            <span class="difficulty">Medium</span>
+                            <span class="duration">5-10 min</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-game" onclick="startGame('password-cracker')">
+                        <i class="fas fa-play"></i>
+                        Play
+                    </button>
+                </div>
+
+                <!-- 7. Capture The Flag (CTF) -->
+                <div class="game-card" data-game="capture-the-flag">
+                    <div class="game-image">
+                        <i class="fas fa-flag"></i>
+                    </div>
+                    <div class="game-content">
+                        <h3>Capture The Flag (CTF)</h3>
+                        <p>15+ Professional hacking challenges across 6 categories</p>
+                        <div class="game-stats">
+                            <span class="difficulty">Expert</span>
+                            <span class="duration">60+ min</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-game" onclick="startGame('capture-the-flag')">
+                        <i class="fas fa-play"></i>
+                        Play
+                    </button>
+                </div>
             </div>
         </section>
 
         <!-- Progress Section -->
         <section id="progress" class="section">
             <div class="section-header">
-                <h2>Your Progress</h2>
-                <p>Track your learning journey and achievements</p>
+                <h2>Your Awareness Progress</h2>
+                <p>Track your cybersecurity awareness journey and achievements</p>
             </div>
 
             <div class="progress-dashboard">
@@ -437,6 +447,33 @@
         </div>
     </div>
 
+    <!-- Flashcard Full-Screen Modal -->
+    <div id="flashcardModal" class="flashcard-modal">
+        <div class="flashcard-modal-content">
+            <div class="flashcard-modal-header">
+                <div class="flashcard-modal-icon" id="flashcardModalIcon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2 id="flashcardModalTitle">Flashcard Title</h2>
+                <button class="flashcard-close-btn" onclick="closeFlashcardModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flashcard-modal-body" id="flashcardModalContent">
+                <!-- Flashcard content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="games/snakeLadder.js"></script>
+    <script src="games/captureTheFlag.js"></script>
+    <script src="games/caesarCipher.js"></script>
+    <script src="games/passwordCracker.js"></script>
+    <script src="games/socialEngineering.js"></script>
+    <script src="games/incidentResponse.js"></script>
+    <script src="games/phishingDetective.js"></script>
+    <script src="games/securityQuiz.js"></script>
+    <script src="games/spotTheThreat.js"></script>
     <script src="script.js"></script>
     </body>
 </html>
