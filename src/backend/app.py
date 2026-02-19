@@ -454,8 +454,20 @@ def get_learning_paths():
                     'estimated_time': '45 minutes'
                 },
                 {
-                    'id': 'network',
+                    'id': 'dpdp',
                     'order': 2,
+                    'title': 'Digital Personal Data Protection (DPDP) Act',
+                    'objectives': [
+                        'Understand what the DPDP Act is and why it exists',
+                        'Learn your key rights as a data principal (individual)',
+                        'Recognize the responsibilities of organisations handling personal data'
+                    ],
+                    'games': ['security-quiz'],
+                    'estimated_time': '40-60 minutes'
+                },
+                {
+                    'id': 'network',
+                    'order': 3,
                     'title': 'Network Security',
                     'objectives': [
                         'Understand network vulnerabilities',
@@ -617,6 +629,28 @@ def get_learning_module(module_id):
                         'title': 'Caesar Cipher',
                         'content': 'Explore one of the oldest encryption methods and understand its principles.',
                         'interactive': 'caesar_cipher_tool'
+                    }
+                ]
+            }
+        },
+        'dpdp': {
+            'title': 'Digital Personal Data Protection (DPDP) Act',
+            'learning_objectives': [
+                'Understand the purpose and scope of the DPDP Act',
+                'Learn the key rights given to individuals (data principals)',
+                'Identify core obligations of organisations (data fiduciaries)'
+            ],
+            'content': {
+                'lessons': [
+                    {
+                        'title': 'Why the DPDP Act Exists',
+                        'content': 'Explore how the DPDP Act protects your digital personal data in India and why it was introduced.',
+                        'interactive': 'dpdp_intro_story'
+                    },
+                    {
+                        'title': 'Your Rights Under DPDP',
+                        'content': 'Learn the practical rights you get under the Act – like access, correction, erasure, and grievance redressal.',
+                        'interactive': 'dpdp_rights_quiz'
                     }
                 ]
             }

@@ -1025,6 +1025,175 @@ function getModuleData(moduleName) {
             `,
             init: initEncryptionModule,
             relatedGame: 'caesar-cipher'
+        },
+        dpdp: {
+            title: 'Digital Personal Data Protection (DPDP) Act',
+            content: `
+                <div class="module-content">
+                    <div class="lesson-section">
+                        <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(0,255,255,0.1); border-radius: 10px; border: 2px solid rgba(0,255,255,0.3);">
+                            <h3 style="color: #00ffff; margin-bottom: 1rem; font-size: 1.8rem;">🛡️ Digital Personal Data Protection (DPDP) Act</h3>
+                            <p style="font-size: 1.1rem; line-height: 1.8; color: #ffffff;">
+                                <strong style="color: #ffd700;">For Kids:</strong> Imagine a rulebook that says, "People must ask nicely before they use your personal information, and they must keep it safe."<br><br>
+                                <strong style="color: #ffd700;">For Students:</strong> The DPDP Act is India’s law that controls how apps, websites, schools, and companies can collect, use, store, and share your personal data.<br><br>
+                                <strong style="color: #ffd700;">For Professionals:</strong> The DPDP Act, 2023 is India’s comprehensive digital privacy law. It defines rights for individuals (data principals) and obligations for organisations (data fiduciaries) around lawful, transparent, and secure processing of personal data.
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3>📘 1. What Counts as "Personal Data"?</h3>
+                            <p style="color: #cccccc; line-height: 1.7;">
+                                <strong>Personal data</strong> is any information that can identify you, directly or indirectly.
+                            </p>
+                            <ul style="color: #ffffff; line-height: 1.8; margin-left: 1.5rem;">
+                                <li><strong>Basic details:</strong> Name, phone number, email, address</li>
+                                <li><strong>Digital identifiers:</strong> IP address, device ID, login ID, profile picture</li>
+                                <li><strong>Sensitive areas:</strong> Financial details, health data, Aadhaar number (usually treated with extra care in practice)</li>
+                            </ul>
+                            <p style="color: #cccccc; margin-top: 0.5rem;">
+                                Under the DPDP Act, the law mainly talks about <strong>digital personal data</strong> – data about people that exists in digital form (or is digitised).
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3>👥 2. Key Roles: Who is Who?</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                                <div style="padding: 1.25rem; background: rgba(0,255,255,0.08); border-radius: 10px; border-left: 4px solid #00ffff;">
+                                    <h4 style="color: #00ffff; margin-bottom: 0.5rem;">🧑 Data Principal</h4>
+                                    <p style="color: #cccccc; font-size: 0.95rem;">
+                                        The <strong>individual</strong> the data is about – <em>you</em>. If an app stores your name, you are the data principal.
+                                    </p>
+                                </div>
+                                <div style="padding: 1.25rem; background: rgba(255,215,0,0.08); border-radius: 10px; border-left: 4px solid #ffd700;">
+                                    <h4 style="color: #ffd700; margin-bottom: 0.5rem;">🏢 Data Fiduciary</h4>
+                                    <p style="color: #cccccc; font-size: 0.95rem;">
+                                        The <strong>organisation</strong> that decides why and how to process your data (apps, websites, companies, schools, banks).
+                                    </p>
+                                </div>
+                                <div style="padding: 1.25rem; background: rgba(255,0,0,0.08); border-radius: 10px; border-left: 4px solid #ff0000;">
+                                    <h4 style="color: #ff6b6b; margin-bottom: 0.5rem;">🤝 Data Processor</h4>
+                                    <p style="color: #cccccc; font-size: 0.95rem;">
+                                        A third party that processes data <strong>on behalf</strong> of a data fiduciary (for example, cloud providers or analytics tools).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3>📜 3. Core Principles in Simple Language</h3>
+                            <p style="color: #cccccc; margin-bottom: 0.75rem;">
+                                The DPDP Act is built on simple, common-sense ideas:
+                            </p>
+                            <ul style="color: #ffffff; line-height: 1.8; margin-left: 1.5rem;">
+                                <li><strong>Lawful & transparent use:</strong> Tell people <em>clearly</em> why you’re taking their data and use it only for that purpose.</li>
+                                <li><strong>Purpose limitation:</strong> Don’t secretly use data for something totally different from what you promised.</li>
+                                <li><strong>Data minimisation:</strong> Collect only what you actually need – no unnecessary details.</li>
+                                <li><strong>Accuracy:</strong> Keep personal data reasonably up to date and correct.</li>
+                                <li><strong>Storage limitation:</strong> Don’t keep personal data forever – retain it only as long as needed.</li>
+                                <li><strong>Security safeguards:</strong> Protect data using reasonable technical and organisational measures.</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3>🧑‍⚖️ 4. Your Key Rights as a Data Principal</h3>
+                            <p style="color: #cccccc; margin-bottom: 0.5rem;">
+                                Under the DPDP Act, you get practical, user-friendly rights:
+                            </p>
+                            <ul style="color: #ffffff; line-height: 1.8; margin-left: 1.5rem;">
+                                <li><strong>Right to Information:</strong> Know <em>what</em> data is collected, <em>why</em>, and <em>who</em> it’s shared with.</li>
+                                <li><strong>Right to Access:</strong> Ask an organisation to show you the personal data they store about you.</li>
+                                <li><strong>Right to Correction & Erasure:</strong> Get incorrect data fixed, and ask for certain data to be deleted when it is no longer needed or consent is withdrawn.</li>
+                                <li><strong>Right to Grievance Redressal:</strong> If you’re unhappy, you can file a complaint with the organisation – and then with the Data Protection Board if needed.</li>
+                                <li><strong>Right to Nominate:</strong> Nominate someone to exercise your rights if you pass away or are unable to act.</li>
+                            </ul>
+                            <p style="background: rgba(0,255,0,0.12); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ff00; margin-top: 0.75rem; color: #ffffff;">
+                                <strong>Example:</strong> If an ed-tech app keeps sending you marketing messages even after you stop using it, you can ask them to delete your data and stop contacting you.
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3>🏢 5. Responsibilities of Organisations (Data Fiduciaries)</h3>
+                            <p style="color: #cccccc; margin-bottom: 0.5rem;">
+                                Organisations handling personal data must:
+                            </p>
+                            <ul style="color: #ffffff; line-height: 1.8; margin-left: 1.5rem;">
+                                <li><strong>Provide clear notices:</strong> Easy-to-understand privacy notices before or at the time of data collection.</li>
+                                <li><strong>Get valid consent (where required):</strong> Consent should be <em>free, specific, informed, unconditional, and unambiguous</em>.</li>
+                                <li><strong>Respect "legitimate uses":</strong> In certain limited situations (like legal obligations), they may process data without consent – but still with safeguards.</li>
+                                <li><strong>Protect children’s data:</strong> Take extra care when processing data about children and avoid harmful tracking or targeted advertising.</li>
+                                <li><strong>Notify breaches:</strong> Inform the Data Protection Board and affected users in case of certain data breaches.</li>
+                                <li><strong>Significant data fiduciaries:</strong> Large/high-risk entities may need a Data Protection Officer, impact assessments, and audits.</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3>📱 6. DPDP in Everyday Life – Quick Scenarios</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                                <div style="padding: 1rem; background: rgba(0,255,255,0.08); border-radius: 10px;">
+                                    <h4 style="color: #00ffff;">🎮 Gaming App</h4>
+                                    <p style="color: #cccccc; font-size: 0.95rem;">
+                                        A mobile game asks for your location, contacts, and SMS access “to improve experience”. Under DPDP, this should be <strong>limited, clear, and optional</strong> unless truly necessary.
+                                    </p>
+                                </div>
+                                <div style="padding: 1rem; background: rgba(0,255,255,0.08); border-radius: 10px;">
+                                    <h4 style="color: #00ffff;">🎓 College Portal</h4>
+                                    <p style="color: #cccccc; font-size: 0.95rem;">
+                                        Your college collects your name, marks, address, and emergency contact for academic records – but it shouldn’t sell this data to advertisers without a lawful basis and proper notice.
+                                    </p>
+                                </div>
+                                <div style="padding: 1rem; background: rgba(0,255,255,0.08); border-radius: 10px;">
+                                    <h4 style="color: #00ffff;">🏦 Fintech App</h4>
+                                    <p style="color: #cccccc; font-size: 0.95rem;">
+                                        A loan app must secure your PAN, bank details, and repayment history, and only use them for the purposes you agreed to (and as allowed by law).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-section" style="margin-top: 2rem;">
+                        <h3>🎯 7. Quick DPDP Act Quiz</h3>
+                        <div class="quiz-question">
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                                <strong>Which of the following best describes your rights under the DPDP Act?</strong>
+                            </p>
+                            <div class="quiz-options" style="display: grid; gap: 0.75rem;">
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'This is too broad – organisations still have clear duties and limits.')">
+                                    Organisations can do anything with your data as long as it is online.
+                                </button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, true, 'Correct – you have rights to know, access, correct, erase (in many cases), and raise complaints.')">
+                                    You can know how your data is used, ask for access/correction, and raise complaints if things go wrong.
+                                </button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'DPDP doesn’t give you this “no-limit” right – there are balanced rules.')">
+                                    You can demand that all organisations delete every bit of your data instantly, always.
+                                </button>
+                                <button class="quiz-option" onclick="checkQuizAnswer(this, false, 'You can act individually – going to court is not the only way to exercise your rights.')">
+                                    Only a court can act; individuals have no direct rights.
+                                </button>
+                            </div>
+                            <div id="quizExplanation" style="margin-top: 1rem; padding: 1rem; background: rgba(0,255,255,0.1); border-radius: 5px; display: none;"></div>
+                        </div>
+                    </div>
+
+                    <div class="next-steps" style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,128,255,0.1)); border-radius: 10px; border: 2px solid rgba(0,255,255,0.3); text-align: center;">
+                        <h4 style="color: #00ffff; margin-bottom: 1rem; font-size: 1.3rem;">🧭 What Should You Do Next?</h4>
+                        <p style="color: #cccccc; margin-bottom: 1.5rem;">
+                            Start noticing privacy notices, permission screens, and data requests in the apps and websites you use. Ask: <em>Do they really need this data?</em>
+                        </p>
+                        <button onclick="closeModule(); startGame('security-quiz');"
+                                style="padding: 1rem 2rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 50px; color: #000; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0,255,255,0.3);"
+                                onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 30px rgba(0,255,255,0.5)'"
+                                onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 20px rgba(0,255,255,0.3)'">
+                            <i class="fas fa-gamepad"></i> Practice with Security Quiz
+                        </button>
+                        <p style="color: #cccccc; margin-top: 1rem; font-size: 0.9rem;">
+                            Many quiz questions can be directly connected to your DPDP awareness and real-life privacy decisions.
+                        </p>
+                    </div>
+                </div>
+            `,
+            init: null,
+            relatedGame: 'security-quiz'
         }
     };
     
@@ -2207,6 +2376,54 @@ const flashcardsData = [
         `
     },
     {
+        title: "DPDP Act (India)",
+        icon: "fas fa-balance-scale",
+        content: `
+            <h4>⚖️ What Is the DPDP Act?</h4>
+            <p>The <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong> is India’s main digital privacy law. It decides how apps, websites, schools, companies, and platforms can collect, use, store, and share your personal data.</p>
+
+            <p style="background: rgba(0,255,255,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ffff; margin: 1rem 0;">
+                <strong>In simple words:</strong> It says, “<em>Ask properly, use fairly, protect carefully, and delete when not needed.</em>”
+            </p>
+
+            <h4>👤 Key Terms</h4>
+            <ul>
+                <li><strong>Data Principal:</strong> The person the data is about – <em>you</em>.</li>
+                <li><strong>Data Fiduciary:</strong> The organisation that decides why and how your data is used (apps, banks, schools, companies).</li>
+                <li><strong>Personal Data:</strong> Any info that can identify you – name, phone, email, photo, ID number, etc.</li>
+            </ul>
+
+            <h4>🛡️ Your Main Rights</h4>
+            <ul>
+                <li>Know <strong>what data</strong> is collected and <strong>why</strong>.</li>
+                <li>Ask for a copy of your data stored by an organisation.</li>
+                <li>Get wrong data corrected or, in many cases, deleted.</li>
+                <li>Raise a complaint if your data is misused or not protected.</li>
+            </ul>
+
+            <h4>🏢 Duties of Organisations</h4>
+            <p>Organisations must:</p>
+            <ul>
+                <li>Take <strong>clear consent</strong> in simple language.</li>
+                <li>Use data only for the <strong>purpose explained</strong>.</li>
+                <li>Protect data with <strong>reasonable security</strong> measures.</li>
+                <li>Inform you and the authorities in case of serious data breaches (like large leaks).</li>
+            </ul>
+
+            <h4>📱 Real-Life Example</h4>
+            <p>Imagine a learning app asks for your name, email, and phone to create an account. Under the DPDP Act, it should:</p>
+            <ul>
+                <li>Tell you <strong>why</strong> it needs this data.</li>
+                <li>Not silently share it with advertisers without a valid basis.</li>
+                <li>Let you ask for your data to be corrected or removed later.</li>
+            </ul>
+
+            <p style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #00ff00; margin-top: 1rem;">
+                <strong>💡 Takeaway:</strong> The DPDP Act gives you more control over your data. Start noticing privacy notices, consent pop-ups, and permission screens – they exist because laws like DPDP require them.
+            </p>
+        `
+    },
+    {
         title: "Malware",
         icon: "fas fa-virus",
         content: `
@@ -2761,6 +2978,7 @@ const flashcardGameMap = {
     'Encryption Basics': ['caesar-cipher'],
     'Firewall': ['security-quiz'],
     'Two-Factor Authentication (2FA)': ['security-quiz'],
+    'DPDP Act (India)': ['security-quiz'],
     'Ransomware': ['spot-the-threat'],
     'Malware': ['spot-the-threat'],
     'Social Engineering': ['social-engineering', 'phishing-detective'],
