@@ -13,6 +13,25 @@ const appState = {
     moduleInstances: {}
 };
 
+// theme helpers -----------------------------------------------------------
+function applyColorBlindMode(enabled) {
+    if (enabled) document.body.classList.add('color-blind');
+    else document.body.classList.remove('color-blind');
+}
+
+function initializeTheme() {
+    const saved = localStorage.getItem('colorBlindMode');
+    const enabled = saved === 'true';
+    const checkbox = document.getElementById('colorBlindToggle');
+    applyColorBlindMode(enabled);
+    if (checkbox) {
+        checkbox.checked = enabled;
+    }
+}
+
+// -------------------------------------------------------------------------
+
+
 // Registry for modular game definitions
 window.CyberArcadeGames = window.CyberArcadeGames || {};
 
@@ -31,7 +50,9 @@ function initializeApp() {
     loadCareerRoadmap();
     loadTodaysSecurityTip();
     loadSecurityChecklist();
+    initializeTheme(); // set up color-blind toggle state
 }
+
 
 // Load and display career roadmap
 function loadCareerRoadmap() {
@@ -40,7 +61,7 @@ function loadCareerRoadmap() {
             title: '🔓 Penetration Tester (Ethical Hacker)',
             description: 'Find security vulnerabilities before attackers do',
             icon: 'fas fa-user-secret',
-            color: '#ff6b6b',
+            color: 'var(--accent-primary)',
             skills: ['Network Security', 'Web Exploitation', 'Social Engineering', 'CTF Challenges'],
             modules: ['Network Security', 'Secure Browsing', 'Phishing Recognition'],
             games: ['Network Security Scanner', 'Capture The Flag', 'Social Engineering Simulator'],
@@ -60,7 +81,7 @@ function loadCareerRoadmap() {
             title: '🔍 Digital Forensics Expert',
             description: 'Investigate cybercrimes and analyze digital evidence',
             icon: 'fas fa-search',
-            color: '#ffd700',
+            color: 'var(--warning)',
             skills: ['File Analysis', 'Data Recovery', 'Evidence Collection', 'CTF Forensics'],
             modules: ['Encryption Basics', 'Secure Browsing'],
             games: ['Capture The Flag (Forensics)', 'Malware Analysis Lab'],
@@ -80,7 +101,7 @@ function loadCareerRoadmap() {
             title: '⚙️ Security Engineer',
             description: 'Build secure systems and infrastructure',
             icon: 'fas fa-cogs',
-            color: '#ff00ff',
+            color: 'var(--accent-secondary)',
             skills: ['Network Security', 'System Hardening', 'Password Security', 'Security Architecture'],
             modules: ['Password Security', 'Network Security', 'Encryption Basics'],
             games: ['Password Cracking Simulator', 'Network Security Scanner', 'Caesar Cipher'],
@@ -155,7 +176,7 @@ function displayCareerRoadmap(roadmapData) {
                             <i class="${role.icon}"></i>
                         </div>
                         <div style="flex: 1;">
-                            <h3 style="color: #ffffff; font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: bold;">${role.title}</h3>
+                            <h3 style="color: var(--text-color); font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: bold;">${role.title}</h3>
                             <p style="color: #cccccc; line-height: 1.6; font-size: 1.05rem;">${role.description}</p>
                         </div>
                     </div>
@@ -185,22 +206,22 @@ function displayCareerRoadmap(roadmapData) {
                         <div>
                             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
                                 <span style="font-size: 1.5rem;">🎮</span>
-                                <span style="color: #ff6b6b; font-weight: bold;">Play These Games:</span>
+                                <span style="color: var(--accent-primary); font-weight: bold;">Play These Games:</span>
                             </div>
                             <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-left: 2rem;">
                                 ${role.games.map(game => `
-                                    <span style="background: rgba(255,107,107,0.15); color: #ff6b6b; padding: 0.4rem 0.8rem; border-radius: 10px; font-size: 0.9rem; border: 1px solid rgba(255,107,107,0.3);">${game.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</span>
+                                    <span style="background: var(--warning-bg); color: var(--accent-primary); padding: 0.4rem 0.8rem; border-radius: 10px; font-size: 0.9rem; border: 1px solid var(--warning-border);">${game.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</span>
                                 `).join('')}
                             </div>
                         </div>
                     </div>
                     
-                    <div class="roadmap-next-steps" style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(255,215,0,0.1); border-radius: 12px; border-left: 4px solid #ffd700; position: relative; z-index: 1;">
+                    <div class="roadmap-next-steps" style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(255,215,0,0.1); border-radius: 12px; border-left: 4px solid var(--warning); position: relative; z-index: 1;">
                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
                             <span style="font-size: 1.3rem;">🌟</span>
-                            <p style="color: #ffd700; font-weight: bold; margin: 0; font-size: 1.05rem;">What's Next?</p>
+                            <p style="color: var(--warning); font-weight: bold; margin: 0; font-size: 1.05rem;">What's Next?</p>
                         </div>
-                        <p style="color: #ffffff; font-size: 0.95rem; line-height: 1.7; margin: 0;">${role.nextSteps}</p>
+                        <p style="color: var(--text-color); font-size: 0.95rem; line-height: 1.7; margin: 0;">${role.nextSteps}</p>
                     </div>
                 </div>
             `).join('')}
@@ -252,10 +273,10 @@ function startCareerPath(careerKey) {
     modal.innerHTML = `
         <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; border-radius: 20px; border: 2px solid rgba(0,255,255,0.3); max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;">
             <h2 style="color: #00ffff; margin-bottom: 1rem;">🎯 Your Career Path Journey</h2>
-            <p style="color: #ffffff; margin-bottom: 2rem; line-height: 1.6;">Let's start your learning journey! We'll guide you through the modules and games relevant to this career path.</p>
+            <p style="color: var(--text-color); margin-bottom: 2rem; line-height: 1.6;">Let's start your learning journey! We'll guide you through the modules and games relevant to this career path.</p>
             
             <div style="margin-bottom: 2rem;">
-                <h3 style="color: #ffd700; margin-bottom: 1rem;">📚 Step 1: Learning Modules (Flashcards)</h3>
+                <h3 style="color: var(--warning); margin-bottom: 1rem;">📚 Step 1: Learning Modules (Flashcards)</h3>
                 <p style="color: #cccccc; font-size: 0.9rem; margin-bottom: 1rem;">Click on any flashcard to learn about these topics:</p>
                 <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                     ${path.modules.map(module => `
@@ -268,19 +289,19 @@ function startCareerPath(careerKey) {
             </div>
             
             <div style="margin-bottom: 2rem;">
-                <h3 style="color: #ffd700; margin-bottom: 1rem;">🎮 Step 2: Practice Games</h3>
+                <h3 style="color: var(--warning); margin-bottom: 1rem;">🎮 Step 2: Practice Games</h3>
                 <p style="color: #cccccc; font-size: 0.9rem; margin-bottom: 1rem;">Practice what you learned with these games:</p>
                 <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                     ${path.games.map(game => `
                         <button onclick="closePathModal(); showSection('games'); setTimeout(() => startGame('${game}'), 300);" 
-                                style="padding: 1rem; background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); border-radius: 10px; color: #ff6b6b; cursor: pointer; text-align: left; transition: all 0.3s;">
+                                style="padding: 1rem; background: var(--warning-bg); border: 1px solid var(--warning-border); border-radius: 10px; color: var(--accent-primary); cursor: pointer; text-align: left; transition: all 0.3s;">
                             <i class="fas fa-gamepad"></i> ${game.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
                         </button>
                     `).join('')}
                 </div>
             </div>
             
-            <button onclick="closePathModal()" style="width: 100%; padding: 1rem; background: rgba(255,0,0,0.2); border: 1px solid #ff0000; border-radius: 10px; color: #ff0000; font-weight: bold; cursor: pointer;">
+            <button onclick="closePathModal()" style="width: 100%; padding: 1rem; background: var(--danger-bg); border: 1px solid var(--danger); border-radius: 10px; color: var(--danger); font-weight: bold; cursor: pointer;">
                 Close
             </button>
         </div>
@@ -392,7 +413,7 @@ function startLearningPath(pathId) {
                                 <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(0,255,255,0.1); border-radius: 10px; border-left: 3px solid #00ffff;">
                                     <div style="width: 35px; height: 35px; background: linear-gradient(45deg, #00ffff, #0080ff); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${index + 1}</div>
                                     <div style="flex: 1;">
-                                        <h4 style="color: #ffffff; margin: 0 0 0.25rem 0;">${module.title}</h4>
+                                        <h4 style="color: var(--text-color); margin: 0 0 0.25rem 0;">${module.title}</h4>
                                         <p style="color: #cccccc; margin: 0; font-size: 0.9rem;"><i class="fas fa-hourglass-half"></i> ${module.estimated_time}</p>
                                     </div>
                                 </div>
@@ -401,7 +422,7 @@ function startLearningPath(pathId) {
                     </div>
                     
                     <div style="display: flex; gap: 1rem; justify-content: center;">
-                        <button onclick="this.parentElement.parentElement.remove()" style="padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 5px; color: #ffffff; cursor: pointer; font-weight: bold;">Cancel</button>
+                        <button onclick="this.parentElement.parentElement.remove()" style="padding: 0.75rem 1.5rem; background: var(--surface); border: 1px solid var(--card-border); border-radius: 5px; color: var(--text-color); cursor: pointer; font-weight: bold;">Cancel</button>
                         <button onclick="startPathModule('${pathId}', 0); this.parentElement.parentElement.parentElement.remove();" style="padding: 0.75rem 1.5rem; background: linear-gradient(45deg, #00ffff, #0080ff); border: none; border-radius: 5px; color: #000; cursor: pointer; font-weight: bold;">Start Learning Path</button>
                     </div>
                 </div>
@@ -477,6 +498,15 @@ function setupEventListeners() {
             showSection(target);
         });
     });
+
+    // color-blind toggle
+    const toggle = document.getElementById('colorBlindToggle');
+    if (toggle) {
+        toggle.addEventListener('change', () => {
+            applyColorBlindMode(toggle.checked);
+            localStorage.setItem('colorBlindMode', toggle.checked);
+        });
+    }
     
     // Escape key to close modals
     document.addEventListener('keydown', function(e) {
@@ -646,7 +676,7 @@ function getModuleData(moduleName) {
                             <strong>For Professionals:</strong> Weak passwords are the #1 cause of data breaches. A single compromised password can expose entire systems.
                         </p>
                         
-                        <div class="real-world-example" style="background: rgba(255,0,0,0.1); padding: 1rem; border-radius: 5px; border-left: 3px solid #ff0000; margin-bottom: 1.5rem;">
+                        <div class="real-world-example" style="background: var(--danger-bg); padding: 1rem; border-radius: 5px; border-left: 3px solid var(--danger); margin-bottom: 1.5rem;">
                             <h4>⚠️ Real-World Example:</h4>
                             <p>In 2021, a company lost $4.5 million because an employee used "password123" as their password. Hackers guessed it in seconds!</p>
                         </div>
@@ -693,12 +723,12 @@ function getModuleData(moduleName) {
                         <div class="password-examples" style="margin-top: 2rem;">
                             <h4>📝 Password Examples:</h4>
                             <div style="display: grid; gap: 1rem; margin-top: 1rem;">
-                                <div style="padding: 1rem; background: rgba(255,0,0,0.1); border-radius: 5px; border-left: 3px solid #ff0000;">
-                                    <strong style="color: #ff0000;">❌ Weak:</strong> "password123"<br>
+                                <div style="padding: 1rem; background: var(--danger-bg); border-radius: 5px; border-left: 3px solid var(--danger);">
+                                    <strong style="color: var(--danger);">❌ Weak:</strong> "password123"<br>
                                     <small>Too common, too short, no special characters</small>
                                 </div>
-                                <div style="padding: 1rem; background: rgba(255,215,0,0.1); border-radius: 5px; border-left: 3px solid #ffd700;">
-                                    <strong style="color: #ffd700;">⚠️ Medium:</strong> "MyDog123"<br>
+                                <div style="padding: 1rem; background: rgba(255,215,0,0.1); border-radius: 5px; border-left: 3px solid var(--warning);">
+                                    <strong class="text-warning">⚠️ Medium:</strong> "MyDog123"<br>
                                     <small>Has uppercase/lowercase/numbers, but too short and uses personal info</small>
                                 </div>
                                 <div style="padding: 1rem; background: rgba(0,255,0,0.1); border-radius: 5px; border-left: 3px solid #00ff00;">
@@ -716,7 +746,7 @@ function getModuleData(moduleName) {
                             <input type="password" id="passwordInput" placeholder="Enter a password to test" style="width: 100%; padding: 1rem; font-size: 1.1rem; background: rgba(255,255,255,0.1); border: 2px solid rgba(0,255,255,0.3); border-radius: 5px; color: white;">
                             <div class="password-strength" id="passwordStrength" style="margin-top: 1rem;">
                                 <div class="strength-bar" style="height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                                    <div class="strength-fill" style="height: 100%; width: 0%; background: linear-gradient(45deg, #ff0000, #ffd700, #00ff00); transition: all 0.3s ease;"></div>
+                                    <div class="strength-fill" style="height: 100%; width: 0%; background: linear-gradient(45deg, var(--danger), var(--warning), var(--success)); transition: all 0.3s ease;"></div>
                                 </div>
                                 <span class="strength-text" style="display: block; margin-top: 0.5rem; font-weight: bold;">Enter a password</span>
                                 <div id="passwordFeedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #cccccc;"></div>
@@ -762,7 +792,7 @@ function getModuleData(moduleName) {
                 <div class="module-content">
                     <div class="lesson-section">
                         <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border: 2px solid rgba(255,0,0,0.3);">
-                            <h3 style="color: #ff0000; margin-bottom: 1rem; font-size: 1.8rem;">🎣 What is Phishing?</h3>
+                            <h3 class="text-danger" style="margin-bottom: 1rem; font-size: 1.8rem;">🎣 What is Phishing?</h3>
                             <p style="font-size: 1.1rem; line-height: 1.8; color: #ffffff;">
                                 <strong style="color: #ffd700;">For Kids:</strong> Like a fisherman trying to catch fish, hackers "fish" for your information by tricking you!<br><br>
                                 <strong style="color: #ffd700;">For Everyone:</strong> Phishing is when attackers pretend to be someone you trust (like your bank or school) to steal your passwords, money, or personal info.
@@ -772,12 +802,12 @@ function getModuleData(moduleName) {
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0;">
                             <div style="padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border-left: 4px solid #ff0000;">
                                 <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
-                                <h4 style="color: #ff0000; margin-bottom: 0.5rem;">Urgent Language</h4>
+                                <h4 class="text-danger" style="margin-bottom: 0.5rem;">Urgent Language</h4>
                                 <p style="color: #cccccc; font-size: 0.9rem;">"Act now!", "Limited time!", "Your account will be closed!"</p>
                             </div>
                             <div style="padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border-left: 4px solid #ff0000;">
                                 <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📧</div>
-                                <h4 style="color: #ff0000; margin-bottom: 0.5rem;">Suspicious Sender</h4>
+                                <h4 class="text-danger" style="margin-bottom: 0.5rem;">Suspicious Sender</h4>
                                 <p style="color: #cccccc; font-size: 0.9rem;">Fake email addresses like "paypal-security.com" instead of "paypal.com"</p>
                             </div>
                             <div style="padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border-left: 4px solid #ff0000;">
@@ -787,7 +817,7 @@ function getModuleData(moduleName) {
                             </div>
                             <div style="padding: 1.5rem; background: rgba(255,0,0,0.1); border-radius: 10px; border-left: 4px solid #ff0000;">
                                 <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">❌</div>
-                                <h4 style="color: #ff0000; margin-bottom: 0.5rem;">Poor Grammar</h4>
+                                <h4 class="text-danger" style="margin-bottom: 0.5rem;">Poor Grammar</h4>
                                 <p style="color: #cccccc; font-size: 0.9rem;">Lots of spelling mistakes and bad grammar</p>
                             </div>
                         </div>
@@ -799,7 +829,7 @@ function getModuleData(moduleName) {
                             <div class="email-example" data-phishing="true" style="background: rgba(255,0,0,0.1); padding: 1.5rem; border-radius: 10px; border: 2px solid rgba(255,0,0,0.5); cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'" onclick="showPhishingAnalysis(this)">
                                 <div class="email-header" style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,0,0,0.3);">
                                     <div style="margin-bottom: 0.5rem;"><strong style="color: #ff0000;">From:</strong> <span style="color: #ffffff;">security@paypal-security.com</span></div>
-                                    <div><strong style="color: #ff0000;">Subject:</strong> <span style="color: #ffffff; font-weight: bold;">URGENT: Your account will be closed!</span></div>
+                                    <div><strong class="text-danger">Subject:</strong> <span class="text-primary" style="font-weight: bold;">URGENT: Your account will be closed!</span></div>
                                 </div>
                                 <div class="email-body" style="color: #ffffff; line-height: 1.8;">
                                     <p>Dear Customer,</p>
@@ -832,7 +862,7 @@ function getModuleData(moduleName) {
                             <div id="quizExplanation" style="margin-top: 1rem; padding: 1rem; background: rgba(255,0,0,0.1); border-radius: 5px; display: none;"></div>
                         </div>
                         <div style="margin-top: 1.5rem; text-align: center;">
-                            <button onclick="closeModule(); showSection('games');" style="padding: 0.8rem 1.5rem; background: linear-gradient(45deg, #ff6b6b, #ff8e53); border: none; border-radius: 50px; color: #ffffff; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255,107,107,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(255,107,107,0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(255,107,107,0.3)'">
+                            <button onclick="closeModule(); showSection('games');" style="padding: 0.8rem 1.5rem; background: var(--warning-gradient); border: none; border-radius: 50px; color: #ffffff; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px var(--warning-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(255,107,107,0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(255,107,107,0.3)'">
                                 <i class="fas fa-gamepad"></i> Play Games to Know More!
                             </button>
                         </div>

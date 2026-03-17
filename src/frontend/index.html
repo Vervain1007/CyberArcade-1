@@ -32,6 +32,12 @@
                     <i class="fas fa-coins"></i>
                     <span id="userPoints">0</span>
                 </div>
+                <div class="theme-toggle">
+                    <label class="switch" title="Color blind safe mode">
+                        <input type="checkbox" id="colorBlindToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </nav>
@@ -94,10 +100,10 @@
             <!-- Today's Security Tip -->
             <div class="security-tip-section" style="background: linear-gradient(135deg, rgba(0,255,255,0.15), rgba(0,128,255,0.15)); padding: 2rem; border-radius: 20px; border: 2px solid rgba(0,255,255,0.3); margin: 3rem 0; text-align: center;">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
-                    <i class="fas fa-lightbulb" style="font-size: 2rem; color: #00ffff;"></i>
-                    <h2 style="color: #00ffff; font-size: 1.8rem; margin: 0;">Today's Security Tip</h2>
+                    <i class="fas fa-lightbulb" style="font-size: 2rem; color: var(--accent-primary);"></i>
+                    <h2 style="color: var(--accent-primary); font-size: 1.8rem; margin: 0;">Today's Security Tip</h2>
                 </div>
-                <div id="todaysSecurityTip" style="color: #ffffff; font-size: 1.3rem; line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                <div id="todaysSecurityTip" style="color: var(--text-color); font-size: 1.3rem; line-height: 1.8; max-width: 800px; margin: 0 auto;">
                     <p style="margin: 0;">Loading tip...</p>
                 </div>
             </div>
@@ -137,9 +143,9 @@
         <!-- Learning Paths Section -->
         <section id="paths" class="section">
             <div class="breadcrumb" style="margin-bottom: 1.5rem; padding: 0.75rem 1rem; background: rgba(0,255,255,0.1); border-radius: 10px; font-size: 0.9rem;">
-                <a href="#home" onclick="showSection('home'); return false;" style="color: #00ffff; text-decoration: none;">Home</a>
-                <span style="margin: 0 0.5rem; color: #cccccc;">→</span>
-                <span style="color: #ffffff;">Learning Paths</span>
+                <a href="#home" onclick="showSection('home'); return false;" style="color: var(--accent-primary); text-decoration: none;">Home</a>
+                <span style="margin: 0 0.5rem; color: var(--text-muted);">→</span>
+                <span style="color: var(--text-color);">Learning Paths</span>
             </div>
             
             <!-- Cybersecurity Career Roadmap -->
